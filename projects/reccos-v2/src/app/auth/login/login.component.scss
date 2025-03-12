@@ -1,0 +1,140 @@
+.login-container {
+  h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #333;
+  }
+}
+
+.form-group {
+  margin-bottom: 1.2rem;
+  
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #555;
+  }
+  
+  input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    
+    &:focus {
+      outline: none;
+      border-color: #1a73e8;
+      box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+    }
+    
+    &.is-invalid {
+      border-color: #dc3545;
+    }
+  }
+}
+
+.invalid-feedback {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.form-check {
+  display: flex;
+  align-items: center;
+  
+  .form-check-input {
+    width: auto;
+    margin-right: 0.5rem;
+  }
+  
+  .form-check-label {
+    margin-bottom: 0;
+  }
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #1a73e8;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  
+  &:hover {
+    background-color: #1557b0;
+  }
+  
+  &:disabled {
+    background-color: #a0c1e8;
+    cursor: not-allowed;
+  }
+}
+
+.form-links {
+  text-align: center;
+  margin-top: 1rem;
+  
+  a {
+    color: #1a73e8;
+    text-decoration: none;
+    
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.spinner {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+  margin-right: 0.5rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+
+.password-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  
+  input {
+    width: 100%;
+    padding-right: 40px; // Espaço para o botão
+  }
+  
+  .password-toggle-btn {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #555;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    &:hover {
+      color: #1a73e8;
+    }
+    
+    &:focus {
+      outline: none;
+    }
+  }
+}

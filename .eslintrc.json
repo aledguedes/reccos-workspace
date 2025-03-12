@@ -1,0 +1,68 @@
+{
+  "root": true,
+  "ignorePatterns": ["projects/**/*"],
+  "overrides": [
+    {
+      "files": ["*.ts"],
+      "parserOptions": {
+        "project": ["tsconfig.json"],
+        "createDefaultProgram": true
+      },
+      "extends": [
+        "plugin:@angular-eslint/recommended",
+        "plugin:@angular-eslint/template/process-inline-templates",
+        "eslint-config-google",
+        "prettier"
+      ],
+      "rules": {
+        "new-cap": "off",
+        "require-jsdoc": "off",
+        "camelcase": "off",
+        "valid-jsdoc": "off",
+        "comma-dangle": "off",
+        "@angular-eslint/directive-selector": [
+          "error",
+          {
+            "type": "attribute",
+            "prefix": "app",
+            "style": "camelCase"
+          }
+        ],
+        "@angular-eslint/component-selector": [
+          "error",
+          {
+            "type": "element",
+            "prefix": "app",
+            "style": "kebab-case"
+          }
+        ],
+        "prettier/prettier": [
+          "off",
+          {
+            "singleQuote": false,
+            "parser": "flow"
+          },
+          {
+            "usePrettierrc": false
+          }
+        ],
+        "quotes": ["error", "double"],
+        "indent": ["error", 2],
+        "max-len": [
+          "error",
+          {
+            "code": 150
+          }
+        ]
+      }
+    },
+    {
+      "files": ["*.html"],
+      "extends": ["plugin:@angular-eslint/template/recommended"],
+      "rules": {
+        "max-len": ["error", { "code": 150 }]
+      }
+    }
+  ],
+  "plugins": ["prettier"]
+}
