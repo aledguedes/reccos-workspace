@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -15,7 +15,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   loginForm!: FormGroup;
   loading = false;
   submitted = false;
@@ -50,11 +50,25 @@ export class LoginComponent implements OnInit {
     this.loading = true;
 
     // Aqui você implementaria a lógica de autenticação
-    // Por enquanto, vamos apenas simular um delay
+    // Por enquanto, vamos apenas simular um delay e verificar o papel do usuário
     setTimeout(() => {
       // Simulando login bem-sucedido
       console.log('Login bem-sucedido', this.loginForm.value);
-      this.router.navigate(['/dashboard']);
+
+      // Simulando verificação de papel do usuário
+      // Na implementação real, você obteria isso da resposta da API de autenticação
+      const userEmail = this.loginForm.value.email.toLowerCase();
+
+      // Verificando o papel do usuário com base no email para fins de demonstração
+      // Em um cenário real, isso viria do backend após autenticação
+      if (userEmail.includes('admin')) {
+        // Redirecionar administradores para a página de ligas
+        this.router.navigate(['/leagues']);
+      } else {
+        // Redirecionar gerentes para a página de federações
+        this.router.navigate(['/federations']);
+      }
+
       this.loading = false;
     }, 1500);
   }
@@ -70,7 +84,7 @@ export class LoginComponent implements OnInit {
   lockTimeRemaining = 0;
   lockTimeDisplay = '';
   private lockTimeInterval: any;
-  
+
   // Add these methods to the component
   private startLockCountdown() {
     this.updateLockTimeDisplay();
@@ -84,13 +98,13 @@ export class LoginComponent implements OnInit {
       }
     }, 1000);
   }
-  
+
   private updateLockTimeDisplay() {
     const minutes = Math.floor(this.lockTimeRemaining / 60000);
     const seconds = Math.floor((this.lockTimeRemaining % 60000) / 1000);
     this.lockTimeDisplay = `${minutes}:${seconds.toString().padStart(2, '0')}`;
   }
-  
+
   // Make sure to add this to ngOnDestroy
   ngOnDestroy() {
     if (this.lockTimeInterval) {
