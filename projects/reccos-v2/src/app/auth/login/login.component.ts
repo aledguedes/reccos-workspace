@@ -63,4 +63,38 @@ export class LoginComponent implements OnInit {
   togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;
   }
+
+  // Add these properties to the component class
+  accountLocked = false;
+  remainingAttempts = 5;
+  lockTimeRemaining = 0;
+  lockTimeDisplay = '';
+  private lockTimeInterval: any;
+  
+  // Add these methods to the component
+  private startLockCountdown() {
+    this.updateLockTimeDisplay();
+    this.lockTimeInterval = setInterval(() => {
+      this.lockTimeRemaining -= 1000;
+      if (this.lockTimeRemaining <= 0) {
+        this.accountLocked = false;
+        clearInterval(this.lockTimeInterval);
+      } else {
+        this.updateLockTimeDisplay();
+      }
+    }, 1000);
+  }
+  
+  private updateLockTimeDisplay() {
+    const minutes = Math.floor(this.lockTimeRemaining / 60000);
+    const seconds = Math.floor((this.lockTimeRemaining % 60000) / 1000);
+    this.lockTimeDisplay = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  }
+  
+  // Make sure to add this to ngOnDestroy
+  ngOnDestroy() {
+    if (this.lockTimeInterval) {
+      clearInterval(this.lockTimeInterval);
+    }
+  }
 }
