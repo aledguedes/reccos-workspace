@@ -77,15 +77,14 @@
 }
 
 /* Estilo para cabeçalhos de categoria quando a sidebar está retraída */
-.md\:w-16 .mt-4.mb-2 {
-  display: block !important; /* Forçar exibição mesmo quando retraído */
+/* Removido o display: block !important para permitir que os cabeçalhos fiquem invisíveis */
+.md\:w-16 .mt-4.mb-2:not(.invisible) {
   text-align: center;
   padding: 0.5rem 0;
 }
 
 .md\:w-16 .text-gray-400.uppercase {
   font-size: 0.6rem;
-  display: block;
   text-align: center;
   padding: 0 0.25rem;
 }
@@ -104,6 +103,24 @@
 .md\:w-64 {
   width: 16rem;
   transition: width 0.3s ease;
+}
+
+/* Garantir que o header mantenha a mesma altura quando a sidebar está retraída */
+.md\:w-16 .flex.items-center.h-16 {
+  height: 4rem !important;
+  display: flex;
+  justify-content: center;
+}
+
+/* Garantir que o espaço do título seja preservado mesmo quando está oculto */
+.md\:w-16 h1.text-white.font-bold.text-xl.hidden {
+  display: block !important;
+  visibility: hidden;
+  width: 0;
+  height: 0;
+  margin: 0;
+  padding: 0;
+  position: absolute;
 }
 
 /* Melhorias para ícones na sidebar quando retraída ou expandida */
