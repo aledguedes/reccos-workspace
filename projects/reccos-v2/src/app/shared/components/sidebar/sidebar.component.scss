@@ -1,0 +1,247 @@
+/* Estilos específicos para a sidebar */
+
+/* Ajustes para a sidebar */
+.bg-gray-800 {
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  height: 100vh; /* Garantir que ocupe 100% da altura da tela */
+  overflow-x: hidden; /* Eliminar scroll horizontal */
+}
+
+/* Garantir que o container principal da sidebar ocupe 100% da altura */
+.fixed.md\:relative.md\:flex.md\:flex-col.md\:inset-y-0 {
+  height: 100vh !important;
+  overflow-x: hidden;
+}
+
+/* Responsividade para dispositivos móveis */
+@media (max-width: 768px) {
+  /* Sidebar oculta por padrão em dispositivos móveis */
+  .md\:flex {
+    display: none !important;
+  }
+
+  /* Quando a sidebar está aberta em dispositivos móveis */
+  .md\:flex:not(.hidden) {
+    display: block !important;
+    position: fixed;
+    width: 100% !important;
+    height: 100%;
+    z-index: 50;
+  }
+
+  /* Garantir que a sidebar ocupe toda a tela quando aberta */
+  .md\:flex:not(.hidden) .bg-gray-800 {
+    width: 100%;
+  }
+}
+
+/* Ajustes para links ativos na sidebar */
+.bg-gray-900 {
+  border-left: 3px solid #3b82f6;
+  position: relative;
+  /* Não alterar o padding-left para manter a mesma disposição do texto */
+}
+
+/* Garantir que os links ativos na sidebar expandida também tenham a borda encostada */
+.md\:w-64 nav a.bg-gray-900 {
+  border-left: 3px solid #3b82f6;
+  /* Não alterar o padding-left para manter a mesma disposição do texto */
+  margin-left: 0;
+}
+
+/* Efeito de hover nos links da sidebar */
+.text-gray-300.hover\:bg-gray-700:hover {
+  background-color: rgba(55, 65, 81, 0.7);
+  transform: translateX(2px);
+}
+
+/* Estilo para os ícones na sidebar */
+.fas {
+  transition: transform 0.2s ease;
+}
+
+.group:hover .fas {
+  transform: scale(1.1);
+}
+
+/* Estilo para os cabeçalhos de categoria */
+.text-gray-400.uppercase {
+  letter-spacing: 0.05em;
+  font-size: 0.7rem;
+}
+
+/* Linha divisória entre categorias */
+.h-px.bg-gray-700 {
+  opacity: 0.6;
+}
+
+/* Estilo para cabeçalhos de categoria quando a sidebar está retraída */
+.md\:w-16 .mt-4.mb-2 {
+  display: block !important; /* Forçar exibição mesmo quando retraído */
+  text-align: center;
+  padding: 0.5rem 0;
+}
+
+.md\:w-16 .text-gray-400.uppercase {
+  font-size: 0.6rem;
+  display: block;
+  text-align: center;
+  padding: 0 0.25rem;
+}
+
+.md\:w-16 .h-px.bg-gray-700 {
+  width: 80%;
+  margin: 0.25rem auto;
+}
+
+/* Estilos para a sidebar retraída */
+.md\:w-16 {
+  width: 4rem;
+  transition: width 0.3s ease;
+}
+
+.md\:w-64 {
+  width: 16rem;
+  transition: width 0.3s ease;
+}
+
+/* Melhorias para ícones na sidebar quando retraída ou expandida */
+.md\:w-16 .fas,
+.md\:w-64 .fas {
+  font-size: 1.25rem !important;
+  margin-right: 0 !important;
+  width: auto !important;
+  text-align: left;
+  transform: none !important; /* Impedir que o ícone diminua */
+}
+
+/* Garantir que os ícones na sidebar expandida tenham o mesmo tamanho da retraída */
+.md\:w-64 nav a.text-gray-300 .fas {
+  font-size: 1.25rem !important;
+  min-width: 1.5rem;
+  min-height: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Estilo para tooltips nos ícones quando a sidebar está retraída */
+.md\:w-16 a {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.md\:w-16 a:hover::after {
+  content: attr(title);
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(17, 24, 39, 0.9);
+  color: white;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  z-index: 50;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Animação para o toggle da sidebar */
+.md\:w-16 button i,
+.md\:w-64 button i {
+  transition: transform 0.3s ease;
+}
+
+/* Estilo para o botão de toggle quando a sidebar está retraída */
+.md\:w-16 .bg-gray-900 {
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px; /* Altura fixa para manter consistência com o estado expandido */
+  width: 100%; /* Garantir que ocupe toda a largura disponível */
+  border-left: 3px solid #3b82f6; /* Manter a borda esquerda azul */
+}
+
+/* Ajuste para o espaçamento dos links na sidebar retraída e expandida */
+.md\:w-16 nav,
+.md\:w-64 nav {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Aumentando o espaçamento interno dos links da sidebar */
+nav a.text-gray-300 {
+  padding: 0.75rem 1rem; /* Aumentado de py-2.5 (0.625rem) para 0.75rem e px-3 para 1rem */
+  margin-bottom: 0.25rem; /* Adicionando um pequeno espaço entre os itens */
+}
+
+/* Ajuste para o espaçamento vertical entre os links */
+nav.space-y-2 {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
+}
+
+/* Melhorando a visualização dos ícones */
+/* Melhorando o espaçamento entre ícones e texto nos links da sidebar */
+nav a.text-gray-300 .fas {
+  min-width: 1.5rem; /* Garantindo largura mínima para alinhamento */
+  margin-right: 0.75rem !important; /* Aumentando o espaçamento entre o ícone e o texto */
+}
+
+/* Garantir que o espaçamento seja mantido mesmo quando o link estiver ativo */
+nav a.bg-gray-900 .fas {
+  margin-right: 0.75rem !important; /* Manter o mesmo espaçamento quando ativo */
+}
+
+/* Garantir que os textos dos links fiquem alinhados à esquerda */
+nav a.text-gray-300 span {
+  text-align: left;
+  display: inline-block;
+}
+
+/* Ajustes para ícones na sidebar retraída */
+.md\:w-16 nav a.text-gray-300 {
+  height: 48px; /* Altura fixa para todos os links */
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centralizar ícones quando retraído */
+  padding: 0.75rem 0.5rem; /* Ajustado para centralizar */
+}
+
+/* Garantir que os ícones fiquem centralizados e mantenham o tamanho na sidebar retraída */
+.md\:w-16 nav a.text-gray-300 .fas {
+  margin: 0 auto; /* Centralizar o ícone */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.25rem !important; /* Forçar o mesmo tamanho de fonte */
+  transform: none !important; /* Evitar que o ícone diminua */
+  min-width: 1.5rem; /* Garantir largura mínima */
+  min-height: 1.5rem; /* Garantir altura mínima */
+}
+
+/* Ajuste para links ativos na sidebar retraída */
+.md\:w-16 nav a.bg-gray-900 {
+  border-radius: 0.375rem; /* Manter o border-radius */
+  border-left: 3px solid #3b82f6; /* Manter a borda esquerda azul */
+  padding-left: 0.5rem; /* Pequeno padding para não encostar a borda no conteúdo */
+  width: 100%; /* Garantir que ocupe toda a largura disponível */
+  display: flex;
+  justify-content: center; /* Centralizar conteúdo */
+}
+
+/* Melhorias para ícones na sidebar quando retraída */
+.md\:w-16 .fas {
+  font-size: 1.25rem !important; /* Tamanho consistente */
+  margin: 0 auto !important; /* Centralizar */
+  width: auto !important;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
