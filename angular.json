@@ -20,9 +20,7 @@
             "outputPath": "dist/reccos-v2",
             "index": "projects/reccos-v2/src/index.html",
             "browser": "projects/reccos-v2/src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "projects/reccos-v2/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -31,9 +29,7 @@
                 "input": "projects/reccos-v2/public"
               }
             ],
-            "styles": [
-              "projects/reccos-v2/src/styles.scss"
-            ],
+            "styles": ["projects/reccos-v2/src/styles.scss"],
             "scripts": [],
             "server": "projects/reccos-v2/src/main.server.ts",
             "prerender": true,
@@ -83,10 +79,7 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
+            "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "projects/reccos-v2/tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -95,9 +88,7 @@
                 "input": "projects/reccos-v2/public"
               }
             ],
-            "styles": [
-              "projects/reccos-v2/src/styles.scss"
-            ],
+            "styles": ["projects/reccos-v2/src/styles.scss"],
             "scripts": []
           }
         }

@@ -1,0 +1,56 @@
+<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+  <div class="sm:mx-auto sm:w-full sm:max-w-md">
+    <div class="text-center">
+      <i class="ri-tools-fill text-6xl text-indigo-600 mb-4"></i>
+      <h2 class="text-center text-2xl font-bold tracking-tight text-gray-900">
+        Sistema em Manutenção
+      </h2>
+      <p class="mt-2 text-center text-sm text-gray-600">
+        Estamos realizando melhorias no sistema. Por favor, tente novamente mais
+        tarde.
+      </p>
+      <p class="mt-4 text-center text-sm text-gray-600">
+        Previsão de retorno: {{ maintenanceEndTime | date: 'dd/MM/yyyy HH:mm' }}
+      </p>
+    </div>
+
+    <div class="mt-8 bg-gray-50 p-4 rounded-lg border border-gray-200">
+      <h3 class="text-sm font-medium text-gray-900">
+        Alternativas disponíveis:
+      </h3>
+      <ul class="mt-2 list-disc pl-5 text-sm text-gray-600">
+        @if (contactInfo) {
+          <li>Entre em contato com o suporte técnico: {{ contactInfo }}</li>
+        }
+        @if (socialLinks.length > 0) {
+          <li>
+            Verifique nossas redes sociais para atualizações:
+            <div class="mt-1 flex space-x-2">
+              @for (link of socialLinks; track link.name) {
+                <a
+                  [href]="link.url"
+                  target="_blank"
+                  class="text-indigo-600 hover:text-indigo-500"
+                >
+                  {{ link.name }}
+                </a>
+              }
+            </div>
+          </li>
+        }
+        @if (!contactInfo && socialLinks.length === 0) {
+          <li>Entre em contato com o suporte técnico</li>
+        }
+      </ul>
+    </div>
+
+    <div class="mt-6 text-center">
+      <a
+        [routerLink]="[returnUrl]"
+        class="text-sm font-medium text-indigo-600 hover:text-indigo-500"
+      >
+        Tentar novamente
+      </a>
+    </div>
+  </div>
+</div>
