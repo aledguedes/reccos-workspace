@@ -1,0 +1,45 @@
+<!-- Navbar superior -->
+<div class="sticky top-0 z-10 flex-shrink-0 flex h-16 bg-white shadow">
+  <button
+    (click)="toggleSidebar()"
+    type="button"
+    class="px-4 border-r border-gray-200 text-gray-500 md:hidden"
+  >
+    <i
+      class="fas"
+      [class.fa-bars]="!isSidebarOpen"
+      [class.fa-times]="isSidebarOpen"
+    ></i>
+  </button>
+  <div class="flex-1 px-4 flex justify-between">
+    <div class="flex-1 flex items-center">
+      <h1 class="text-xl font-semibold">{{ currentPageTitle }}</h1>
+    </div>
+    <div class="ml-4 flex items-center md:ml-6">
+      <!-- Links contextuais da navbar -->
+      <div class="hidden md:flex space-x-4 mr-4">
+        <a
+          *ngFor="let link of navbarLinks"
+          [routerLink]="link.path"
+          routerLinkActive="text-blue-600 font-bold"
+          class="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
+        >
+          {{ link.name }}
+        </a>
+      </div>
+
+      <!-- Dropdown do perfil do usuário -->
+      <div class="ml-3 relative">
+        <div>
+          <button
+            type="button"
+            class="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            <span class="sr-only">Abrir menu do usuário</span>
+            <i class="fas fa-user-circle text-2xl text-gray-400"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
