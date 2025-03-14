@@ -98,6 +98,7 @@
 .md\:w-16 {
   width: 4rem;
   transition: width 0.3s ease;
+  overflow-x: hidden; /* Eliminar scroll horizontal quando retraída */
 }
 
 .md\:w-64 {
@@ -261,4 +262,9 @@ nav a.text-gray-300 span {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+/* Ajuste para o container de conteúdo da sidebar */
+.flex-1.flex.flex-col.overflow-y-auto {
+  overflow-x: hidden; /* Prevenir scroll horizontal enquanto mantém o scroll vertical */
 }
