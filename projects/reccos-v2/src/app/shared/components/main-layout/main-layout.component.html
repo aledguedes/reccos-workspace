@@ -1,5 +1,6 @@
-<div class="flex h-screen bg-gray-100">
-  <!-- Sidebar componentizada -->
+<!-- Layout principal com sidebar, navbar e conteúdo -->
+<div class="flex h-screen bg-gray-100 dark:bg-gray-900">
+  <!-- Sidebar Component -->
   <app-sidebar
     [isSidebarOpen]="isSidebarOpen"
     [isSidebarExpanded]="isSidebarExpanded"
@@ -8,13 +9,16 @@
     (toggleSidebarExpansionEvent)="toggleSidebarExpansion()"
   ></app-sidebar>
 
-  <!-- Conteúdo principal -->
+  <!-- Overlay para dispositivos móveis -->
   <div
-    [class.md:pl-64]="isSidebarOpen && isSidebarExpanded"
-    [class.md:pl-16]="isSidebarOpen && !isSidebarExpanded"
-    class="flex flex-col flex-1 w-full transition-all duration-300"
-  >
-    <!-- Navbar componentizado -->
+    id="menuOverlay"
+    class="fixed inset-0 bg-black bg-opacity-50 z-30 hidden md:hidden"
+    (click)="toggleSidebar()"
+  ></div>
+
+  <!-- Conteúdo principal -->
+  <div class="flex flex-col flex-1 overflow-hidden">
+    <!-- Navbar Component -->
     <app-navbar
       [currentPageTitle]="currentPageTitle"
       [navbarLinks]="navbarLinks"
@@ -22,9 +26,13 @@
       (toggleSidebarEvent)="toggleSidebar()"
     ></app-navbar>
 
-    <!-- Conteúdo da página -->
-    <main class="flex-1 overflow-y-auto bg-gray-100 p-6">
-      <router-outlet></router-outlet>
+    <!-- Conteúdo da página usando router-outlet -->
+    <main
+      class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 dark:bg-gray-900 p-4"
+    >
+      <div class="container mx-auto px-4 py-2">
+        <router-outlet></router-outlet>
+      </div>
     </main>
   </div>
 </div>
