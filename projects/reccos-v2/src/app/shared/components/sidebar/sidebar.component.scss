@@ -6,6 +6,18 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   height: 100vh; /* Garantir que ocupe 100% da altura da tela */
   overflow-x: hidden; /* Eliminar scroll horizontal */
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 40;
+  width: 16rem;
+  background-color: #fff;
+  border-right: 1px solid #e5e7eb;
+}
+
+.dark .bg-gray-800 {
+  background-color: #1f2937;
+  border-color: #374151;
 }
 
 /* Garantir que o container principal da sidebar ocupe 100% da altura */
@@ -68,7 +80,7 @@
 /* Estilo para os cabeçalhos de categoria */
 .text-gray-400.uppercase {
   letter-spacing: 0.05em;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
 }
 
 /* Linha divisória entre categorias */
@@ -84,7 +96,7 @@
 }
 
 .md\:w-16 .text-gray-400.uppercase {
-  font-size: 0.6rem;
+  font-size: 0.55rem;
   text-align: center;
   padding: 0 0.25rem;
 }
@@ -127,7 +139,7 @@
 /* Melhorias para ícones na sidebar quando retraída ou expandida */
 .md\:w-16 .fas,
 .md\:w-64 .fas {
-  font-size: 1.25rem !important;
+  font-size: 1.1rem !important;
   margin-right: 0 !important;
   width: auto !important;
   text-align: left;
@@ -136,9 +148,9 @@
 
 /* Garantir que os ícones na sidebar expandida tenham o mesmo tamanho da retraída */
 .md\:w-64 nav a.text-gray-300 .fas {
-  font-size: 1.25rem !important;
-  min-width: 1.5rem;
-  min-height: 1.5rem;
+  font-size: 1.1rem !important;
+  min-width: 1.4rem;
+  min-height: 1.4rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -161,7 +173,7 @@
   color: white;
   padding: 0.5rem 0.75rem;
   border-radius: 0.375rem;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   white-space: nowrap;
   z-index: 50;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -237,10 +249,10 @@ nav a.text-gray-300 span {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1.25rem !important; /* Forçar o mesmo tamanho de fonte */
+  font-size: 1.1rem !important; /* Forçar o mesmo tamanho de fonte */
   transform: none !important; /* Evitar que o ícone diminua */
-  min-width: 1.5rem; /* Garantir largura mínima */
-  min-height: 1.5rem; /* Garantir altura mínima */
+  min-width: 1.4rem; /* Garantir largura mínima */
+  min-height: 1.4rem; /* Garantir altura mínima */
 }
 
 /* Ajuste para links ativos na sidebar retraída */
@@ -255,7 +267,7 @@ nav a.text-gray-300 span {
 
 /* Melhorias para ícones na sidebar quando retraída */
 .md\:w-16 .fas {
-  font-size: 1.25rem !important; /* Tamanho consistente */
+  font-size: 1.1rem !important; /* Tamanho consistente */
   margin: 0 auto !important; /* Centralizar */
   width: auto !important;
   text-align: center;
