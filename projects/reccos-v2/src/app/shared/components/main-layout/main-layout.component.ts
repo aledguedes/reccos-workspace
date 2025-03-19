@@ -7,14 +7,7 @@ import { NavbarComponent } from '../navbar/navbar.component';
 @Component({
   selector: 'app-main-layout',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterOutlet,
-    RouterLink,
-    RouterLinkActive,
-    SidebarComponent,
-    NavbarComponent,
-  ],
+  imports: [CommonModule, RouterOutlet, SidebarComponent, NavbarComponent],
   templateUrl: './main-layout.component.html',
   styleUrls: ['./main-layout.component.scss'],
 })
@@ -37,7 +30,7 @@ export class MainLayoutComponent implements OnInit {
     {
       name: 'Federações',
       path: '/federations',
-      icon: 'sitemap',
+      icon: 'organization-chart',
       description: 'Administrar federações esportivas',
     },
     {
@@ -52,13 +45,13 @@ export class MainLayoutComponent implements OnInit {
     {
       name: 'Times',
       path: '/teams',
-      icon: 'users-line',
+      icon: 'team',
       description: 'Gerenciar times e elencos',
     },
     {
       name: 'Jogadores',
       path: '/players',
-      icon: 'user-group',
+      icon: 'user-3',
       description: 'Cadastro e gestão de atletas',
     },
 
@@ -67,19 +60,19 @@ export class MainLayoutComponent implements OnInit {
     {
       name: 'Árbitros',
       path: '/referees',
-      icon: 'user-tie',
+      icon: 'user-star',
       description: 'Gestão de árbitros',
     },
     {
       name: 'Estatísticas',
       path: '/statistics',
-      icon: 'chart-line',
+      icon: 'line-chart',
       description: 'Visualizar estatísticas',
     },
     {
       name: 'Calendário',
       path: '/calendar',
-      icon: 'calendar-days',
+      icon: 'calendar-2',
       description: 'Agenda de jogos e eventos',
     },
   ];
