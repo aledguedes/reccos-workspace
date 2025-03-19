@@ -37,14 +37,34 @@
   .md\:flex:not(.hidden) {
     display: block !important;
     position: fixed;
-    width: 100% !important;
-    height: 100%;
     z-index: 50;
   }
 
-  /* Garantir que a sidebar ocupe toda a tela quando aberta */
-  .md\:flex:not(.hidden) .bg-gray-800 {
-    width: 100%;
+  /* Garantir que a sidebar não ocupe toda a tela quando aberta em dispositivos móveis */
+  aside {
+    max-width: 280px;
+    width: 85%;
+    border-radius: 0 8px 8px 0;
+  }
+
+  /* Garantir que os textos dos links apareçam quando a sidebar estiver aberta em dispositivos móveis */
+  aside span.flex-1.ms-3 {
+    display: block !important;
+    opacity: 1 !important;
+    width: auto !important;
+  }
+
+  /* Ajustar o alinhamento dos links para que fiquem à esquerda em dispositivos móveis */
+  aside a.flex {
+    justify-content: flex-start !important;
+  }
+
+  /* Ajustar o tamanho e margem dos ícones para dispositivos móveis */
+  aside i.ri-line {
+    width: 1.25rem !important;
+    height: 1.25rem !important;
+    margin-right: 0.75rem !important;
+    margin-left: 0 !important;
   }
 }
 
