@@ -1,77 +1,95 @@
+<!-- Overlay para dispositivos móveis que fecha a sidebar ao ser clicado -->
+<div
+  *ngIf="isSidebarOpen"
+  class="fixed inset-0 bg-black/50 backdrop-blur-sm z-30 md:hidden transition-opacity duration-300"
+  (click)="toggleSidebar()"
+></div>
+
 <aside
   id="logo-sidebar"
-  [class.hidden]="!isSidebarOpen"
+  [class.hidden]="!isSidebarOpen && !isSidebarExpanded"
+  [class.md:block]="true"
   [class.md:w-64]="isSidebarExpanded"
   [class.md:w-16]="!isSidebarExpanded"
-  class="fixed top-0 left-0 z-40 h-screen transition-transform border-r border-gray-200 bg-white dark:bg-gray-800 dark:border-gray-700 md:relative md:flex md:flex-col md:inset-y-0 duration-300 overflow-hidden"
+  [class.translate-x-0]="isSidebarOpen"
+  [class.-translate-x-full]="!isSidebarOpen"
+  class="fixed top-0 left-0 z-40 h-screen transition-transform border-r border-gray-200 bg-white dark:bg-gray-800 dark:border-gray-700 md:translate-x-0 md:relative md:flex md:flex-col md:inset-y-0 duration-300 overflow-hidden shadow-lg md:h-full max-w-[280px] w-[85%]"
   aria-label="Sidebar"
 >
   <div class="flex items-center h-16 flex-shrink-0 px-4 justify-between">
     <h1
-      class="text-gray-900 font-bold text-lg"
+      class="text-gray-900 font-bold text-lg dark:text-white"
       [class.hidden]="!isSidebarExpanded"
     >
       Reccos
     </h1>
     <button
       (click)="toggleSidebarExpansion()"
-      class="text-gray-300 hover:text-white focus:outline-none"
+      class="text-gray-500 hover:text-gray-700 focus:outline-none dark:text-gray-400 dark:hover:text-gray-200 hidden md:block"
       title="Expandir/Retrair menu"
     >
       <i
-        class="fas"
-        [class.fa-angle-left]="isSidebarExpanded"
-        [class.fa-angle-right]="!isSidebarExpanded"
+        [class.ri-arrow-left-s-line]="isSidebarExpanded"
+        [class.ri-arrow-right-s-line]="!isSidebarExpanded"
+        [ngClass]="
+          isSidebarExpanded ? 'ri-arrow-left-s-line' : 'ri-arrow-right-s-line'
+        "
       ></i>
+    </button>
+    <button
+      (click)="toggleSidebar()"
+      class="text-gray-500 hover:text-gray-700 focus:outline-none dark:text-gray-400 dark:hover:text-gray-200 md:hidden"
+      title="Fechar menu"
+    >
+      <i class="ri-close-line"></i>
     </button>
   </div>
   <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
     <ul class="space-y-2 font-medium">
       <!-- Renderiza os links da sidebar com suporte a cabeçalhos de categoria -->
-      <ng-container *ngFor="let link of sidebarLinks">
+      @for (link of sidebarLinks; track link) {
         <!-- Cabeçalho de categoria -->
-        <div
-          *ngIf="link.isHeader"
-          class="mt-4 mb-2"
-          [class.invisible]="!isSidebarExpanded"
-        >
-          <h3
-            class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider"
-          >
-            {{ link.name }}
-          </h3>
-          <div class="mt-1 h-px bg-gray-200"></div>
-        </div>
+        @if (link.isHeader) {
+          <div class="mt-4 mb-2" [class.invisible]="!isSidebarExpanded">
+            <h3
+              class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider"
+            >
+              {{ link.name }}
+            </h3>
+            <div class="mt-1 h-px bg-gray-200"></div>
+          </div>
+        }
 
         <!-- Link de navegação -->
-        <li *ngIf="!link.isHeader">
-          <a
-            [routerLink]="link.path"
-            routerLinkActive="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-white"
-            class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group transition-all duration-200 ease-in-out"
-            [title]="link.description"
-            [attr.data-tooltip]="link.name"
-            [class.justify-center]="!isSidebarExpanded"
-          >
-            <i
-              class="fas fa-{{
-                link.icon
-              }} text-gray-400 group-hover:text-gray-300"
-              [ngClass]="{
-                'w-5 h-5 mr-3': isSidebarExpanded,
-                'w-6 h-6 mx-auto': !isSidebarExpanded,
-              }"
-            ></i>
-            <span
-              class="flex-1 ms-3 whitespace-nowrap transition-all duration-200 text-sm"
-              [class.hidden]="!isSidebarExpanded"
-              [class.opacity-0]="!isSidebarExpanded"
-              [class.w-0]="!isSidebarExpanded"
-              >{{ link.name }}</span
+        @if (!link.isHeader) {
+          <li>
+            <a
+              [routerLink]="link.path"
+              routerLinkActive="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-white"
+              class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group transition-all duration-200 ease-in-out"
+              [title]="link.description"
+              [attr.data-tooltip]="link.name"
+              [class.justify-center]="!isSidebarExpanded"
             >
-          </a>
-        </li>
-      </ng-container>
+              <i
+                class="ri-{{ link.icon }}-line transition-colors duration-200"
+                [ngClass]="{
+                  'w-5 h-5 mr-3': isSidebarExpanded,
+                  'w-6 h-6 mx-auto': !isSidebarExpanded,
+                  'text-gray-400 group-hover:text-gray-700 dark:group-hover:text-white': true,
+                }"
+              ></i>
+              <span
+                class="flex-1 ms-3 whitespace-nowrap transition-all duration-200 text-sm"
+                [class.hidden]="!isSidebarExpanded"
+                [class.opacity-0]="!isSidebarExpanded"
+                [class.w-0]="!isSidebarExpanded"
+                >{{ link.name }}</span
+              >
+            </a>
+          </li>
+        }
+      }
     </ul>
   </div>
 </aside>
