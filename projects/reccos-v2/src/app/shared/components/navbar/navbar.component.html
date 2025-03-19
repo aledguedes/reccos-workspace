@@ -3,18 +3,17 @@
 >
   <div class="flex items-center gap-2 sm:gap-3">
     <button
-      class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
+      class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 md:hidden"
       id="toggleSidebar"
       (click)="toggleSidebar()"
     >
       <i class="ri-layout-left-line" style="width: 20px; height: 20px"></i>
     </button>
-    <h1 class="text-lg font-medium hidden sm:block">Dashboard</h1>
+    <h1 class="text-lg font-medium hidden sm:block">{{ currentPageTitle }}</h1>
   </div>
 
   <div class="flex items-center gap-2 sm:gap-4 md:gap-6">
     <div class="relative max-w-56 hidden md:block">
-      123
       <i
         class="ri-search-line absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400"
         style="width: 16px; height: 16px"
