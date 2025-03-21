@@ -1,9 +1,12 @@
-<div class="p-6">
-  <div class="flex justify-between items-center mb-6">
+<div class="p-0 sm:p-6">
+  <div
+    class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4"
+  >
     <h1 class="text-2xl font-bold">Gerenciamento de Ligas</h1>
+
     <button
       (click)="createNewLeague()"
-      class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 flex items-center gap-2"
+      class="btn btn-primary flex items-center gap-2 w-full sm:w-auto"
     >
       <i class="ri-add-line"></i> Nova Liga
     </button>
@@ -17,7 +20,7 @@
   </div>
 
   <!-- Leagues Table -->
-  <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-3 sm:p-6">
     <h2 class="text-xl font-semibold mb-4">Lista de Ligas</h2>
 
     <app-data-table
