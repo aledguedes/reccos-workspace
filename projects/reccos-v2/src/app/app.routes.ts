@@ -15,8 +15,8 @@ export const routes: Routes = [
     children: [
       {
         path: 'leagues',
-        loadComponent: () =>
-          import('./leagues/leagues.component').then(m => m.LeaguesComponent),
+        loadChildren: () =>
+          import('./leagues/league.routes').then(r => r.LEAGUE_ROUTES),
       },
       {
         path: 'federations',

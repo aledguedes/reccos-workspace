@@ -63,10 +63,10 @@ export class LoginComponent implements OnInit, OnDestroy {
       // Em um cenário real, isso viria do backend após autenticação
       if (userEmail.includes('admin')) {
         // Redirecionar administradores para a página de ligas
-        this.router.navigate(['/leagues']);
+        this.router.navigate(['/federations']);
       } else {
         // Redirecionar gerentes para a página de federações
-        this.router.navigate(['/federations']);
+        this.router.navigate(['/leagues']);
       }
 
       this.loading = false;
