@@ -11,33 +11,9 @@
 
   <!-- Stats Cards -->
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-    <app-stat-card
-      title="Total de Ligas"
-      [value]="totalLeagues"
-      description="Ligas cadastradas no sistema"
-    >
-    </app-stat-card>
-
-    <app-stat-card
-      title="Ligas Ativas"
-      [value]="activeLeagues"
-      description="Ligas em andamento atualmente"
-    >
-    </app-stat-card>
-
-    <app-stat-card
-      title="Total de Times"
-      [value]="totalTeams"
-      description="Times participando em todas as ligas"
-    >
-    </app-stat-card>
-
-    <app-stat-card
-      title="Total de Partidas"
-      [value]="totalMatches"
-      description="Partidas em todas as ligas"
-    >
-    </app-stat-card>
+    @for (card of cards; track $index) {
+      <app-stat-card [card]="card" />
+    }
   </div>
 
   <!-- Leagues Table -->

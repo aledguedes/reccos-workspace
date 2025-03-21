@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ILeagueCard } from '../../../core/models/league.model';
 
 @Component({
   selector: 'app-stat-card',
@@ -9,7 +10,10 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./stat-card.component.scss'],
 })
 export class StatCardComponent {
-  @Input() title: string = '';
-  @Input() value: string | number = 0;
-  @Input() description: string = '';
+  @Input() card: ILeagueCard = {
+    title: '',
+    value: '',
+    trend: { positive: true, value: 0, lastMonthValue: 0 },
+    icon: '',
+  };
 }

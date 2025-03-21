@@ -5,19 +5,19 @@ import {
   DataTableComponent,
   TableColumn,
 } from '../../shared/components/data-table/data-table.component';
+import { ILeague, ILeagueCard } from '../../core/models/league.model';
 import { StatCardComponent } from '../../shared/components/stat-card/stat-card.component';
-import { League } from '../../core/models/league.model';
 
 @Component({
   selector: 'app-leagues-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, DataTableComponent, StatCardComponent],
+  imports: [CommonModule, RouterModule, StatCardComponent, DataTableComponent],
   templateUrl: './leagues-list.component.html',
   styleUrl: './leagues-list.component.scss',
 })
 export class LeaguesListComponent {
   // Mock data for leagues
-  leagues: League[] = [
+  leagues: ILeague[] = [
     {
       id: 1,
       name: 'Premier League',
@@ -81,6 +81,33 @@ export class LeaguesListComponent {
     { header: 'Partidas', field: 'matchesCount', sortable: true },
   ];
 
+  cards: ILeagueCard[] = [
+    {
+      title: 'Times Cadastrados',
+      value: '24',
+      trend: { positive: true, value: 12, lastMonthValue: 10 },
+      icon: 'ri-group-line',
+    },
+    {
+      title: 'Jogadores Ativos',
+      value: '237',
+      trend: { positive: true, value: 5, lastMonthValue: 1 },
+      icon: 'ri-line-chart-line',
+    },
+    {
+      title: 'Torneios',
+      value: '3',
+      trend: { positive: false, value: 0, lastMonthValue: 1 },
+      icon: 'ri-trophy-line',
+    },
+    {
+      title: 'Partidas Agendadas',
+      value: '16',
+      trend: { positive: true, value: 8, lastMonthValue: 4 },
+      icon: 'ri-calendar-line',
+    },
+  ];
+
   // Stats for cards
   totalLeagues = this.leagues.length;
   activeLeagues = this.leagues.filter(league => league.status === 'active')
@@ -93,17 +120,17 @@ export class LeaguesListComponent {
 
   constructor() {}
 
-  onViewLeague(league: League): void {
+  onViewLeague(league: ILeague): void {
     console.log('View league:', league);
     // Implement navigation to league details
   }
 
-  onEditLeague(league: League): void {
+  onEditLeague(league: ILeague): void {
     console.log('Edit league:', league);
     // Implement navigation to league edit
   }
 
-  onDeleteLeague(league: League): void {
+  onDeleteLeague(league: ILeague): void {
     console.log('Delete league:', league);
     // Implement league deletion logic
   }

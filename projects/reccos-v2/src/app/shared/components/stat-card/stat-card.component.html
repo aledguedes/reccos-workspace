@@ -1,13 +1,48 @@
-<div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 h-full">
-  <h3 class="text-gray-500 dark:text-gray-400 text-sm font-medium mb-2">
-    {{ title }}
-  </h3>
-  <div class="flex items-baseline">
-    <span class="text-3xl font-bold text-gray-900 dark:text-white">{{
-      value
-    }}</span>
+<div
+  [ngClass]="[
+    'p-6 rounded-2xl bg-white border border-gray-200 transition-all hover:shadow-lg relative',
+  ]"
+>
+  <!-- Título e Ícone -->
+  <div class="flex justify-between items-center mb-2">
+    <div class="flex items-center gap-2">
+      <div class="p-3 px-4 rounded-lg bg-blue-50 text-blue-500">
+        <i [ngClass]="card.icon" class="h-4 w-4"></i>
+      </div>
+      <h3 class="text-sm font-medium text-gray-500">{{ card.title }}</h3>
+    </div>
   </div>
-  <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">
-    {{ description }}
-  </p>
+
+  <!-- Valor e Tendência -->
+  <div class="flex items-center justify-between gap-2">
+    <p class="text-2xl font-semibold text-gray-900">{{ card.value }}</p>
+    <div *ngIf="card.trend" class="flex flex-col">
+      <div class="flex items-center gap-1">
+        <i
+          [ngClass]="{
+            'ri-arrow-up-line text-green-500': card.trend.positive,
+            'ri-arrow-down-line text-red-500': !card.trend.positive,
+          }"
+          class="text-xs"
+          [attr.aria-label]="
+            card.trend.positive ? 'Tendência positiva' : 'Tendência negativa'
+          "
+        ></i>
+        <span
+          [ngClass]="{
+            'text-xs font-semibold': true,
+            'ri-arrow-up-line text-green-500': card.trend.positive,
+            'ri-arrow-down-linetext-red-500': !card.trend.positive,
+          }"
+        >
+          {{ card.trend.positive ? '+' : '' }}{{ card.trend.value }}%
+        </span>
+      </div>
+      @if (card.trend.lastMonthValue) {
+        <span class="text-xs text-gray-400">
+          Última atualização {{ card.trend.lastMonthValue }}
+        </span>
+      }
+    </div>
+  </div>
 </div>
