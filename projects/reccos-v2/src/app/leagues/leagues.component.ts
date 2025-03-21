@@ -1,19 +1,13 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from 'express';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-leagues',
   standalone: true,
-  imports: [CommonModule],
-  template: `
-    <div class="p-6">
-      <h1 class="text-2xl font-bold mb-4">Leagues Management</h1>
-      <p>
-        Welcome to the leagues management dashboard. This is where
-        administrators can manage leagues.
-      </p>
-    </div>
-  `,
+  imports: [CommonModule, RouterOutlet],
+  template: `<router-outlet />`,
   styles: [],
 })
 export class LeaguesComponent {

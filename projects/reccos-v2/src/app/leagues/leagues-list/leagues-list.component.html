@@ -1,0 +1,64 @@
+<div class="p-6">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold">Gerenciamento de Ligas</h1>
+    <button
+      (click)="createNewLeague()"
+      class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 flex items-center gap-2"
+    >
+      <i class="ri-add-line"></i> Nova Liga
+    </button>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+    <app-stat-card
+      title="Total de Ligas"
+      [value]="totalLeagues"
+      description="Ligas cadastradas no sistema"
+    >
+    </app-stat-card>
+
+    <app-stat-card
+      title="Ligas Ativas"
+      [value]="activeLeagues"
+      description="Ligas em andamento atualmente"
+    >
+    </app-stat-card>
+
+    <app-stat-card
+      title="Total de Times"
+      [value]="totalTeams"
+      description="Times participando em todas as ligas"
+    >
+    </app-stat-card>
+
+    <app-stat-card
+      title="Total de Partidas"
+      [value]="totalMatches"
+      description="Partidas em todas as ligas"
+    >
+    </app-stat-card>
+  </div>
+
+  <!-- Leagues Table -->
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
+    <h2 class="text-xl font-semibold mb-4">Lista de Ligas</h2>
+
+    <app-data-table
+      [columns]="columns"
+      [data]="leagues"
+      [showActions]="true"
+      [showPagination]="true"
+      emptyMessage="Nenhuma liga encontrada"
+      [itemsPerPage]="10"
+      [currentPage]="1"
+      [totalItems]="leagues.length"
+      (onView)="onViewLeague($event)"
+      (onEdit)="onEditLeague($event)"
+      (onDelete)="onDeleteLeague($event)"
+      (onSort)="onSortLeagues($event)"
+      (onPageChange)="onPageChange($event)"
+    >
+    </app-data-table>
+  </div>
+</div>
