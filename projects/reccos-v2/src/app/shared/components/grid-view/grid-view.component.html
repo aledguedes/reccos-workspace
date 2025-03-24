@@ -1,0 +1,51 @@
+<div
+  class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6"
+>
+  @for (item of items; track item.id) {
+    <div class="card bg-white hover:shadow-md transition-shadow">
+      <div class="card-body">
+        <!-- Cabeçalho -->
+        <div class="flex justify-between items-start">
+          <h3 class="card-title text-lg">{{ item.name }}</h3>
+          <div class="badge {{ getStatusBadge(item.status).variant }}">
+            {{ getStatusBadge(item.status).label }}
+          </div>
+        </div>
+        <!-- Conteúdo -->
+        <div class="grid grid-cols-2 gap-2 text-sm mt-4">
+          <div class="flex items-center">
+            <i class="ri-calendar-line h-4 w-4 mr-2 text-gray-500"></i>
+            <span>{{ item.startDate | date: 'dd/MM/yyyy' }}</span>
+          </div>
+          <div class="flex items-center">
+            <i class="ri-trophy-line h-4 w-4 mr-2 text-gray-500"></i>
+            <span>{{ item.format }}</span>
+          </div>
+          <div class="flex items-center">
+            <i class="ri-group-line h-4 w-4 mr-2 text-gray-500"></i>
+            <span>{{ item.teamCount }} equipes</span>
+          </div>
+          <div class="flex items-center">
+            <i class="ri-table-line h-4 w-4 mr-2 text-gray-500"></i>
+            <span>{{ item.tournamentCount }} torneios</span>
+          </div>
+        </div>
+        <!-- Rodapé -->
+        <div class="card-actions flex flex-col gap-2 mt-4">
+          <button class="btn btn-ghost btn-sm" (click)="view.emit(item)">
+            <i class="ri-arrow-right-double-line h-5 w-5"></i>
+          </button>
+          <button class="btn btn-ghost btn-sm" (click)="edit.emit(item)">
+            <i class="ri-pencil-line h-4 w-4"></i>
+          </button>
+          <button
+            class="btn btn-ghost btn-sm text-red-500 hover:text-white hover:bg-red-500"
+            (click)="delete.emit(item)"
+          >
+            <i class="ri-delete-bin-line h-4 w-4"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

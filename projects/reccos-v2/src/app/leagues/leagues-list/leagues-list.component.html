@@ -19,25 +19,71 @@
     }
   </div>
 
-  <!-- Leagues Table -->
-  <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-3 sm:p-6">
-    <h2 class="text-xl font-semibold mb-4">Lista de Ligas</h2>
-
-    <app-data-table
-      [columns]="columns"
-      [data]="leagues"
-      [showActions]="true"
-      [showPagination]="true"
-      emptyMessage="Nenhuma liga encontrada"
-      [itemsPerPage]="10"
-      [currentPage]="1"
-      [totalItems]="leagues.length"
-      (onView)="onViewLeague($event)"
-      (onEdit)="onEditLeague($event)"
-      (onDelete)="onDeleteLeague($event)"
-      (onSort)="onSortLeagues($event)"
-      (onPageChange)="onPageChange($event)"
+  <!-- Leagues List with View Toggle -->
+  <div
+    class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-3 sm:p-6 space-y-4 mb-6"
+  >
+    <div
+      class="flex flex-col sm:flex-row sm:items-center justify-between gap-2"
     >
-    </app-data-table>
+      <h2 class="text-xl font-bold">Lista de Ligas</h2>
+
+      <!-- View toggle buttons with Remix icons -->
+      <div class="join">
+        @for (layout of layouts; track layout.value) {
+          <button
+            class="join-item btn btn-sm"
+            [class.btn-active]="currentLayout() === layout.value"
+            (click)="setLayout(layout.value)"
+            [attr.aria-label]="layout.label"
+          >
+            <i class="{{ layout.icon }} text-lg"></i>
+          </button>
+        }
+      </div>
+    </div>
   </div>
+
+  @if (leagues.length > 0) {
+    @switch (currentLayout()) {
+      @case ('grid') {
+        <app-grid-view
+          [items]="leagues"
+          (view)="onViewLeague($event)"
+          (edit)="onEditLeague($event)"
+          (delete)="onDeleteLeague($event)"
+        ></app-grid-view>
+      }
+      @case ('list') {
+        <app-list-view
+          [items]="leagues"
+          (view)="onViewLeague($event)"
+          (edit)="onEditLeague($event)"
+          (delete)="onDeleteLeague($event)"
+        ></app-list-view>
+      }
+      @case ('table') {
+        <app-data-table
+          [columns]="columns"
+          [data]="leagues"
+          [showActions]="true"
+          [showPagination]="true"
+          emptyMessage="Nenhuma liga encontrada"
+          [itemsPerPage]="10"
+          [currentPage]="1"
+          [totalItems]="leagues.length"
+          (onView)="onViewLeague($event)"
+          (onEdit)="onEditLeague($event)"
+          (onDelete)="onDeleteLeague($event)"
+          (onSort)="onSortLeagues($event)"
+          (onPageChange)="onPageChange($event)"
+        >
+        </app-data-table>
+      }
+    }
+  } @else {
+    <div class="card p-8 text-center">
+      <p class="text-gray-500">Nenhuma liga encontrada.</p>
+    </div>
+  }
 </div>

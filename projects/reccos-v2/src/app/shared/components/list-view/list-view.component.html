@@ -1,0 +1,55 @@
+<div class="space-y-3">
+  @for (item of items; track item.id) {
+    <div class="card bg-white hover:bg-gray-100 transition-colors">
+      <div class="card-body flex items-center p-4">
+        <!-- Nome e Status -->
+        <div class="flex-1">
+          <div class="flex items-center gap-2">
+            <h3 class="font-medium">{{ item.name }}</h3>
+            <div class="badge {{ getStatusBadge(item.status).variant }}">
+              {{ getStatusBadge(item.status).label }}
+            </div>
+          </div>
+        </div>
+        <!-- Informações (visíveis em telas maiores) -->
+        <div class="hidden md:flex gap-4 text-sm text-gray-500 mr-4">
+          <div class="flex items-center">
+            <i class="ri-calendar-line h-4 w-4 mr-1"></i>
+            <span>{{ item.startDate | date: 'dd/MM/yyyy' }}</span>
+          </div>
+          <div class="flex items-center">
+            <i class="ri-trophy-line h-4 w-4 mr-1"></i>
+            <span>{{ item.format }}</span>
+          </div>
+          <div class="flex items-center">
+            <i class="ri-group-line h-4 w-4 mr-1"></i>
+            <span>{{ item.teamCount }}</span>
+          </div>
+          <div class="flex items-center">
+            <i class="ri-table-line h-4 w-4 mr-1"></i>
+            <span>{{ item.tournamentCount }} torneios</span>
+          </div>
+        </div>
+        <!-- Ações -->
+        <div class="flex items-center gap-2">
+          <button class="btn btn-ghost btn-sm" (click)="view.emit(item)">
+            <i class="ri-arrow-right-double-line h-5 w-5"></i>
+          </button>
+          @if (edit.observed) {
+            <button class="btn btn-ghost btn-sm" (click)="edit.emit(item)">
+              <i class="ri-pencil-line h-4 w-4"></i>
+            </button>
+          }
+          @if (delete.observed) {
+            <button
+              class="btn btn-ghost btn-sm text-red-500 hover:text-white hover:bg-red-500"
+              (click)="delete.emit(item)"
+            >
+              <i class="ri-delete-bin-line h-4 w-4"></i>
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+  }
+</div>

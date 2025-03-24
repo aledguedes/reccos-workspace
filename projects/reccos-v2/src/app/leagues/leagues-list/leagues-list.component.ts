@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import {
@@ -7,11 +7,29 @@ import {
 } from '../../shared/components/data-table/data-table.component';
 import { ILeague, ILeagueCard } from '../../core/models/league.model';
 import { StatCardComponent } from '../../shared/components/stat-card/stat-card.component';
+import { GridViewComponent } from '../../shared/components/grid-view/grid-view.component';
+import { ListViewComponent } from '../../shared/components/list-view/list-view.component';
+
+// Definindo o tipo para os layouts
+type ViewLayout = 'grid' | 'list' | 'table';
+
+export interface ILayout {
+  value: ViewLayout;
+  label: string;
+  icon: string;
+}
 
 @Component({
   selector: 'app-leagues-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, StatCardComponent, DataTableComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    StatCardComponent,
+    DataTableComponent,
+    GridViewComponent,
+    ListViewComponent,
+  ],
   templateUrl: './leagues-list.component.html',
   styleUrl: './leagues-list.component.scss',
 })
@@ -108,6 +126,12 @@ export class LeaguesListComponent {
     },
   ];
 
+  layouts: ILayout[] = [
+    { value: 'grid', label: 'Grid View', icon: 'ri-layout-grid-line' },
+    { value: 'list', label: 'List View', icon: 'ri-list-check' },
+    { value: 'table', label: 'Table View', icon: 'ri-table-line' },
+  ];
+
   // Stats for cards
   totalLeagues = this.leagues.length;
   activeLeagues = this.leagues.filter(league => league.status === 'active')
@@ -117,6 +141,8 @@ export class LeaguesListComponent {
     (sum, league) => sum + league.matchesCount,
     0
   );
+
+  currentLayout = signal<ViewLayout>('table');
 
   constructor() {}
 
@@ -148,5 +174,9 @@ export class LeaguesListComponent {
   createNewLeague(): void {
     console.log('Create new league');
     // Implement navigation to league creation
+  }
+
+  setLayout(layout: ViewLayout): void {
+    this.currentLayout.set(layout);
   }
 }
