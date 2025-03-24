@@ -16,33 +16,31 @@
   <!-- Valor e Tendência -->
   <div class="flex items-center justify-between gap-2">
     <p class="text-2xl font-semibold text-gray-900">{{ card.value }}</p>
-    <div *ngIf="card.trend" class="flex flex-col">
-      <div class="flex items-center gap-1">
-        <i
-          [ngClass]="{
-            'ri-arrow-up-line text-green-500': card.trend.positive,
-            'ri-arrow-down-line text-red-500': !card.trend.positive,
-          }"
-          class="text-xs"
-          [attr.aria-label]="
-            card.trend.positive ? 'Tendência positiva' : 'Tendência negativa'
-          "
-        ></i>
-        <span
-          [ngClass]="{
-            'text-xs font-semibold': true,
-            'ri-arrow-up-line text-green-500': card.trend.positive,
-            'ri-arrow-down-linetext-red-500': !card.trend.positive,
-          }"
-        >
-          {{ card.trend.positive ? '+' : '' }}{{ card.trend.value }}%
-        </span>
+    @if (card.trend) {
+      <div class="flex flex-col">
+        <div class="flex items-center gap-1">
+          <span>
+            <i
+              [ngClass]="{
+                'ri-arrow-up-line text-green-500': card.trend.positive,
+                'ri-arrow-down-line text-red-500': !card.trend.positive,
+              }"
+              class="text-xs"
+              [attr.aria-label]="
+                card.trend.positive
+                  ? 'Tendência positiva'
+                  : 'Tendência negativa'
+              "
+            ></i>
+            {{ card.trend.positive ? '+' : '' }}{{ card.trend.value }}%
+          </span>
+        </div>
+        @if (card.trend.lastMonthValue) {
+          <span class="text-xs text-gray-400">
+            Última atualização {{ card.trend.lastMonthValue }}
+          </span>
+        }
       </div>
-      @if (card.trend.lastMonthValue) {
-        <span class="text-xs text-gray-400">
-          Última atualização {{ card.trend.lastMonthValue }}
-        </span>
-      }
-    </div>
+    }
   </div>
 </div>

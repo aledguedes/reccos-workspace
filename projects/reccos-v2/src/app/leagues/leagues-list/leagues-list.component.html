@@ -1,15 +1,57 @@
 <div class="p-0 sm:p-6">
-  <div
-    class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4"
-  >
-    <h1 class="text-2xl font-bold">Gerenciamento de Ligas</h1>
+  <!-- Header with title and controls -->
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+    <!-- Left side: Title and description -->
+    <div>
+      <h1 class="text-2xl font-bold text-base-content">Ligas</h1>
+      <p class="text-sm text-base-content/70">
+        Gerenciamento de campeonatos e torneios
+      </p>
+    </div>
 
-    <button
-      (click)="createNewLeague()"
-      class="btn btn-primary flex items-center gap-2 w-full sm:w-auto"
-    >
-      <i class="ri-add-line"></i> Nova Liga
-    </button>
+    <!-- Right side: Search, view toggle and add button -->
+    <div class="flex flex-col sm:flex-row items-end sm:items-center gap-3 w-full sm:w-auto">
+      <!-- Search input -->
+      <div class="relative w-full sm:w-64">
+        <label class="input input-bordered flex items-center gap-2">
+          <i class="ri-search-line text-base-content/70"></i>
+          <input
+            type="text"
+            placeholder="Buscar ligas..."
+            class="grow"
+            [value]="searchQuery()"
+            (input)="onSearchChange($event)"
+            aria-label="Buscar ligas"
+          />
+        </label>
+      </div>
+
+      <!-- View toggle buttons -->
+      <div class="join">
+        <!-- View toggle button - shows only the alternative layout -->
+        <div class="tooltip" data-tip="Alternar visualização">
+          @for (layout of layouts; track layout.value) {
+            @if (currentLayout() !== layout.value) {
+              <button
+                class="btn bg-white text-gray-700 border border-gray-200 rounded-md hover:border-primary transition-colors"
+                (click)="setLayout(layout.value)"
+                [attr.aria-label]="layout.label"
+              >
+                <i class="{{ layout.icon }} text-xl hover:text-primary"></i>
+              </button>
+            }
+          }
+        </div>
+      </div>
+
+      <!-- Add button -->
+      <button
+        (click)="createNewLeague()"
+        class="btn btn-primary flex items-center gap-2"
+      >
+        <i class="ri-add-line"></i> Nova Liga
+      </button>
+    </div>
   </div>
 
   <!-- Stats Cards -->
@@ -19,25 +61,39 @@
     }
   </div>
 
-  <!-- Leagues Table -->
-  <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-3 sm:p-6">
-    <h2 class="text-xl font-semibold mb-4">Lista de Ligas</h2>
-
-    <app-data-table
-      [columns]="columns"
-      [data]="leagues"
-      [showActions]="true"
-      [showPagination]="true"
-      emptyMessage="Nenhuma liga encontrada"
-      [itemsPerPage]="10"
-      [currentPage]="1"
-      [totalItems]="leagues.length"
-      (onView)="onViewLeague($event)"
-      (onEdit)="onEditLeague($event)"
-      (onDelete)="onDeleteLeague($event)"
-      (onSort)="onSortLeagues($event)"
-      (onPageChange)="onPageChange($event)"
-    >
-    </app-data-table>
-  </div>
+  <!-- Content area - removed the separate header for "Lista de Ligas" -->
+  @if (filteredLeagues.length > 0) {
+    @switch (currentLayout()) {
+      @case ('grid') {
+        <app-grid-view
+          [items]="filteredLeagues"
+          (view)="onViewLeague($event)"
+          (edit)="onEditLeague($event)"
+          (delete)="onDeleteLeague($event)"
+        ></app-grid-view>
+      }
+      @case ('table') {
+        <app-data-table
+          [columns]="columns"
+          [data]="filteredLeagues"
+          [showActions]="true"
+          [showPagination]="true"
+          emptyMessage="Nenhuma liga encontrada"
+          [itemsPerPage]="10"
+          [currentPage]="1"
+          [totalItems]="filteredLeagues.length"
+          (onView)="onViewLeague($event)"
+          (onEdit)="onEditLeague($event)"
+          (onDelete)="onDeleteLeague($event)"
+          (onSort)="onSortLeagues($event)"
+          (onPageChange)="onPageChange($event)"
+        >
+        </app-data-table>
+      }
+    }
+  } @else {
+    <div class="card p-8 text-center">
+      <p class="text-gray-500">Nenhuma liga encontrada.</p>
+    </div>
+  }
 </div>

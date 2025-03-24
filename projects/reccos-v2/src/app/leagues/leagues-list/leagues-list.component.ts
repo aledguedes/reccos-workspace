@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import {
@@ -7,11 +7,27 @@ import {
 } from '../../shared/components/data-table/data-table.component';
 import { ILeague, ILeagueCard } from '../../core/models/league.model';
 import { StatCardComponent } from '../../shared/components/stat-card/stat-card.component';
+import { GridViewComponent } from '../../shared/components/grid-view/grid-view.component';
+
+// Definindo o tipo para os layouts
+type ViewLayout = 'grid' | 'list' | 'table';
+
+export interface ILayout {
+  value: ViewLayout;
+  label: string;
+  icon: string;
+}
 
 @Component({
   selector: 'app-leagues-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, StatCardComponent, DataTableComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    StatCardComponent,
+    DataTableComponent,
+    GridViewComponent,
+  ],
   templateUrl: './leagues-list.component.html',
   styleUrl: './leagues-list.component.scss',
 })
@@ -108,6 +124,11 @@ export class LeaguesListComponent {
     },
   ];
 
+  layouts: ILayout[] = [
+    { value: 'grid', label: 'Grid View', icon: 'ri-layout-grid-line' },
+    { value: 'table', label: 'Table View', icon: 'ri-table-line' },
+  ];
+
   // Stats for cards
   totalLeagues = this.leagues.length;
   activeLeagues = this.leagues.filter(league => league.status === 'active')
@@ -118,7 +139,18 @@ export class LeaguesListComponent {
     0
   );
 
-  constructor() {}
+  currentLayout = signal<ViewLayout>('table');
+
+  searchQuery = signal<string>('');
+  @Output() search = new EventEmitter<string>();
+
+  // Add this property to store filtered leagues
+  filteredLeagues: ILeague[] = [];
+
+  constructor() {
+    // Initialize filteredLeagues with all leagues
+    this.filteredLeagues = [...this.leagues];
+  }
 
   onViewLeague(league: ILeague): void {
     console.log('View league:', league);
@@ -148,5 +180,25 @@ export class LeaguesListComponent {
   createNewLeague(): void {
     console.log('Create new league');
     // Implement navigation to league creation
+  }
+
+  setLayout(layout: ViewLayout): void {
+    this.currentLayout.set(layout);
+  }
+
+  onSearchChange(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+    this.searchQuery.set(value);
+    this.search.emit(value);
+    this.filterLeagues(); // Call filter function when search changes
+  }
+
+  filterLeagues(): void {
+    const query = this.searchQuery().toLowerCase();
+    this.filteredLeagues = this.leagues.filter(league => 
+      !query || 
+      league.name.toLowerCase().includes(query) ||
+      league.season.toLowerCase().includes(query)
+    );
   }
 }
