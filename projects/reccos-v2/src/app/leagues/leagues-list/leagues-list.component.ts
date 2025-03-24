@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, EventEmitter, Output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import {
@@ -8,7 +8,6 @@ import {
 import { ILeague, ILeagueCard } from '../../core/models/league.model';
 import { StatCardComponent } from '../../shared/components/stat-card/stat-card.component';
 import { GridViewComponent } from '../../shared/components/grid-view/grid-view.component';
-import { ListViewComponent } from '../../shared/components/list-view/list-view.component';
 
 // Definindo o tipo para os layouts
 type ViewLayout = 'grid' | 'list' | 'table';
@@ -28,7 +27,6 @@ export interface ILayout {
     StatCardComponent,
     DataTableComponent,
     GridViewComponent,
-    ListViewComponent,
   ],
   templateUrl: './leagues-list.component.html',
   styleUrl: './leagues-list.component.scss',
@@ -128,7 +126,6 @@ export class LeaguesListComponent {
 
   layouts: ILayout[] = [
     { value: 'grid', label: 'Grid View', icon: 'ri-layout-grid-line' },
-    { value: 'list', label: 'List View', icon: 'ri-list-check' },
     { value: 'table', label: 'Table View', icon: 'ri-table-line' },
   ];
 
@@ -144,7 +141,16 @@ export class LeaguesListComponent {
 
   currentLayout = signal<ViewLayout>('table');
 
-  constructor() {}
+  searchQuery = signal<string>('');
+  @Output() search = new EventEmitter<string>();
+
+  // Add this property to store filtered leagues
+  filteredLeagues: ILeague[] = [];
+
+  constructor() {
+    // Initialize filteredLeagues with all leagues
+    this.filteredLeagues = [...this.leagues];
+  }
 
   onViewLeague(league: ILeague): void {
     console.log('View league:', league);
@@ -178,5 +184,21 @@ export class LeaguesListComponent {
 
   setLayout(layout: ViewLayout): void {
     this.currentLayout.set(layout);
+  }
+
+  onSearchChange(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+    this.searchQuery.set(value);
+    this.search.emit(value);
+    this.filterLeagues(); // Call filter function when search changes
+  }
+
+  filterLeagues(): void {
+    const query = this.searchQuery().toLowerCase();
+    this.filteredLeagues = this.leagues.filter(league => 
+      !query || 
+      league.name.toLowerCase().includes(query) ||
+      league.season.toLowerCase().includes(query)
+    );
   }
 }

@@ -1,10 +1,11 @@
+import { RouterLink } from '@angular/router';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-grid-view',
   standalone: true,
-  imports: [CommonModule, DatePipe],
+  imports: [CommonModule, DatePipe, RouterLink],
   templateUrl: './grid-view.component.html',
   styleUrls: ['./grid-view.component.scss'],
 })

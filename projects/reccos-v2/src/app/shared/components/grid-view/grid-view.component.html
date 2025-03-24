@@ -32,18 +32,29 @@
         </div>
         <!-- Rodapé -->
         <div class="card-actions flex flex-col gap-2 mt-4">
-          <button class="btn btn-ghost btn-sm" (click)="view.emit(item)">
-            <i class="ri-arrow-right-double-line h-5 w-5"></i>
-          </button>
-          <button class="btn btn-ghost btn-sm" (click)="edit.emit(item)">
-            <i class="ri-pencil-line h-4 w-4"></i>
-          </button>
-          <button
-            class="btn btn-ghost btn-sm text-red-500 hover:text-white hover:bg-red-500"
-            (click)="delete.emit(item)"
+          <a
+            [routerLink]="['/league', item.id]"
+            class="btn btn-outline btn-sm w-full"
           >
-            <i class="ri-delete-bin-line h-4 w-4"></i>
-          </button>
+            Ver detalhes
+            <i class="ri-arrow-right-double-line h-4 w-4 ml-2"></i>
+          </a>
+          <div class="flex gap-2 w-full">
+            <button
+              class="btn btn-outline btn-sm flex-1"
+              (click)="edit.emit(item)"
+            >
+              <i class="ri-pencil-line h-4 w-4 mr-1"></i>
+              Editar
+            </button>
+            <button
+              class="btn btn-outline btn-sm flex-1 text-red-500 hover:text-white hover:bg-red-500"
+              (click)="delete.emit(item)"
+            >
+              <i class="ri-delete-bin-line h-4 w-4 mr-1"></i>
+              Excluir
+            </button>
+          </div>
         </div>
       </div>
     </div>
