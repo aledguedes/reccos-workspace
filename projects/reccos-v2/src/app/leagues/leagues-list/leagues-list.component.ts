@@ -5,8 +5,7 @@ import {
   DataTableComponent,
   TableColumn,
 } from '../../shared/components/data-table/data-table.component';
-import { ILeague, ILeagueCard } from '../../core/models/league.model';
-import { StatCardComponent } from '../../shared/components/stat-card/stat-card.component';
+import { ILeague } from '../../core/models/league.model';
 import { GridViewComponent } from '../../shared/components/grid-view/grid-view.component';
 
 // Definindo o tipo para os layouts
@@ -24,7 +23,6 @@ export interface ILayout {
   imports: [
     CommonModule,
     RouterModule,
-    StatCardComponent,
     DataTableComponent,
     GridViewComponent,
   ],
@@ -97,59 +95,29 @@ export class LeaguesListComponent {
     { header: 'Partidas', field: 'matchesCount', sortable: true },
   ];
 
-  cards: ILeagueCard[] = [
-    {
-      title: 'Times Cadastrados',
-      value: '24',
-      trend: { positive: true, value: 12, lastMonthValue: 10 },
-      icon: 'ri-group-line',
-    },
-    {
-      title: 'Jogadores Ativos',
-      value: '237',
-      trend: { positive: true, value: 5, lastMonthValue: 1 },
-      icon: 'ri-line-chart-line',
-    },
-    {
-      title: 'Torneios',
-      value: '3',
-      trend: { positive: false, value: 0, lastMonthValue: 1 },
-      icon: 'ri-trophy-line',
-    },
-    {
-      title: 'Partidas Agendadas',
-      value: '16',
-      trend: { positive: true, value: 8, lastMonthValue: 4 },
-      icon: 'ri-calendar-line',
-    },
-  ];
-
   layouts: ILayout[] = [
     { value: 'grid', label: 'Grid View', icon: 'ri-layout-grid-line' },
     { value: 'table', label: 'Table View', icon: 'ri-table-line' },
   ];
 
-  // Stats for cards
-  totalLeagues = this.leagues.length;
-  activeLeagues = this.leagues.filter(league => league.status === 'active')
-    .length;
-  totalTeams = this.leagues.reduce((sum, league) => sum + league.teamsCount, 0);
-  totalMatches = this.leagues.reduce(
-    (sum, league) => sum + league.matchesCount,
-    0
-  );
-
   currentLayout = signal<ViewLayout>('table');
-
   searchQuery = signal<string>('');
   @Output() search = new EventEmitter<string>();
 
   // Add this property to store filtered leagues
   filteredLeagues: ILeague[] = [];
 
+  // Add this with your other signals
+  isLoading = signal<boolean>(true);
+  
   constructor() {
     // Initialize filteredLeagues with all leagues
     this.filteredLeagues = [...this.leagues];
+    
+    // Simulate loading delay
+    setTimeout(() => {
+      this.isLoading.set(false);
+    }, 1500); // 1.5 second fake loading time
   }
 
   onViewLeague(league: ILeague): void {
