@@ -34,14 +34,14 @@
         <div class="card-actions flex flex-col gap-2 mt-4">
           <a
             [routerLink]="['/league', item.id]"
-            class="btn btn-outline btn-sm w-full"
+            class="btn btn-outline btn-success btn-sm w-full"
           >
+            <i class="ri-eye-line h-4 w-4 ml-2"></i>
             Ver detalhes
-            <i class="ri-arrow-right-double-line h-4 w-4 ml-2"></i>
           </a>
           <div class="flex gap-2 w-full">
             <button
-              class="btn btn-outline btn-sm flex-1"
+              class="btn btn-outline btn-primary btn-sm flex-1"
               (click)="edit.emit(item)"
             >
               <i class="ri-pencil-line h-4 w-4 mr-1"></i>
