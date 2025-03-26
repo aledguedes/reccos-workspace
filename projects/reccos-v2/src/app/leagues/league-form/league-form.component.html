@@ -1,0 +1,179 @@
+<div class="p-6">
+  <div class="mb-6">
+    <h1 class="text-2xl font-bold text-base-content">Nova Liga</h1>
+    <p class="text-sm text-base-content/70">
+      Preencha os dados para criar uma nova liga
+    </p>
+  </div>
+
+  <div class="card bg-base-100 shadow-md">
+    <div class="card-body">
+      <form [formGroup]="leagueForm" (ngSubmit)="onSubmit()">
+        <!-- Nome da Liga -->
+        <div class="form-control w-full mb-4">
+          <label class="label">
+            <span class="label-text">Nome da Liga</span>
+          </label>
+          <input
+            type="text"
+            formControlName="name"
+            placeholder="Digite o nome da liga"
+            class="input input-bordered w-full"
+            [ngClass]="{
+              'input-error':
+                leagueForm.get('name')?.invalid &&
+                leagueForm.get('name')?.touched,
+            }"
+          />
+          <label
+            class="label"
+            *ngIf="
+              leagueForm.get('name')?.invalid && leagueForm.get('name')?.touched
+            "
+          >
+            <span class="label-text-alt text-error"
+              >Nome da liga é obrigatório</span
+            >
+          </label>
+        </div>
+
+        <!-- Temporada -->
+        <div class="form-control w-full mb-4">
+          <label class="label">
+            <span class="label-text">Temporada</span>
+          </label>
+          <input
+            type="text"
+            formControlName="season"
+            placeholder="Ex: 2023/2024"
+            class="input input-bordered w-full"
+            [ngClass]="{
+              'input-error':
+                leagueForm.get('season')?.invalid &&
+                leagueForm.get('season')?.touched,
+            }"
+          />
+          <label
+            class="label"
+            *ngIf="
+              leagueForm.get('season')?.invalid &&
+              leagueForm.get('season')?.touched
+            "
+          >
+            <span class="label-text-alt text-error"
+              >Temporada é obrigatória</span
+            >
+          </label>
+        </div>
+
+        <!-- Data de Início -->
+        <div class="form-control w-full mb-4">
+          <label class="label">
+            <span class="label-text">Data de Início</span>
+          </label>
+          <input
+            type="date"
+            formControlName="startDate"
+            class="input input-bordered w-full"
+            [ngClass]="{
+              'input-error':
+                leagueForm.get('startDate')?.invalid &&
+                leagueForm.get('startDate')?.touched,
+            }"
+          />
+          <label
+            class="label"
+            *ngIf="
+              leagueForm.get('startDate')?.invalid &&
+              leagueForm.get('startDate')?.touched
+            "
+          >
+            <span class="label-text-alt text-error"
+              >Data de início é obrigatória</span
+            >
+          </label>
+        </div>
+
+        <!-- Data de Término -->
+        <div class="form-control w-full mb-4">
+          <label class="label">
+            <span class="label-text">Data de Término</span>
+          </label>
+          <input
+            type="date"
+            formControlName="endDate"
+            class="input input-bordered w-full"
+            [ngClass]="{
+              'input-error':
+                leagueForm.get('endDate')?.invalid &&
+                leagueForm.get('endDate')?.touched,
+            }"
+          />
+          <label
+            class="label"
+            *ngIf="
+              leagueForm.get('endDate')?.invalid &&
+              leagueForm.get('endDate')?.touched
+            "
+          >
+            <span class="label-text-alt text-error"
+              >Data de término é obrigatória</span
+            >
+          </label>
+        </div>
+
+        <!-- Status -->
+        <div class="form-control w-full mb-6">
+          <label class="label">
+            <span class="label-text">Status</span>
+          </label>
+          <select
+            formControlName="status"
+            class="select select-bordered w-full"
+            [ngClass]="{
+              'select-error':
+                leagueForm.get('status')?.invalid &&
+                leagueForm.get('status')?.touched,
+            }"
+          >
+            <option value="upcoming">Em breve</option>
+            <option value="active">Ativa</option>
+            <option value="finished">Finalizada</option>
+          </select>
+          <label
+            class="label"
+            *ngIf="
+              leagueForm.get('status')?.invalid &&
+              leagueForm.get('status')?.touched
+            "
+          >
+            <span class="label-text-alt text-error">Status é obrigatório</span>
+          </label>
+        </div>
+
+        <!-- Botões de ação -->
+        <div class="flex justify-end gap-2 mt-6">
+          <button
+            type="button"
+            class="btn btn-outline"
+            (click)="onCancel()"
+            [disabled]="isSubmitting"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="isSubmitting"
+          >
+            <span
+              *ngIf="isSubmitting"
+              class="loading loading-spinner loading-xs mr-2"
+            ></span>
+            Salvar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

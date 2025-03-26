@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import {
   DataTableComponent,
   TableColumn,
@@ -20,12 +20,7 @@ export interface ILayout {
 @Component({
   selector: 'app-leagues-list',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterModule,
-    DataTableComponent,
-    GridViewComponent,
-  ],
+  imports: [CommonModule, RouterModule, DataTableComponent, GridViewComponent],
   templateUrl: './leagues-list.component.html',
   styleUrl: './leagues-list.component.scss',
 })
@@ -109,11 +104,11 @@ export class LeaguesListComponent {
 
   // Add this with your other signals
   isLoading = signal<boolean>(true);
-  
-  constructor() {
+
+  constructor(private router: Router) {
     // Initialize filteredLeagues with all leagues
     this.filteredLeagues = [...this.leagues];
-    
+
     // Simulate loading delay
     setTimeout(() => {
       this.isLoading.set(false);
@@ -145,9 +140,9 @@ export class LeaguesListComponent {
     // Implement pagination logic
   }
 
-  createNewLeague(): void {
+  navigateToCreateLeague(): void {
     console.log('Create new league');
-    // Implement navigation to league creation
+    this.router.navigate(['/leagues/create']);
   }
 
   setLayout(layout: ViewLayout): void {
@@ -163,10 +158,11 @@ export class LeaguesListComponent {
 
   filterLeagues(): void {
     const query = this.searchQuery().toLowerCase();
-    this.filteredLeagues = this.leagues.filter(league => 
-      !query || 
-      league.name.toLowerCase().includes(query) ||
-      league.season.toLowerCase().includes(query)
+    this.filteredLeagues = this.leagues.filter(
+      league =>
+        !query ||
+        league.name.toLowerCase().includes(query) ||
+        league.season.toLowerCase().includes(query)
     );
   }
 }
