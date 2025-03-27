@@ -8,12 +8,18 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BasicInfoComponent } from './basic-info/basic-info.component';
+import { TournamentFormatComponent } from './tournament-format/tournament-format.component';
 import { LeagueFormService } from '../shared/league-form.service';
 
 @Component({
   selector: 'app-league-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, BasicInfoComponent],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    BasicInfoComponent,
+    TournamentFormatComponent,
+  ],
   templateUrl: './league-form.component.html',
   styleUrls: ['./league-form.component.scss'],
 })

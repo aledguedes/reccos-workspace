@@ -1,0 +1,244 @@
+@if (parentForm) {
+  <div class="space-y-6">
+    <h2 class="text-xl font-semibold mb-4">Formato do Torneio</h2>
+
+    <div class="space-y-4" [formGroup]="parentForm">
+      <!-- Formato do Torneio -->
+      <div class="form-control w-full">
+        <label class="label">
+          <span class="label-text">Formato do Torneio</span>
+        </label>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4" role="radiogroup">
+          @for (option of formatOptions; track option.value) {
+            <div class="relative">
+              <input
+                type="radio"
+                [id]="option.value"
+                [value]="option.value"
+                formControlName="format"
+                class="peer sr-only"
+                [attr.aria-label]="option.label"
+              />
+              <label
+                [for]="option.value"
+                class="flex flex-col p-4 border border-base-300 rounded-md bg-base-100 hover:bg-base-200 peer-checked:border-primary cursor-pointer transition-all h-full"
+              >
+                <div class="flex items-center mb-2">
+                  <i
+                    [class]="getFormatIcon(option.value)"
+                    class="mr-2 text-primary text-xl"
+                  ></i>
+                  <span class="font-medium">{{ option.label }}</span>
+                </div>
+                <p class="text-sm text-base-content/70">
+                  {{ getFormatDescription(option.value) }}
+                </p>
+              </label>
+            </div>
+          }
+        </div>
+
+        @if (
+          parentForm.get('format')?.invalid &&
+          parentForm.get('format')?.touched &&
+          parentForm.get('format')?.dirty
+        ) {
+          <label class="label">
+            <span class="label-text-alt text-error">Formato é obrigatório</span>
+          </label>
+        }
+      </div>
+
+      <!-- Número de Times por Grupo (apenas para formato de grupos) -->
+      @if (parentForm.get('format')?.value === 'group_knockout') {
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text">Número de Times por Grupo</span>
+          </label>
+          <input
+            id="teamsPerGroup"
+            type="number"
+            min="2"
+            placeholder="Ex: 4"
+            class="input input-bordered w-full"
+            formControlName="teamsPerGroup"
+            aria-label="Número de Times por Grupo"
+            [ngClass]="{
+              'input-error':
+                parentForm.get('teamsPerGroup')?.invalid &&
+                parentForm.get('teamsPerGroup')?.touched &&
+                parentForm.get('teamsPerGroup')?.dirty,
+            }"
+          />
+          @if (
+            parentForm.get('teamsPerGroup')?.invalid &&
+            parentForm.get('teamsPerGroup')?.touched &&
+            parentForm.get('teamsPerGroup')?.dirty
+          ) {
+            <label class="label">
+              <span class="label-text-alt text-error">
+                Número de times por grupo é obrigatório e deve ser pelo menos 2
+              </span>
+            </label>
+          }
+        </div>
+      }
+      <!-- Grid para Número de Equipes e Jogadores por Equipe na mesma linha -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Número de Equipes -->
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text">Número de Equipes</span>
+          </label>
+          <input
+            id="teamsCount"
+            type="number"
+            min="2"
+            placeholder="Ex: 8"
+            class="input input-bordered w-full"
+            formControlName="teamsCount"
+            aria-label="Número de Equipes"
+            [ngClass]="{
+              'input-error':
+                parentForm.get('teamsCount')?.invalid &&
+                parentForm.get('teamsCount')?.touched &&
+                parentForm.get('teamsCount')?.dirty,
+            }"
+          />
+          @if (
+            parentForm.get('teamsCount')?.invalid &&
+            parentForm.get('teamsCount')?.touched &&
+            parentForm.get('teamsCount')?.dirty
+          ) {
+            <label class="label">
+              <span class="label-text-alt text-error">
+                Número de equipes é obrigatório e deve ser pelo menos 2
+              </span>
+            </label>
+          }
+        </div>
+
+        <!-- Jogadores por Equipe -->
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text">Jogadores por Equipe</span>
+          </label>
+          <input
+            id="playersPerTeam"
+            type="number"
+            min="1"
+            placeholder="Ex: 5"
+            class="input input-bordered w-full"
+            formControlName="playersPerTeam"
+            aria-label="Jogadores por Equipe"
+            [ngClass]="{
+              'input-error':
+                parentForm.get('playersPerTeam')?.invalid &&
+                parentForm.get('playersPerTeam')?.touched &&
+                parentForm.get('playersPerTeam')?.dirty,
+            }"
+          />
+          @if (
+            parentForm.get('playersPerTeam')?.invalid &&
+            parentForm.get('playersPerTeam')?.touched &&
+            parentForm.get('playersPerTeam')?.dirty
+          ) {
+            <label class="label">
+              <span class="label-text-alt text-error">
+                Número de jogadores é obrigatório e deve ser pelo menos 1
+              </span>
+            </label>
+          }
+        </div>
+      </div>
+
+      <!-- Grid para Duração das Partidas e Intervalo na mesma linha -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Duração das Partidas -->
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text">Duração das Partidas (minutos)</span>
+          </label>
+          <div class="flex items-center">
+            <i class="ri-time-line mr-2 text-base-content/70"></i>
+            <input
+              id="matchDuration"
+              type="number"
+              min="10"
+              placeholder="Ex: 40"
+              class="input input-bordered w-full"
+              formControlName="matchDuration"
+              aria-label="Duração das Partidas"
+              [ngClass]="{
+                'input-error':
+                  parentForm.get('matchDuration')?.invalid &&
+                  parentForm.get('matchDuration')?.touched &&
+                  parentForm.get('matchDuration')?.dirty,
+              }"
+            />
+          </div>
+          @if (
+            parentForm.get('matchDuration')?.invalid &&
+            parentForm.get('matchDuration')?.touched &&
+            parentForm.get('matchDuration')?.dirty
+          ) {
+            <label class="label">
+              <span class="label-text-alt text-error">
+                Duração é obrigatória e deve ser pelo menos 10 minutos
+              </span>
+            </label>
+          }
+        </div>
+
+        <!-- Intervalo -->
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text">Intervalo (minutos)</span>
+          </label>
+          <div class="flex items-center">
+            <i class="ri-pause-circle-line mr-2 text-base-content/70"></i>
+            <input
+              id="breakDuration"
+              type="number"
+              min="5"
+              placeholder="Ex: 15"
+              class="input input-bordered w-full"
+              formControlName="breakDuration"
+              aria-label="Intervalo"
+              [ngClass]="{
+                'input-error':
+                  parentForm.get('breakDuration')?.invalid &&
+                  parentForm.get('breakDuration')?.touched &&
+                  parentForm.get('breakDuration')?.dirty,
+              }"
+            />
+          </div>
+          @if (
+            parentForm.get('breakDuration')?.invalid &&
+            parentForm.get('breakDuration')?.touched &&
+            parentForm.get('breakDuration')?.dirty
+          ) {
+            <label class="label">
+              <span class="label-text-alt text-error">
+                Intervalo é obrigatório e deve ser pelo menos 5 minutos
+              </span>
+            </label>
+          }
+        </div>
+      </div>
+
+      <!-- Botões de Navegação -->
+      <div class="flex justify-end mt-6 space-x-2">
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="onNext()"
+          [disabled]="!isFormValid()"
+        >
+          Próximo
+        </button>
+      </div>
+    </div>
+  </div>
+}

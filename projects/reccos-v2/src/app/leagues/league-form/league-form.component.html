@@ -22,7 +22,7 @@
           [ngClass]="{ 'step-primary': currentStep >= 2 }"
           (click)="goToStep(2)"
         >
-          Configurações de Temporada
+          Formato do Torneio
         </li>
         <li
           class="step"
@@ -41,105 +41,13 @@
           </div>
         }
 
-        <!-- Passo 2: Configurações de Temporada -->
+        <!-- Passo 2: Formato do Torneio -->
         @if (currentStep === 2) {
           <div class="space-y-4">
-            <h2 class="text-xl font-semibold mb-4">
-              Configurações de Temporada
-            </h2>
-
-            <!-- Data de Início -->
-            <div class="form-control w-full">
-              <label class="label">
-                <span class="label-text">Data de Início</span>
-              </label>
-              <input
-                type="date"
-                formControlName="startDate"
-                class="input input-bordered w-full"
-                [ngClass]="{
-                  'input-error':
-                    leagueForm.get('startDate')?.invalid &&
-                    leagueForm.get('startDate')?.touched &&
-                    leagueForm.get('startDate')?.dirty,
-                }"
-              />
-              <label
-                class="label"
-                *ngIf="
-                  leagueForm.get('startDate')?.invalid &&
-                  leagueForm.get('startDate')?.touched &&
-                  leagueForm.get('startDate')?.dirty
-                "
-              >
-                <span class="label-text-alt text-error"
-                  >Data de início é obrigatória</span
-                >
-              </label>
-            </div>
-
-            <!-- Data de Término -->
-            <div class="form-control w-full">
-              <label class="label">
-                <span class="label-text">Data de Término</span>
-              </label>
-              <input
-                type="date"
-                formControlName="endDate"
-                class="input input-bordered w-full"
-                [ngClass]="{
-                  'input-error':
-                    leagueForm.get('endDate')?.invalid &&
-                    leagueForm.get('endDate')?.touched &&
-                    leagueForm.get('endDate')?.dirty,
-                }"
-              />
-              <label
-                class="label"
-                *ngIf="
-                  leagueForm.get('endDate')?.invalid &&
-                  leagueForm.get('endDate')?.touched &&
-                  leagueForm.get('endDate')?.dirty
-                "
-              >
-                <span class="label-text-alt text-error"
-                  >Data de término é obrigatória</span
-                >
-              </label>
-            </div>
-
-            <!-- Status -->
-            <div class="form-control w-full">
-              <label class="label">
-                <span class="label-text">Status</span>
-              </label>
-              <select
-                formControlName="status"
-                class="select select-bordered w-full"
-                [ngClass]="{
-                  'select-error':
-                    leagueForm.get('status')?.invalid &&
-                    leagueForm.get('status')?.touched &&
-                    leagueForm.get('status')?.dirty,
-                }"
-              >
-                <option value="upcoming">Em breve</option>
-                <option value="active">Ativa</option>
-                <option value="finished">Finalizada</option>
-              </select>
-              <label
-                class="label"
-                *ngIf="
-                  leagueForm.get('status')?.invalid &&
-                  leagueForm.get('status')?.touched &&
-                  leagueForm.get('status')?.dirty
-                "
-              >
-                <span class="label-text-alt text-error"
-                  >Status é obrigatório</span
-                >
-              </label>
-            </div>
+            <app-tournament-format
+              [parentForm]="leagueForm"
+              (proceed)="nextStep()"
+            />
           </div>
         }
 
@@ -180,6 +88,48 @@
                     <span class="font-semibold">Status:</span>
                     {{ getStatusLabel(leagueForm.get('status')?.value) }}
                   </p>
+                </div>
+              </div>
+
+              <div class="mt-4">
+                <h3 class="font-medium text-base-content/70">
+                  Formato do Torneio
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                  <div>
+                    <p>
+                      <span class="font-semibold">Formato:</span>
+                      {{
+                        leagueForm.get('format')?.value === 'league'
+                          ? 'Liga (todos contra todos)'
+                          : leagueForm.get('format')?.value === 'cup'
+                            ? 'Copa (eliminatórias)'
+                            : 'Grupos + Eliminatórias'
+                      }}
+                    </p>
+                    <p>
+                      <span class="font-semibold">Número de Equipes:</span>
+                      {{ leagueForm.get('teamsCount')?.value }}
+                    </p>
+                    <p
+                      *ngIf="
+                        leagueForm.get('format')?.value === 'group_knockout'
+                      "
+                    >
+                      <span class="font-semibold">Times por Grupo:</span>
+                      {{ leagueForm.get('teamsPerGroup')?.value }}
+                    </p>
+                  </div>
+                  <div>
+                    <p>
+                      <span class="font-semibold">Jogadores por Equipe:</span>
+                      {{ leagueForm.get('playersPerTeam')?.value }}
+                    </p>
+                    <p>
+                      <span class="font-semibold">Duração das Partidas:</span>
+                      {{ leagueForm.get('matchDuration')?.value }} minutos
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
