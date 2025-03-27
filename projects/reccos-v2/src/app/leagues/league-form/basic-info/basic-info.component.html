@@ -1,0 +1,88 @@
+@if (parentForm) {
+  <div class="space-y-6">
+    <h2 class="text-xl font-semibold mb-4">Informações Básicas do Torneio</h2>
+
+    <div class="space-y-4" [formGroup]="parentForm">
+      <!-- Grid para Nome do Torneio e Temporada na mesma linha -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Nome do Torneio -->
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text">Nome do Torneio</span>
+          </label>
+          <input
+            id="name"
+            type="text"
+            placeholder="Ex: Copa Municipal de Futebol 2023"
+            class="input input-bordered w-full"
+            formControlName="name"
+            aria-label="Nome do Torneio"
+            [ngClass]="{
+              'input-error':
+                parentForm.get('name')?.invalid &&
+                parentForm.get('name')?.touched &&
+                parentForm.get('name')?.dirty,
+            }"
+          />
+          @if (
+            parentForm.get('name')?.invalid &&
+            parentForm.get('name')?.touched &&
+            parentForm.get('name')?.dirty
+          ) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Nome do torneio é obrigatório</span
+              >
+            </label>
+          }
+        </div>
+
+        <!-- Temporada -->
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text">Temporada</span>
+          </label>
+          <input
+            id="season"
+            type="text"
+            placeholder="Ex: 2023"
+            class="input input-bordered w-full"
+            formControlName="season"
+            aria-label="Temporada"
+            [ngClass]="{
+              'input-error':
+                parentForm.get('season')?.invalid &&
+                parentForm.get('season')?.touched &&
+                parentForm.get('season')?.dirty,
+            }"
+          />
+          @if (
+            parentForm.get('season')?.invalid &&
+            parentForm.get('season')?.touched &&
+            parentForm.get('season')?.dirty
+          ) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Temporada é obrigatória</span
+              >
+            </label>
+          }
+        </div>
+      </div>
+
+      <div class="form-control w-full">
+        <label class="label">
+          <span class="label-text">Descrição</span>
+        </label>
+        <textarea
+          id="description"
+          placeholder="Descreva o torneio, seus objetivos e outras informações relevantes..."
+          rows="4"
+          class="textarea textarea-bordered w-full"
+          formControlName="description"
+          aria-label="Descrição do Torneio"
+        ></textarea>
+      </div>
+    </div>
+  </div>
+}
