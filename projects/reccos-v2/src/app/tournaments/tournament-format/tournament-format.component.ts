@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  AfterViewInit,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
@@ -15,7 +22,7 @@ import {
   templateUrl: './tournament-format.component.html',
   styleUrls: ['./tournament-format.component.scss'],
 })
-export class TournamentFormatComponent implements OnInit {
+export class TournamentFormatComponent implements OnInit, AfterViewInit {
   @Input() parentForm!: FormGroup;
   @Output() proceed = new EventEmitter<void>();
 
@@ -119,6 +126,58 @@ export class TournamentFormatComponent implements OnInit {
     if (this.validateStep()) {
       this.proceed.emit();
     }
+  }
+
+  ngAfterViewInit(): void {
+    // Inicializar os sliders com a aparência personalizada
+    setTimeout(() => {
+      this.updateRangeSliders();
+
+      // Adicionar listeners para os sliders
+      const sliders = document.querySelectorAll('input[type="range"]');
+      sliders.forEach(slider => {
+        slider.addEventListener('input', () => {
+          this.updateSliderBackground(slider as HTMLInputElement);
+        });
+
+        // Inicializar o background do slider
+        this.updateSliderBackground(slider as HTMLInputElement);
+      });
+
+      // Observar mudanças nos valores dos controles do formulário
+      this.parentForm.get('teamsCount')?.valueChanges.subscribe(() => {
+        this.updateRangeSliders();
+      });
+
+      this.parentForm.get('playersPerTeam')?.valueChanges.subscribe(() => {
+        this.updateRangeSliders();
+      });
+
+      this.parentForm.get('teamsPerGroup')?.valueChanges.subscribe(() => {
+        this.updateRangeSliders();
+      });
+    }, 0);
+  }
+
+  // Método para atualizar todos os sliders
+  private updateRangeSliders(): void {
+    const sliders = document.querySelectorAll('input[type="range"]');
+    sliders.forEach(slider => {
+      this.updateSliderBackground(slider as HTMLInputElement);
+    });
+  }
+
+  // Método para atualizar o background do slider baseado no valor atual
+  private updateSliderBackground(slider: HTMLInputElement): void {
+    const min = parseFloat(slider.min) || 0;
+    const max = parseFloat(slider.max) || 100;
+    const value = parseFloat(slider.value) || 0;
+
+    // Calcular a porcentagem do valor atual em relação ao intervalo
+    const percentage = ((value - min) / (max - min)) * 100;
+
+    // Aplicar o estilo de background com a porcentagem calculada
+    slider.style.setProperty('--range-shdw', `${percentage}%`);
   }
 
   validateStep(): boolean {

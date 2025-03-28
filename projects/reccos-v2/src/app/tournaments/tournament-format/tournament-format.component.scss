@@ -1,0 +1,81 @@
+/* Estilos específicos para o componente de formato de torneio */
+
+/* Garantindo que o item selecionado tenha destaque visual */
+.peer:checked + label {
+  background-color: hsl(var(--b3, 210 20% 94%)) !important;
+  border-color: hsl(var(--p, 259 94% 51%)) !important;
+  border-width: 1px !important;
+  box-shadow: 0 0 0 1px rgba(var(--p-rgb, 124 58 237), 0.1) !important;
+}
+
+/* Melhorando o efeito de hover */
+label:hover {
+  background-color: hsl(var(--b3, 210 20% 94%)) !important;
+}
+
+/* Personalização dos sliders */
+.range {
+  height: 6px;
+  background-color: #e5e7eb;
+  border-radius: 9999px;
+  appearance: none;
+  -webkit-appearance: none;
+  overflow: hidden;
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: #3b82f6; /* Cor primária do tema */
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+  }
+
+  &::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: #3b82f6; /* Cor primária do tema */
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &::-webkit-slider-thumb:hover,
+  &::-moz-range-thumb:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 4px rgba(59, 130, 246, 0.5);
+  }
+
+  &.range-primary::-webkit-slider-runnable-track {
+    background-image: linear-gradient(#3b82f6, #3b82f6);
+    background-size: var(--range-shdw, 0%) 100%;
+    background-repeat: no-repeat;
+  }
+}
+
+/* Estilizando o container do slider para melhor alinhamento */
+.flex.items-center.gap-2 {
+  margin-top: 8px;
+
+  span.text-xs {
+    font-weight: 500;
+    color: #6b7280;
+  }
+}
+
+/* Estilizando o valor atual do slider */
+.mb-2.text-center.font-semibold {
+  color: #3b82f6;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}

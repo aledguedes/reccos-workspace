@@ -1,0 +1,180 @@
+@if (parentForm) {
+  <div class="space-y-6">
+    <h2 class="text-xl font-semibold mb-4">Formato do Torneio</h2>
+
+    <div class="space-y-4" [formGroup]="parentForm">
+      <!-- Formato do Torneio -->
+      <div class="form-control w-full">
+        <label class="label">
+          <span class="label-text text-sm font-semibold mb-3"
+            >Selecione o formato
+          </span>
+        </label>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4" role="radiogroup">
+          @for (option of formatOptions; track option.value) {
+            <div class="relative">
+              <input
+                type="radio"
+                [id]="option.value"
+                [value]="option.value"
+                formControlName="format"
+                class="peer sr-only"
+                [attr.aria-label]="option.label"
+              />
+              <label
+                [for]="option.value"
+                class="flex flex-col p-4 border border-base-300 rounded-md bg-base-100 hover:bg-base-200 peer-checked:border-primary cursor-pointer transition-all h-full"
+              >
+                <div class="flex items-center mb-2">
+                  <i
+                    [class]="getFormatIcon(option.value)"
+                    class="mr-2 text-primary text-xl"
+                  ></i>
+                  <span class="font-semibold">{{ option.label }}</span>
+                </div>
+                <p class="text-sm text-base-content/70">
+                  {{ getFormatDescription(option.value) }}
+                </p>
+              </label>
+            </div>
+          }
+        </div>
+
+        @if (
+          parentForm.get('format')?.invalid &&
+          parentForm.get('format')?.touched &&
+          parentForm.get('format')?.dirty
+        ) {
+          <label class="label">
+            <span class="label-text-alt text-error">Formato é obrigatório</span>
+          </label>
+        }
+      </div>
+
+      <!-- Número de Times por Grupo (apenas para formato de grupos) -->
+      @if (parentForm.get('format')?.value === 'group_knockout') {
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text text-sm font-semibold"
+              >Número de Times por Grupo</span
+            >
+          </label>
+          <div class="mb-2 text-center font-semibold">
+            {{ parentForm.get('teamsPerGroup')?.value }}
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs">2</span>
+            <input
+              id="teamsPerGroup"
+              type="range"
+              min="2"
+              max="8"
+              class="w-full accent-indigo-600"
+              formControlName="teamsPerGroup"
+              aria-label="Número de Times por Grupo"
+            />
+            <span class="text-xs">8</span>
+          </div>
+          @if (
+            parentForm.get('teamsPerGroup')?.invalid &&
+            parentForm.get('teamsPerGroup')?.touched &&
+            parentForm.get('teamsPerGroup')?.dirty
+          ) {
+            <label class="label">
+              <span class="label-text-alt text-error">
+                Número de times por grupo é obrigatório e deve ser pelo menos 2
+              </span>
+            </label>
+          }
+        </div>
+      }
+      <!-- Grid para Número de Equipes e Jogadores por Equipe na mesma linha -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Número de Equipes -->
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text text-sm font-semibold"
+              >Número de Equipes</span
+            >
+          </label>
+          <div class="mb-2 text-center font-semibold">
+            {{ parentForm.get('teamsCount')?.value }}
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs">2</span>
+            <input
+              id="teamsCount"
+              type="range"
+              min="2"
+              max="32"
+              class="w-full accent-indigo-600"
+              formControlName="teamsCount"
+              aria-label="Número de Equipes"
+            />
+            <span class="text-xs">32</span>
+          </div>
+          @if (
+            parentForm.get('teamsCount')?.invalid &&
+            parentForm.get('teamsCount')?.touched &&
+            parentForm.get('teamsCount')?.dirty
+          ) {
+            <label class="label">
+              <span class="label-text-alt text-error">
+                Número de equipes é obrigatório e deve ser pelo menos 2
+              </span>
+            </label>
+          }
+        </div>
+
+        <!-- Jogadores por Equipe -->
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text text-sm font-semibold"
+              >Jogadores por Equipe</span
+            >
+          </label>
+          <div class="mb-2 text-center font-semibold">
+            {{ parentForm.get('playersPerTeam')?.value }}
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs">1</span>
+            <input
+              id="playersPerTeam"
+              type="range"
+              min="1"
+              max="30"
+              class="w-full accent-indigo-600"
+              formControlName="playersPerTeam"
+              aria-label="Jogadores por Equipe"
+            />
+            <span class="text-xs">30</span>
+          </div>
+          @if (
+            parentForm.get('playersPerTeam')?.invalid &&
+            parentForm.get('playersPerTeam')?.touched &&
+            parentForm.get('playersPerTeam')?.dirty
+          ) {
+            <label class="label">
+              <span class="label-text-alt text-error">
+                Número de jogadores é obrigatório e deve ser pelo menos 1
+              </span>
+            </label>
+          }
+        </div>
+      </div>
+
+      <!-- Botões de Navegação -->
+      <div class="flex justify-end mt-6 space-x-2">
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="onNext()"
+          [disabled]="!isFormValid()"
+        >
+          Próximo
+        </button>
+      </div>
+    </div>
+  </div>
+}

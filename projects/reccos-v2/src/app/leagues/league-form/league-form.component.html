@@ -1,176 +1,82 @@
-<div class="p-6">
-  <div class="mb-6">
-    <h1 class="text-2xl font-bold text-base-content">Nova Liga</h1>
-    <p class="text-sm text-base-content/70">
-      Preencha os dados para criar uma nova liga
-    </p>
-  </div>
-
-  <div class="card bg-base-100 shadow-md">
-    <div class="card-body">
-      <!-- Stepper de navegação -->
-      <ul class="steps steps-horizontal w-full mb-8">
-        <li
-          class="step"
-          [ngClass]="{ 'step-primary': currentStep >= 1 }"
-          (click)="goToStep(1)"
-        >
-          Informações Básicas
-        </li>
-        <li
-          class="step"
-          [ngClass]="{ 'step-primary': currentStep >= 2 }"
-          (click)="goToStep(2)"
-        >
-          Formato do Torneio
-        </li>
-        <li
-          class="step"
-          [ngClass]="{ 'step-primary': currentStep >= 3 }"
-          (click)="goToStep(3)"
-        >
-          Revisão
-        </li>
-      </ul>
-
-      <form [formGroup]="leagueForm" (ngSubmit)="onSubmit()">
-        <!-- Passo 1: Informações Básicas -->
-        @if (currentStep === 1) {
-          <div class="space-y-4">
-            <app-basic-info [parentForm]="leagueForm" (proceed)="nextStep()" />
-          </div>
-        }
-
-        <!-- Passo 2: Formato do Torneio -->
-        @if (currentStep === 2) {
-          <div class="space-y-4">
-            <app-tournament-format
-              [parentForm]="leagueForm"
-              (proceed)="nextStep()"
-            />
-          </div>
-        }
-
-        <!-- Passo 3: Revisão -->
-        @if (currentStep === 3) {
-          <div class="space-y-4">
-            <h2 class="text-xl font-semibold mb-4">Revisão</h2>
-
-            <div class="bg-base-200 p-4 rounded-lg">
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <h3 class="font-medium text-base-content/70">
-                    Informações Básicas
-                  </h3>
-                  <p>
-                    <span class="font-semibold">Nome:</span>
-                    {{ leagueForm.get('name')?.value }}
-                  </p>
-                  <p>
-                    <span class="font-semibold">Temporada:</span>
-                    {{ leagueForm.get('season')?.value }}
-                  </p>
-                </div>
-
-                <div>
-                  <h3 class="font-medium text-base-content/70">
-                    Configurações de Temporada
-                  </h3>
-                  <p>
-                    <span class="font-semibold">Data de Início:</span>
-                    {{ formatDate(leagueForm.get('startDate')?.value) }}
-                  </p>
-                  <p>
-                    <span class="font-semibold">Data de Término:</span>
-                    {{ formatDate(leagueForm.get('endDate')?.value) }}
-                  </p>
-                  <p>
-                    <span class="font-semibold">Status:</span>
-                    {{ getStatusLabel(leagueForm.get('status')?.value) }}
-                  </p>
-                </div>
-              </div>
-
-              <div class="mt-4">
-                <h3 class="font-medium text-base-content/70">
-                  Formato do Torneio
-                </h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                  <div>
-                    <p>
-                      <span class="font-semibold">Formato:</span>
-                      {{
-                        leagueForm.get('format')?.value === 'league'
-                          ? 'Liga (todos contra todos)'
-                          : leagueForm.get('format')?.value === 'cup'
-                            ? 'Copa (eliminatórias)'
-                            : 'Grupos + Eliminatórias'
-                      }}
-                    </p>
-                    <p>
-                      <span class="font-semibold">Número de Equipes:</span>
-                      {{ leagueForm.get('teamsCount')?.value }}
-                    </p>
-                    <p
-                      *ngIf="
-                        leagueForm.get('format')?.value === 'group_knockout'
-                      "
-                    >
-                      <span class="font-semibold">Times por Grupo:</span>
-                      {{ leagueForm.get('teamsPerGroup')?.value }}
-                    </p>
-                  </div>
-                  <div>
-                    <p>
-                      <span class="font-semibold">Jogadores por Equipe:</span>
-                      {{ leagueForm.get('playersPerTeam')?.value }}
-                    </p>
-                    <p>
-                      <span class="font-semibold">Duração das Partidas:</span>
-                      {{ leagueForm.get('matchDuration')?.value }} minutos
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        }
-
-        <!-- Botões de navegação -->
-        <div class="flex justify-between mt-8">
-          <button
-            *ngIf="currentStep > 1"
-            type="button"
-            class="btn btn-outline"
-            (click)="previousStep()"
-            [disabled]="isSubmitting"
-          >
-            Voltar
-          </button>
-          <div class="flex-grow"></div>
-          <button
-            *ngIf="currentStep < 3"
-            type="button"
-            class="btn btn-primary"
-            (click)="nextStep()"
-            [disabled]="!canProceed() || isSubmitting"
-          >
-            Próximo
-          </button>
-          <button
-            *ngIf="currentStep === 3"
-            type="submit"
-            class="btn btn-primary"
-            [disabled]="leagueForm.invalid || isSubmitting"
-          >
-            <span
-              *ngIf="isSubmitting"
-              class="loading loading-spinner loading-xs mr-2"
-            ></span>
-            Finalizar Cadastro
-          </button>
-        </div>
-      </form>
+<h2 class="text-2xl font-bold text-primary mb-6">
+  {{ league ? 'Editar Liga' : 'Nova Liga' }}
+</h2>
+<form [formGroup]="leagueForm" (ngSubmit)="onSubmit()" class="space-y-4">
+  <!-- Name Field -->
+  <div class="form-control">
+    <label class="label">
+      <span class="label-text font-bold text-gray-700 mb-1">Nome da Liga</span>
+    </label>
+    <input
+      type="text"
+      placeholder="Digite o nome da liga"
+      class="input input-bordered w-full"
+      [class.input-error]="
+        leagueForm.get('name')?.invalid && leagueForm.get('name')?.touched
+      "
+      formControlName="name"
+    />
+    <div
+      *ngIf="leagueForm.get('name')?.invalid && leagueForm.get('name')?.touched"
+      class="text-error text-sm mt-1"
+    >
+      <span *ngIf="leagueForm.get('name')?.errors?.['required']"
+        >Nome é obrigatório</span
+      >
+      <span *ngIf="leagueForm.get('name')?.errors?.['minlength']"
+        >Nome deve ter pelo menos 3 caracteres</span
+      >
     </div>
   </div>
-</div>
+
+  <!-- Description Field -->
+  <div class="form-control">
+    <label class="label">
+      <span class="label-text font-bold text-gray-700 mb-1">Descrição</span>
+    </label>
+    <textarea
+      class="textarea textarea-bordered h-24"
+      placeholder="Digite uma descrição para a liga"
+      [class.textarea-error]="
+        leagueForm.get('description')?.invalid &&
+        leagueForm.get('description')?.touched
+      "
+      formControlName="description"
+    ></textarea>
+    <div
+      *ngIf="
+        leagueForm.get('description')?.invalid &&
+        leagueForm.get('description')?.touched
+      "
+      class="text-error text-sm mt-1"
+    >
+      <span *ngIf="leagueForm.get('description')?.errors?.['maxlength']"
+        >Descrição deve ter no máximo 500 caracteres</span
+      >
+    </div>
+  </div>
+
+  <!-- Status Field -->
+  <div class="form-control">
+    <label class="label">
+      <span class="label-text font-bold text-gray-700 mb-1">Status</span>
+    </label>
+    <select class="select select-bordered w-full" formControlName="status">
+      <option value="PLANNING">Planejamento</option>
+      <option value="ACTIVE">Ativo</option>
+      <option value="PAUSED">Pausado</option>
+      <option value="FINISHED">Finalizado</option>
+    </select>
+  </div>
+
+  <!-- Form Actions -->
+  <div class="card-actions justify-end mt-6">
+    <button type="button" class="btn btn-ghost" (click)="onCancel()">
+      Cancelar
+    </button>
+    <button type="submit" class="btn btn-primary gap-2">
+      <i class="ri-save-line"></i>
+      Salvar
+    </button>
+  </div>
+</form>
