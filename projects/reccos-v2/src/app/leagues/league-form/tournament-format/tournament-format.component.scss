@@ -2,8 +2,13 @@
 
 /* Garantindo que o item selecionado tenha destaque visual */
 .peer:checked + label {
-  background-color: hsl(var(--b2, 210 20% 98%)) !important;
+  background-color: hsl(var(--b3, 210 20% 94%)) !important;
   border-color: hsl(var(--p, 259 94% 51%)) !important;
   border-width: 1px !important;
   box-shadow: 0 0 0 1px rgba(var(--p-rgb, 124 58 237), 0.1) !important;
+}
+
+/* Melhorando o efeito de hover */
+label:hover {
+  background-color: hsl(var(--b3, 210 20% 94%)) !important;
 }
