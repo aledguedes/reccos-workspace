@@ -7,6 +7,7 @@ import {
 } from '../../shared/components/data-table/data-table.component';
 import { ILeague } from '../../core/models/league.model';
 import { GridViewComponent } from '../../shared/components/grid-view/grid-view.component';
+import { LeagueFormComponent } from '../league-form/league-form.component';
 
 // Definindo o tipo para os layouts
 type ViewLayout = 'grid' | 'list' | 'table';
@@ -20,7 +21,13 @@ export interface ILayout {
 @Component({
   selector: 'app-leagues-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, DataTableComponent, GridViewComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    DataTableComponent,
+    GridViewComponent,
+    LeagueFormComponent,
+  ],
   templateUrl: './leagues-list.component.html',
   styleUrl: './leagues-list.component.scss',
 })
@@ -142,7 +149,11 @@ export class LeaguesListComponent {
 
   navigateToCreateLeague(): void {
     console.log('Create new league');
-    this.router.navigate(['/leagues/create']);
+    // Abrir modal de criação de liga
+    const modal = document.getElementById(
+      'create-league-modal'
+    ) as HTMLDialogElement;
+    modal?.showModal();
   }
 
   setLayout(layout: ViewLayout): void {

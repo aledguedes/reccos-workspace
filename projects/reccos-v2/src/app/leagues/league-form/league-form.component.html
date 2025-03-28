@@ -1,116 +1,82 @@
-<div class="card bg-base-100 shadow-xl p-6 max-w-3xl mx-auto">
-  <div class="card-body p-0">
-    <h2 class="card-title text-2xl font-bold text-primary mb-6">
-      {{ league ? 'Editar Liga' : 'Nova Liga' }}
-    </h2>
-    <form [formGroup]="leagueForm" (ngSubmit)="onSubmit()" class="space-y-4">
-      <!-- Name Field -->
-      <div class="form-control">
-        <label class="label">
-          <span class="label-text">Nome da Liga</span>
-        </label>
-        <input
-          type="text"
-          placeholder="Digite o nome da liga"
-          class="input input-bordered w-full"
-          [class.input-error]="
-            leagueForm.get('name')?.invalid && leagueForm.get('name')?.touched
-          "
-          formControlName="name"
-        />
-        <div
-          *ngIf="
-            leagueForm.get('name')?.invalid && leagueForm.get('name')?.touched
-          "
-          class="text-error text-sm mt-1"
-        >
-          <span *ngIf="leagueForm.get('name')?.errors?.['required']"
-            >Nome é obrigatório</span
-          >
-          <span *ngIf="leagueForm.get('name')?.errors?.['minlength']"
-            >Nome deve ter pelo menos 3 caracteres</span
-          >
-        </div>
-      </div>
-
-      <!-- Description Field -->
-      <div class="form-control">
-        <label class="label">
-          <span class="label-text">Descrição</span>
-        </label>
-        <textarea
-          class="textarea textarea-bordered h-24"
-          placeholder="Digite uma descrição para a liga"
-          [class.textarea-error]="
-            leagueForm.get('description')?.invalid &&
-            leagueForm.get('description')?.touched
-          "
-          formControlName="description"
-        ></textarea>
-        <div
-          *ngIf="
-            leagueForm.get('description')?.invalid &&
-            leagueForm.get('description')?.touched
-          "
-          class="text-error text-sm mt-1"
-        >
-          <span *ngIf="leagueForm.get('description')?.errors?.['maxlength']"
-            >Descrição deve ter no máximo 500 caracteres</span
-          >
-        </div>
-      </div>
-
-      <!-- Start Date Field -->
-      <div class="form-control">
-        <label class="label">
-          <span class="label-text">Data de Início</span>
-        </label>
-        <input
-          type="date"
-          class="input input-bordered w-full"
-          [class.input-error]="
-            leagueForm.get('startDate')?.invalid &&
-            leagueForm.get('startDate')?.touched
-          "
-          formControlName="startDate"
-        />
-        <div
-          *ngIf="
-            leagueForm.get('startDate')?.invalid &&
-            leagueForm.get('startDate')?.touched
-          "
-          class="text-error text-sm mt-1"
-        >
-          <span *ngIf="leagueForm.get('startDate')?.errors?.['required']"
-            >Data de início é obrigatória</span
-          >
-        </div>
-      </div>
-
-      <!-- End Date Field -->
-      <div class="form-control">
-        <label class="label">
-          <span class="label-text">Data de Término</span>
-        </label>
-        <input
-          type="date"
-          class="input input-bordered w-full"
-          [(ngModel)]="league.endDate"
-          name="endDate"
-          required
-        />
-      </div>
-
-      <!-- Form Actions -->
-      <div class="card-actions justify-end mt-6">
-        <button type="button" class="btn btn-ghost" (click)="onCancel()">
-          Cancelar
-        </button>
-        <button type="submit" class="btn btn-primary gap-2">
-          <i class="ri-save-line"></i>
-          Salvar
-        </button>
-      </div>
-    </form>
+<h2 class="text-2xl font-bold text-primary mb-6">
+  {{ league ? 'Editar Liga' : 'Nova Liga' }}
+</h2>
+<form [formGroup]="leagueForm" (ngSubmit)="onSubmit()" class="space-y-4">
+  <!-- Name Field -->
+  <div class="form-control">
+    <label class="label">
+      <span class="label-text font-bold text-gray-700 mb-1">Nome da Liga</span>
+    </label>
+    <input
+      type="text"
+      placeholder="Digite o nome da liga"
+      class="input input-bordered w-full"
+      [class.input-error]="
+        leagueForm.get('name')?.invalid && leagueForm.get('name')?.touched
+      "
+      formControlName="name"
+    />
+    <div
+      *ngIf="leagueForm.get('name')?.invalid && leagueForm.get('name')?.touched"
+      class="text-error text-sm mt-1"
+    >
+      <span *ngIf="leagueForm.get('name')?.errors?.['required']"
+        >Nome é obrigatório</span
+      >
+      <span *ngIf="leagueForm.get('name')?.errors?.['minlength']"
+        >Nome deve ter pelo menos 3 caracteres</span
+      >
+    </div>
   </div>
-</div>
+
+  <!-- Description Field -->
+  <div class="form-control">
+    <label class="label">
+      <span class="label-text font-bold text-gray-700 mb-1">Descrição</span>
+    </label>
+    <textarea
+      class="textarea textarea-bordered h-24"
+      placeholder="Digite uma descrição para a liga"
+      [class.textarea-error]="
+        leagueForm.get('description')?.invalid &&
+        leagueForm.get('description')?.touched
+      "
+      formControlName="description"
+    ></textarea>
+    <div
+      *ngIf="
+        leagueForm.get('description')?.invalid &&
+        leagueForm.get('description')?.touched
+      "
+      class="text-error text-sm mt-1"
+    >
+      <span *ngIf="leagueForm.get('description')?.errors?.['maxlength']"
+        >Descrição deve ter no máximo 500 caracteres</span
+      >
+    </div>
+  </div>
+
+  <!-- Status Field -->
+  <div class="form-control">
+    <label class="label">
+      <span class="label-text font-bold text-gray-700 mb-1">Status</span>
+    </label>
+    <select class="select select-bordered w-full" formControlName="status">
+      <option value="PLANNING">Planejamento</option>
+      <option value="ACTIVE">Ativo</option>
+      <option value="PAUSED">Pausado</option>
+      <option value="FINISHED">Finalizado</option>
+    </select>
+  </div>
+
+  <!-- Form Actions -->
+  <div class="card-actions justify-end mt-6">
+    <button type="button" class="btn btn-ghost" (click)="onCancel()">
+      Cancelar
+    </button>
+    <button type="submit" class="btn btn-primary gap-2">
+      <i class="ri-save-line"></i>
+      Salvar
+    </button>
+  </div>
+</form>

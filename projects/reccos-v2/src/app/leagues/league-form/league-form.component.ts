@@ -28,6 +28,7 @@ export class LeagueFormComponent {
       description: ['', Validators.maxLength(500)],
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
+      status: ['Planning', Validators.required],
     });
 
     if (this.league) {
@@ -38,10 +39,19 @@ export class LeagueFormComponent {
   onSubmit() {
     if (this.leagueForm.valid) {
       this.save.emit(this.leagueForm.value);
+      this.leagueForm.reset();
+      this.closeModal();
     }
   }
 
+  private closeModal() {
+    const modal = document.getElementById('my_modal_1') as HTMLDialogElement;
+    modal?.close();
+  }
+
   onCancel() {
+    this.leagueForm.reset();
     this.cancel.emit();
+    this.closeModal();
   }
 }
