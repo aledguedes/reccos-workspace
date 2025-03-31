@@ -1,4 +1,4 @@
-<div class="mb-8">
+<div class="mb-1">
   <h2 class="text-3xl font-bold text-primary">
     {{ league ? 'Editar Liga' : 'Nova Liga' }}
   </h2>
@@ -20,17 +20,10 @@
         type="text"
         placeholder="Digite o nome da liga"
         class="input input-bordered w-full"
-        [class.input-error]="
-          leagueForm.get('name')?.invalid && leagueForm.get('name')?.touched
-        "
+        [class.input-error]="submitted && leagueForm.get('name')?.invalid"
         formControlName="name"
       />
-      <label class="label">
-        <span class="label-text-alt text-muted-foreground">
-          Este será o nome principal da sua liga de futebol.
-        </span>
-      </label>
-      @if (leagueForm.get('name')?.invalid && leagueForm.get('name')?.touched) {
+      @if (submitted && leagueForm.get('name')?.invalid) {
         <div class="text-error text-sm mt-1">
           @if (leagueForm.get('name')?.errors?.['required']) {
             <span>Nome é obrigatório</span>
@@ -39,6 +32,12 @@
             <span>Nome deve ter pelo menos 3 caracteres</span>
           }
         </div>
+      } @else {
+        <label class="label">
+          <span class="label-text-alt text-muted-foreground">
+            Este será o nome principal da sua liga de futebol.
+          </span>
+        </label>
       }
     </div>
 
@@ -76,22 +75,18 @@
             class="input input-bordered w-full"
             formControlName="location"
             [ngClass]="{
-              'input-error':
-                leagueForm.get('location')?.invalid &&
-                leagueForm.get('location')?.touched,
+              'input-error': submitted && leagueForm.get('location')?.invalid,
             }"
           />
         </div>
-        <label class="label">
-          <span class="label-text-alt text-muted-foreground">
-            Onde a liga será realizada.
-          </span>
-        </label>
-        @if (
-          leagueForm.get('location')?.invalid &&
-          leagueForm.get('location')?.touched
-        ) {
+        @if (submitted && leagueForm.get('location')?.invalid) {
           <span class="text-error text-sm"> A localização é obrigatória. </span>
+        } @else {
+          <label class="label">
+            <span class="label-text-alt text-muted-foreground">
+              Onde a liga será realizada.
+            </span>
+          </label>
         }
       </div>
 
@@ -102,18 +97,28 @@
             >Status da Liga</span
           >
         </label>
-        <select class="select select-bordered w-full" formControlName="status">
-          <option disabled selected>Selecione o status</option>
+        <select
+          class="select select-bordered w-full"
+          formControlName="status"
+          [ngClass]="{
+            'input-error': submitted && leagueForm.get('status')?.invalid,
+          }"
+        >
+          <option value="default" disabled selected>Selecione o status</option>
           <option value="planning">Em planejamento</option>
           <option value="ongoing">Em andamento</option>
           <option value="completed">Concluída</option>
           <option value="archived">Arquivada</option>
         </select>
-        <label class="label">
-          <span class="label-text-alt text-muted-foreground">
-            Status atual da liga.
-          </span>
-        </label>
+        @if (submitted && leagueForm.get('status')?.invalid) {
+          <span class="text-error text-sm">O status é obrigatório.</span>
+        } @else {
+          <label class="label">
+            <span class="label-text-alt text-muted-foreground">
+              Status atual da liga.
+            </span>
+          </label>
+        }
       </div>
     </div>
 

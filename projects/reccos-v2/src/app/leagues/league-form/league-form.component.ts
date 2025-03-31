@@ -21,13 +21,14 @@ export class LeagueFormComponent {
   @Output() cancel = new EventEmitter<void>();
 
   leagueForm: FormGroup;
+  submitted = false;
 
   constructor(private fb: FormBuilder) {
     this.leagueForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
       description: [''],
       location: ['', Validators.required],
-      status: ['Planning', Validators.required],
+      status: ['default', Validators.required],
     });
 
     if (this.league) {
@@ -36,6 +37,8 @@ export class LeagueFormComponent {
   }
 
   onSubmit() {
+    this.submitted = true;
+
     if (this.leagueForm.valid) {
       this.save.emit(this.leagueForm.value);
       this.leagueForm.reset();
@@ -50,6 +53,7 @@ export class LeagueFormComponent {
 
   onCancel() {
     this.leagueForm.reset();
+    this.submitted = false;
     this.cancel.emit();
     this.closeModal();
   }

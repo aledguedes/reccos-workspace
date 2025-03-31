@@ -176,4 +176,29 @@ export class LeaguesListComponent {
         league.season.toLowerCase().includes(query)
     );
   }
+
+  onSaveLeague(leagueData: any): void {
+    console.log('League saved:', leagueData);
+    // Aqui você implementaria a lógica para salvar a liga no backend
+    // Por enquanto, vamos apenas adicionar à lista local
+    const newLeague: ILeague = {
+      id: this.leagues.length + 1,
+      name: leagueData.name,
+      season: '2023/2024', // Valor padrão
+      startDate: new Date().toISOString().split('T')[0],
+      endDate: new Date().toISOString().split('T')[0],
+      status: leagueData.status.toLowerCase(),
+      teamsCount: 0,
+      matchesCount: 0,
+      // Adicione outros campos conforme necessário
+    };
+
+    this.leagues.push(newLeague);
+    this.filterLeagues(); // Atualiza a lista filtrada
+  }
+
+  onCancelLeague(): void {
+    console.log('League creation cancelled');
+    // Não é necessário fazer nada aqui, o modal já será fechado pelo componente do formulário
+  }
 }
