@@ -7,6 +7,8 @@ export interface ILeague {
   teamsCount: number;
   matchesCount: number;
   status: 'active' | 'finished' | 'upcoming';
+  description?: string;
+  location?: string;
 }
 
 export interface ILeagueCard {

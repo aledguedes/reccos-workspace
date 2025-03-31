@@ -53,7 +53,11 @@
       </button>
       <dialog id="my_modal_1" class="modal">
         <div class="modal-box w-full max-w-3xl">
-          <app-league-form />
+          <app-league-form
+            [league]="selectedLeague"
+            (save)="onSaveLeague($event)"
+            (cancel)="onCancelLeague()"
+          />
         </div>
       </dialog>
     </div>
