@@ -25,9 +25,8 @@ export class LeagueFormComponent {
   constructor(private fb: FormBuilder) {
     this.leagueForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
-      description: ['', Validators.maxLength(500)],
-      startDate: ['', Validators.required],
-      endDate: ['', Validators.required],
+      description: [''],
+      location: ['', Validators.required],
       status: ['Planning', Validators.required],
     });
 
