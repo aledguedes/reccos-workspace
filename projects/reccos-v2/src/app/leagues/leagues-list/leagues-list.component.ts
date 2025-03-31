@@ -43,6 +43,9 @@ export class LeaguesListComponent {
       status: 'active',
       teamsCount: 20,
       matchesCount: 380,
+      description:
+        'Principal campeonato de futebol da Inglaterra, disputado por 20 clubes.',
+      location: 'Inglaterra',
     },
     {
       id: 2,
@@ -53,6 +56,9 @@ export class LeaguesListComponent {
       status: 'active',
       teamsCount: 20,
       matchesCount: 380,
+      description:
+        'Campeonato Espanhol de Futebol, organizado pela Liga Nacional de Fútbol Profesional.',
+      location: 'Espanha',
     },
     {
       id: 3,
@@ -63,6 +69,9 @@ export class LeaguesListComponent {
       status: 'active',
       teamsCount: 18,
       matchesCount: 306,
+      description:
+        'Principal campeonato de futebol da Alemanha, disputado por 18 clubes.',
+      location: 'Alemanha',
     },
     {
       id: 4,
@@ -73,6 +82,9 @@ export class LeaguesListComponent {
       status: 'active',
       teamsCount: 20,
       matchesCount: 380,
+      description:
+        'Campeonato Italiano de Futebol, organizado pela Lega Serie A.',
+      location: 'Itália',
     },
     {
       id: 5,
@@ -83,6 +95,9 @@ export class LeaguesListComponent {
       status: 'active',
       teamsCount: 18,
       matchesCount: 306,
+      description:
+        'Principal campeonato de futebol da França, disputado por 18 clubes.',
+      location: 'França',
     },
   ];
 
@@ -112,6 +127,9 @@ export class LeaguesListComponent {
   // Add this with your other signals
   isLoading = signal<boolean>(true);
 
+  // Liga selecionada para edição
+  selectedLeague: ILeague | null = null;
+
   constructor(private router: Router) {
     // Initialize filteredLeagues with all leagues
     this.filteredLeagues = [...this.leagues];
@@ -129,7 +147,12 @@ export class LeaguesListComponent {
 
   onEditLeague(league: ILeague): void {
     console.log('Edit league:', league);
-    // Implement navigation to league edit
+    // Armazenar a liga selecionada para edição
+    this.selectedLeague = league;
+
+    // Abrir o modal de edição
+    const modal = document.getElementById('my_modal_1') as HTMLDialogElement;
+    modal?.showModal();
   }
 
   onDeleteLeague(league: ILeague): void {
@@ -175,5 +198,78 @@ export class LeaguesListComponent {
         league.name.toLowerCase().includes(query) ||
         league.season.toLowerCase().includes(query)
     );
+  }
+
+  onSaveLeague(leagueData: any): void {
+    console.log('League saved:', leagueData);
+    // Aqui você implementaria a lógica para salvar a liga no backend
+
+    // Mapear o status do formulário para o modelo ILeague
+    let leagueStatus: 'active' | 'finished' | 'upcoming' = 'active';
+    switch (leagueData.status) {
+      case 'ongoing':
+        leagueStatus = 'active';
+        break;
+      case 'completed':
+        leagueStatus = 'finished';
+        break;
+      case 'planning':
+        leagueStatus = 'upcoming';
+        break;
+      default:
+        leagueStatus = 'active';
+    }
+
+    if (this.selectedLeague) {
+      // Modo de edição - atualizar liga existente
+      const index = this.leagues.findIndex(
+        l => l.id === this.selectedLeague!.id
+      );
+      if (index !== -1) {
+        // Manter os campos que não estão no formulário
+        this.leagues[index] = {
+          ...this.selectedLeague,
+          name: leagueData.name,
+          description: leagueData.description,
+          location: leagueData.location,
+          status: leagueStatus,
+          season: leagueData.season || this.selectedLeague.season,
+          startDate: leagueData.startDate || this.selectedLeague.startDate,
+          endDate: leagueData.endDate || this.selectedLeague.endDate,
+        };
+        console.log('League updated:', this.leagues[index]);
+      }
+    } else {
+      // Modo de criação - adicionar nova liga
+      const newLeague: ILeague = {
+        id: this.leagues.length + 1,
+        name: leagueData.name,
+        season: leagueData.season || '2023/2024',
+        startDate:
+          leagueData.startDate || new Date().toISOString().split('T')[0],
+        endDate: leagueData.endDate || new Date().toISOString().split('T')[0],
+        status: leagueStatus,
+        teamsCount: 0,
+        matchesCount: 0,
+        description: leagueData.description,
+        location: leagueData.location,
+      };
+
+      this.leagues.push(newLeague);
+      console.log('New league created:', newLeague);
+    }
+
+    // Limpar a liga selecionada
+    this.selectedLeague = null;
+
+    // Atualizar a lista filtrada
+    this.filterLeagues();
+  }
+
+  onCancelLeague(): void {
+    console.log('League operation cancelled');
+    // Limpar a liga selecionada
+    this.selectedLeague = null;
+    // O modal já será fechado pelo componente do formulário
   }
 }
