@@ -79,7 +79,7 @@ export class LeaguesListComponent {
       season: '2023/2024',
       startDate: '2023-08-19',
       endDate: '2024-05-26',
-      status: 'active',
+      status: 'archived',
       teamsCount: 20,
       matchesCount: 380,
       description:
@@ -92,7 +92,7 @@ export class LeaguesListComponent {
       season: '2023/2024',
       startDate: '2023-08-13',
       endDate: '2024-05-19',
-      status: 'active',
+      status: 'canceled',
       teamsCount: 18,
       matchesCount: 306,
       description:
@@ -205,20 +205,7 @@ export class LeaguesListComponent {
     // Aqui você implementaria a lógica para salvar a liga no backend
 
     // Mapear o status do formulário para o modelo ILeague
-    let leagueStatus: 'active' | 'finished' | 'upcoming' = 'active';
-    switch (leagueData.status) {
-      case 'ongoing':
-        leagueStatus = 'active';
-        break;
-      case 'completed':
-        leagueStatus = 'finished';
-        break;
-      case 'planning':
-        leagueStatus = 'upcoming';
-        break;
-      default:
-        leagueStatus = 'active';
-    }
+    let leagueStatus: 'active' | 'archived' | 'canceled' = 'active';
 
     if (this.selectedLeague) {
       // Modo de edição - atualizar liga existente

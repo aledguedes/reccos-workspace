@@ -6,7 +6,7 @@ export interface ILeague {
   startDate: string;
   teamsCount: number;
   matchesCount: number;
-  status: 'active' | 'finished' | 'upcoming';
+  status: 'active' | 'archived' | 'canceled';
   description?: string;
   location?: string;
 }
