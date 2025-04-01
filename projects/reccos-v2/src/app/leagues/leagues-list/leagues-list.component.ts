@@ -8,6 +8,8 @@ import {
 import { ILeague } from '../../core/models/league.model';
 import { GridViewComponent } from '../../shared/components/grid-view/grid-view.component';
 import { LeagueFormComponent } from '../league-form/league-form.component';
+import { ToastService } from '../../shared/services/toast.service';
+import { ToastComponent } from '../../shared/components/toast/toast.component';
 
 // Definindo o tipo para os layouts
 type ViewLayout = 'grid' | 'list' | 'table';
@@ -27,6 +29,7 @@ export interface ILayout {
     DataTableComponent,
     GridViewComponent,
     LeagueFormComponent,
+    ToastComponent,
   ],
   templateUrl: './leagues-list.component.html',
   styleUrl: './leagues-list.component.scss',
@@ -130,7 +133,10 @@ export class LeaguesListComponent {
   // Liga selecionada para edição
   selectedLeague: ILeague | null = null;
 
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    private toastService: ToastService
+  ) {
     // Initialize filteredLeagues with all leagues
     this.filteredLeagues = [...this.leagues];
 
@@ -204,53 +210,71 @@ export class LeaguesListComponent {
     console.log('League saved:', leagueData);
     // Aqui você implementaria a lógica para salvar a liga no backend
 
-    // Mapear o status do formulário para o modelo ILeague
-    let leagueStatus: 'active' | 'archived' | 'canceled' = 'active';
+    try {
+      // Mapear o status do formulário para o modelo ILeague
+      let leagueStatus: 'active' | 'archived' | 'canceled' = 'active';
 
-    if (this.selectedLeague) {
-      // Modo de edição - atualizar liga existente
-      const index = this.leagues.findIndex(
-        l => l.id === this.selectedLeague!.id
-      );
-      if (index !== -1) {
-        // Manter os campos que não estão no formulário
-        this.leagues[index] = {
-          ...this.selectedLeague,
+      if (this.selectedLeague) {
+        // Modo de edição - atualizar liga existente
+        const index = this.leagues.findIndex(
+          l => l.id === this.selectedLeague!.id
+        );
+        if (index !== -1) {
+          // Manter os campos que não estão no formulário
+          this.leagues[index] = {
+            ...this.selectedLeague,
+            name: leagueData.name,
+            description: leagueData.description,
+            location: leagueData.location,
+            status: leagueStatus,
+            season: leagueData.season || this.selectedLeague.season,
+            startDate: leagueData.startDate || this.selectedLeague.startDate,
+            endDate: leagueData.endDate || this.selectedLeague.endDate,
+          };
+          console.log('League updated:', this.leagues[index]);
+
+          // Exibir mensagem de sucesso para atualização
+          this.toastService.success(
+            `Liga "${leagueData.name}" atualizada com sucesso!`
+          );
+        }
+      } else {
+        // Modo de criação - adicionar nova liga
+        const newLeague: ILeague = {
+          id: this.leagues.length + 1,
           name: leagueData.name,
+          season: leagueData.season || '2023/2024',
+          startDate:
+            leagueData.startDate || new Date().toISOString().split('T')[0],
+          endDate: leagueData.endDate || new Date().toISOString().split('T')[0],
+          status: leagueStatus,
+          teamsCount: 0,
+          matchesCount: 0,
           description: leagueData.description,
           location: leagueData.location,
-          status: leagueStatus,
-          season: leagueData.season || this.selectedLeague.season,
-          startDate: leagueData.startDate || this.selectedLeague.startDate,
-          endDate: leagueData.endDate || this.selectedLeague.endDate,
         };
-        console.log('League updated:', this.leagues[index]);
+
+        this.leagues.push(newLeague);
+        console.log('New league created:', newLeague);
+
+        // Exibir mensagem de sucesso para criação
+        this.toastService.success(
+          `Liga "${leagueData.name}" criada com sucesso!`
+        );
       }
-    } else {
-      // Modo de criação - adicionar nova liga
-      const newLeague: ILeague = {
-        id: this.leagues.length + 1,
-        name: leagueData.name,
-        season: leagueData.season || '2023/2024',
-        startDate:
-          leagueData.startDate || new Date().toISOString().split('T')[0],
-        endDate: leagueData.endDate || new Date().toISOString().split('T')[0],
-        status: leagueStatus,
-        teamsCount: 0,
-        matchesCount: 0,
-        description: leagueData.description,
-        location: leagueData.location,
-      };
 
-      this.leagues.push(newLeague);
-      console.log('New league created:', newLeague);
+      // Limpar a liga selecionada
+      this.selectedLeague = null;
+
+      // Atualizar a lista filtrada
+      this.filterLeagues();
+    } catch (error) {
+      // Exibir mensagem de erro caso ocorra algum problema
+      console.error('Erro ao salvar liga:', error);
+      this.toastService.error(
+        `Erro ao salvar liga: ${error instanceof Error ? error.message : 'Erro desconhecido'}`
+      );
     }
-
-    // Limpar a liga selecionada
-    this.selectedLeague = null;
-
-    // Atualizar a lista filtrada
-    this.filterLeagues();
   }
 
   onCancelLeague(): void {

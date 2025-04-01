@@ -60,20 +60,6 @@ export class LeagueFormComponent implements OnInit, OnChanges {
 
       // Mapear o status da liga para os valores do formulário
       let formStatus = 'active'; // Valor padrão válido caso não corresponda a nenhum dos casos
-      if (this.league.status) {
-        switch (this.league.status) {
-          case 'active':
-            formStatus = 'active';
-            break;
-          case 'finished':
-            formStatus = 'archived';
-            break;
-          case 'upcoming':
-            formStatus = 'ongoing';
-            break;
-          // Não definimos default para 'default' pois esse valor não existe nas opções do select
-        }
-      }
 
       // Atualizar o formulário com os valores da liga
       this.leagueForm.patchValue({
@@ -82,8 +68,6 @@ export class LeagueFormComponent implements OnInit, OnChanges {
         location: location,
         status: formStatus,
       });
-
-      console.log('ON INIT FORM this.leagueForm', this.leagueForm.value);
     }
   }
 
