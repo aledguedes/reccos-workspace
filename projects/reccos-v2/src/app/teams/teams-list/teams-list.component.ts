@@ -8,6 +8,7 @@ import {
 import { ITeam } from '../../core/models/team.model';
 import { GridViewComponent } from '../../shared/components/grid-view/grid-view.component';
 import { ToastService } from '../../shared/services/toast.service';
+import { TeamFormComponent } from '../team-form/team-form.component';
 
 // Definindo o tipo para os layouts
 type ViewLayout = 'grid' | 'list' | 'table';
@@ -21,7 +22,13 @@ export interface ILayout {
 @Component({
   selector: 'app-teams-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, DataTableComponent, GridViewComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    DataTableComponent,
+    GridViewComponent,
+    TeamFormComponent,
+  ],
   templateUrl: './teams-list.component.html',
   styleUrl: './teams-list.component.scss',
 })
@@ -154,10 +161,7 @@ export class TeamsListComponent {
 
   onEditTeam(team: ITeam): void {
     console.log('Edit team:', team);
-    // Armazenar o time selecionado para edição
     this.selectedTeam = team;
-
-    // Abrir o modal de edição
     const modal = document.getElementById('my_modal_1') as HTMLDialogElement;
     modal?.showModal();
   }
@@ -179,7 +183,10 @@ export class TeamsListComponent {
 
   navigateToCreateTeam(): void {
     console.log('Create new team');
-    // Abrir modal de criação de time
+    // Limpar o time selecionado para criar um novo
+    this.selectedTeam = null;
+
+    // Abrir o modal de criação
     const modal = document.getElementById('my_modal_1') as HTMLDialogElement;
     modal?.showModal();
   }

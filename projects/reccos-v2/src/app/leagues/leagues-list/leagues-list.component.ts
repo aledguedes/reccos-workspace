@@ -145,13 +145,12 @@ export class LeaguesListComponent {
   }
 
   onViewLeague(league: ILeague): void {
-    console.log('View league:', league);
-    // Implement navigation to league details
+    this.router.navigate(['/leagues', league.id]);
   }
 
   onEditLeague(league: ILeague): void {
-    console.log('Edit league:', league);
-    // Armazenar a liga selecionada para edição
+    console.log('Edit team:', league);
+    // Armazenar o time selecionado para edição
     this.selectedLeague = league;
 
     // Abrir o modal de edição
@@ -160,8 +159,12 @@ export class LeaguesListComponent {
   }
 
   onDeleteLeague(league: ILeague): void {
-    console.log('Delete league:', league);
-    // Implement league deletion logic
+    const index = this.leagues.findIndex(l => l.id === league.id);
+    if (index !== -1) {
+      this.leagues.splice(index, 1);
+      this.filteredLeagues = [...this.leagues];
+      this.toastService.show('Liga removida com sucesso!');
+    }
   }
 
   onSortLeagues(event: { field: string; direction: 'asc' | 'desc' }): void {

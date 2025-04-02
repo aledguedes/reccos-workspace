@@ -32,57 +32,53 @@ export class LeagueFormComponent implements OnInit, OnChanges {
   submitted = false;
 
   constructor(private fb: FormBuilder) {}
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['league'] && changes['league'].currentValue) {
-      this.initForm();
-    }
-  }
 
   ngOnInit() {
     this.initForm();
     // Inicializar o formulário com os dados da liga quando estiver no modo de edição
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['league'] && changes['league'].currentValue) {
+      this.initForm();
+    }
+  }
+
   initForm() {
     this.leagueForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3)]],
-      description: [''],
-      location: ['', Validators.required],
-      status: ['', Validators.required],
+      name: [
+        this.league?.name || '',
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(100),
+        ],
+      ],
+      description: [this.league?.description || '', Validators.maxLength(500)],
+      location: [this.league?.location || '', Validators.required],
+      status: [this.league?.status || 'active', Validators.required],
     });
-    if (this.league) {
-      console.log('ON INIT FORM', this.league);
-
-      // Garantir que temos valores válidos para cada campo
-      const name = this.league.name || '';
-      const description = this.league.description || '';
-      const location = this.league.location || '';
-
-      // Mapear o status da liga para os valores do formulário
-      let formStatus = 'active'; // Valor padrão válido caso não corresponda a nenhum dos casos
-
-      // Atualizar o formulário com os valores da liga
-      this.leagueForm.patchValue({
-        name: name,
-        description: description,
-        location: location,
-        status: formStatus,
-      });
-    }
   }
 
   onSubmit() {
-    this.submitted = true;
-
-    if (this.leagueForm.valid) {
-      this.save.emit(this.leagueForm.value);
-      this.leagueForm.reset();
-      this.closeModal();
+    if (this.leagueForm.invalid) {
+      // Marcar todos os campos como touched para mostrar erros
+      Object.keys(this.leagueForm.controls).forEach(key => {
+        const control = this.leagueForm.get(key);
+        control?.markAsTouched();
+      });
+      return;
     }
+
+    this.submitted = true;
+    this.save.emit(this.leagueForm.value);
+    this.closeModal();
   }
 
   private closeModal() {
-    const modal = document.getElementById('my_modal_1') as HTMLDialogElement;
+    const modal = document.getElementById(
+      'my_modal_teams'
+    ) as HTMLDialogElement;
     modal?.close();
   }
 
