@@ -1,0 +1,15 @@
+// Estilos específicos para o formulário de times
+// A maioria dos estilos vem do Tailwind e DaisyUI
+
+.form-control {
+  margin-bottom: 0.5rem;
+}
+
+// Estilo para o preview da imagem
+.logo-preview {
+  transition: all 0.3s ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}

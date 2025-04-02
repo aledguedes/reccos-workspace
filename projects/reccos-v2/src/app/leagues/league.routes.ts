@@ -13,7 +13,11 @@ export const LEAGUE_ROUTES: Routes = [
         component: LeaguesListComponent,
       },
       {
-        path: 'create',
+        path: 'new',
+        component: LeagueFormComponent,
+      },
+      {
+        path: ':id/edit',
         component: LeagueFormComponent,
       },
     ],

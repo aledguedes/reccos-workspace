@@ -9,7 +9,6 @@ import { ILeague } from '../../core/models/league.model';
 import { GridViewComponent } from '../../shared/components/grid-view/grid-view.component';
 import { LeagueFormComponent } from '../league-form/league-form.component';
 import { ToastService } from '../../shared/services/toast.service';
-import { ToastComponent } from '../../shared/components/toast/toast.component';
 
 // Definindo o tipo para os layouts
 type ViewLayout = 'grid' | 'list' | 'table';
@@ -29,7 +28,6 @@ export interface ILayout {
     DataTableComponent,
     GridViewComponent,
     LeagueFormComponent,
-    ToastComponent,
   ],
   templateUrl: './leagues-list.component.html',
   styleUrl: './leagues-list.component.scss',
@@ -147,13 +145,12 @@ export class LeaguesListComponent {
   }
 
   onViewLeague(league: ILeague): void {
-    console.log('View league:', league);
-    // Implement navigation to league details
+    this.router.navigate(['/leagues', league.id]);
   }
 
   onEditLeague(league: ILeague): void {
-    console.log('Edit league:', league);
-    // Armazenar a liga selecionada para edição
+    console.log('Edit team:', league);
+    // Armazenar o time selecionado para edição
     this.selectedLeague = league;
 
     // Abrir o modal de edição
@@ -162,8 +159,12 @@ export class LeaguesListComponent {
   }
 
   onDeleteLeague(league: ILeague): void {
-    console.log('Delete league:', league);
-    // Implement league deletion logic
+    const index = this.leagues.findIndex(l => l.id === league.id);
+    if (index !== -1) {
+      this.leagues.splice(index, 1);
+      this.filteredLeagues = [...this.leagues];
+      this.toastService.show('Liga removida com sucesso!');
+    }
   }
 
   onSortLeagues(event: { field: string; direction: 'asc' | 'desc' }): void {

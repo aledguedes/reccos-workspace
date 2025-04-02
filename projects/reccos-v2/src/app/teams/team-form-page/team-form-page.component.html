@@ -1,0 +1,21 @@
+<div class="p-0 sm:p-6">
+  <!-- Header com botão de voltar -->
+  <div class="flex items-center mb-6">
+    <button
+      class="btn btn-ghost mr-4"
+      (click)="onCancelTeam()"
+      aria-label="Voltar para a lista de times"
+    >
+      <i class="ri-arrow-left-line text-xl"></i>
+    </button>
+  </div>
+
+  <!-- Conteúdo principal -->
+  <div class="max-w-4xl mx-auto">
+    <app-team-form
+      [team]="selectedTeam"
+      (save)="onSaveTeam($event)"
+      (cancel)="onCancelTeam()"
+    ></app-team-form>
+  </div>
+</div>
