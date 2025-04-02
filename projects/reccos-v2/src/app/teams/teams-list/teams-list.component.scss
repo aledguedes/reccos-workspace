@@ -1,0 +1,31 @@
+/* Estilos específicos para a listagem de times */
+
+/* Estilo para o card de time no modo grid */
+:host ::ng-deep app-grid-view {
+  .card {
+    transition:
+      transform 0.2s ease-in-out,
+      box-shadow 0.2s ease-in-out;
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow:
+        0 10px 15px -3px rgba(0, 0, 0, 0.1),
+        0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+  }
+}
+
+/* Estilo para a tabela de times */
+:host ::ng-deep app-data-table {
+  .team-logo {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .team-name {
+    font-weight: 500;
+  }
+}

@@ -9,7 +9,6 @@ import { ILeague } from '../../core/models/league.model';
 import { GridViewComponent } from '../../shared/components/grid-view/grid-view.component';
 import { LeagueFormComponent } from '../league-form/league-form.component';
 import { ToastService } from '../../shared/services/toast.service';
-import { ToastComponent } from '../../shared/components/toast/toast.component';
 
 // Definindo o tipo para os layouts
 type ViewLayout = 'grid' | 'list' | 'table';
@@ -29,7 +28,6 @@ export interface ILayout {
     DataTableComponent,
     GridViewComponent,
     LeagueFormComponent,
-    ToastComponent,
   ],
   templateUrl: './leagues-list.component.html',
   styleUrl: './leagues-list.component.scss',

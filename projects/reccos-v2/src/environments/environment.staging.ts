@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8080/api',
-  appName: 'Reccos - Desenvolvimento',
+  apiUrl: 'https://localhost:8080/api',
+  appName: 'Reccos - Staging',
   version: '2.0.0',
   debugMode: true,
   authConfig: {
