@@ -102,7 +102,10 @@ export class MainLayoutComponent implements OnInit {
 
   // Método para atualizar os links contextuais com base na rota atual
   updateContextualLinks(path: string): void {
-    if (path.includes('leagues')) {
+    if (path.includes('leagues/new')) {
+      this.currentPageTitle = 'Nova Liga';
+      this.navbarLinks = [];
+    } else if (path.includes('leagues')) {
       this.currentPageTitle = 'Gerenciamento de Ligas';
       this.navbarLinks = [
         { name: 'Times', path: '/leagues/teams' },

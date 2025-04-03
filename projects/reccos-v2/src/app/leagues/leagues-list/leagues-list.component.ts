@@ -7,7 +7,6 @@ import {
 } from '../../shared/components/data-table/data-table.component';
 import { ILeague } from '../../core/models/league.model';
 import { GridViewComponent } from '../../shared/components/grid-view/grid-view.component';
-import { LeagueFormComponent } from '../league-form/league-form.component';
 import { ToastService } from '../../shared/services/toast.service';
 
 // Definindo o tipo para os layouts
@@ -22,13 +21,7 @@ export interface ILayout {
 @Component({
   selector: 'app-leagues-list',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterModule,
-    DataTableComponent,
-    GridViewComponent,
-    LeagueFormComponent,
-  ],
+  imports: [CommonModule, RouterModule, DataTableComponent, GridViewComponent],
   templateUrl: './leagues-list.component.html',
   styleUrl: './leagues-list.component.scss',
 })
@@ -149,13 +142,7 @@ export class LeaguesListComponent {
   }
 
   onEditLeague(league: ILeague): void {
-    console.log('Edit team:', league);
-    // Armazenar o time selecionado para edição
-    this.selectedLeague = league;
-
-    // Abrir o modal de edição
-    const modal = document.getElementById('my_modal_1') as HTMLDialogElement;
-    modal?.showModal();
+    this.router.navigate(['/leagues', league.id, 'edit']);
   }
 
   onDeleteLeague(league: ILeague): void {
@@ -177,13 +164,8 @@ export class LeaguesListComponent {
     // Implement pagination logic
   }
 
-  navigateToCreateLeague(): void {
-    console.log('Create new league');
-    // Abrir modal de criação de liga
-    const modal = document.getElementById(
-      'create-league-modal'
-    ) as HTMLDialogElement;
-    modal?.showModal();
+  navigateToNewLeague(): void {
+    this.router.navigate(['/leagues/new']);
   }
 
   setLayout(layout: ViewLayout): void {

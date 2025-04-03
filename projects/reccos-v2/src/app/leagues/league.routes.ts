@@ -11,14 +11,17 @@ export const LEAGUE_ROUTES: Routes = [
       {
         path: '',
         component: LeaguesListComponent,
+        title: 'Ligas',
       },
       {
         path: 'new',
         component: LeagueFormComponent,
+        title: 'Nova Liga',
       },
       {
         path: ':id/edit',
         component: LeagueFormComponent,
+        title: 'Editar Liga',
       },
     ],
   },

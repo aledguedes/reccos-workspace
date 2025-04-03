@@ -45,21 +45,12 @@
 
       <!-- Add button -->
       <button
-        onclick="my_modal_1.showModal()"
+        (click)="navigateToNewLeague()"
         class="btn btn-primary flex items-center gap-2"
         aria-label="Criar nova liga"
       >
         <i class="ri-add-line"></i> Nova Liga
       </button>
-      <dialog id="my_modal_1" class="modal">
-        <div class="modal-box w-full max-w-3xl">
-          <app-league-form
-            [league]="selectedLeague"
-            (save)="onSaveLeague($event)"
-            (cancel)="onCancelLeague()"
-          />
-        </div>
-      </dialog>
     </div>
   </div>
 
