@@ -9,6 +9,9 @@ export interface ILeague {
   status: 'active' | 'archived' | 'canceled';
   description?: string;
   location?: string;
+  createdAt: string;
+  registeredTeams: number;
+  logo: string;
 }
 
 export interface ILeagueCard {

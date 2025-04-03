@@ -1,15 +1,4 @@
-<div class="container mx-auto px-4 py-8 max-w-4xl">
-  <div class="mb-6">
-    <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-primary">
-      {{ league ? 'Editar Liga' : 'Nova Liga' }}
-    </h2>
-    <p
-      class="text-xs sm:text-sm md:text-base lg:text-lg text-muted-foreground mt-2 max-w-prose break-words whitespace-normal"
-    >
-      Configure as informações básicas da sua nova liga de futebol.
-    </p>
-  </div>
-
+<div class="container mx-auto max-w-4xl">
   <div class="glass-panel" rounded-xl p-6 md:p-8 subtle-shadow>
     <form
       [formGroup]="leagueForm"

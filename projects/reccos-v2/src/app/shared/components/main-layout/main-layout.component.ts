@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { ToastComponent } from '../toast/toast.component';
@@ -89,14 +89,23 @@ export class MainLayoutComponent implements OnInit {
 
   // Título da página atual
   currentPageTitle = '';
+  currentPageDescription: string = '';
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     // Only access window object in browser environment
     if (isPlatformBrowser(this.platformId)) {
       // Detectar a rota atual e atualizar os links contextuais e o título
       this.updateContextualLinks(window.location.pathname);
+
+      // Escutar mudanças de rota
+      this.router.events.subscribe(() => {
+        this.updateContextualLinks(window.location.pathname);
+      });
     }
   }
 
@@ -104,9 +113,12 @@ export class MainLayoutComponent implements OnInit {
   updateContextualLinks(path: string): void {
     if (path.includes('leagues/new')) {
       this.currentPageTitle = 'Nova Liga';
+      this.currentPageDescription = 'Crie uma nova liga para suas competições';
       this.navbarLinks = [];
     } else if (path.includes('leagues')) {
       this.currentPageTitle = 'Gerenciamento de Ligas';
+      this.currentPageDescription =
+        'Gerencie suas ligas esportivas e suas competições';
       this.navbarLinks = [
         { name: 'Times', path: '/leagues/teams' },
         { name: 'Jogadores', path: '/leagues/players' },
@@ -114,18 +126,23 @@ export class MainLayoutComponent implements OnInit {
       ];
     } else if (path.includes('federations')) {
       this.currentPageTitle = 'Gerenciamento de Federações';
+      this.currentPageDescription =
+        'Gerencie suas federações esportivas e suas competições';
       this.navbarLinks = [
         { name: 'Ligas', path: '/federations/leagues' },
         { name: 'Membros', path: '/federations/members' },
       ];
     } else if (path.includes('teams')) {
       this.currentPageTitle = 'Gerenciamento de Times';
+      this.currentPageDescription = 'Gerencie seus times e suas competições';
       this.navbarLinks = [
         { name: 'Jogadores', path: '/teams/players' },
         { name: 'Estatísticas', path: '/teams/statistics' },
       ];
     } else if (path.includes('players')) {
       this.currentPageTitle = 'Gerenciamento de Jogadores';
+      this.currentPageDescription =
+        'Gerencie seus jogadores e suas competições';
       this.navbarLinks = [
         { name: 'Perfil', path: '/players/profile' },
         { name: 'Estatísticas', path: '/players/statistics' },

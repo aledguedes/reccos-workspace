@@ -1,7 +1,7 @@
 <nav
-  class="flex items-center justify-between h-16 px-4 sm:px-6 border-b border-gray-200 bg-white/80 backdrop-blur sticky top-0 z-40 dark:bg-gray-800/80 dark:border-gray-700"
+  class="flex items-center justify-between h-20 px-4 sm:px-6 py-2 border-b border-gray-200 bg-white/80 backdrop-blur sticky top-0 z-40 dark:bg-gray-800/80 dark:border-gray-700"
 >
-  <div class="flex items-center gap-2 sm:gap-3">
+  <div class="flex flex-col items-start gap-1 sm:gap-1.5">
     <button
       class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 md:hidden"
       id="toggleSidebar"
@@ -9,7 +9,12 @@
     >
       <i class="ri-layout-left-line" style="width: 20px; height: 20px"></i>
     </button>
-    <h1 class="text-lg font-medium hidden sm:block">{{ currentPageTitle }}</h1>
+    <h1 class="text-2xl font-semibold text-base-content hidden sm:block">
+      {{ currentPageTitle }}
+    </h1>
+    <p class="text-sm text-gray-600 dark:text-gray-300">
+      {{ currentPageDescription }}
+    </p>
   </div>
 
   <div class="flex items-center gap-2 sm:gap-4 md:gap-6">
