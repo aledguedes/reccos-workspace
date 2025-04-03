@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 export class NavbarComponent {
   // Inputs para receber dados do componente pai
   @Input() currentPageTitle = '';
+  @Input() currentPageDescription = '';
   @Input() navbarLinks: { name: string; path: string }[] = [];
   @Input() isSidebarOpen = false;
 

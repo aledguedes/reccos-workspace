@@ -7,11 +7,11 @@ import {
 } from '../../shared/components/data-table/data-table.component';
 import { ILeague } from '../../core/models/league.model';
 import { GridViewComponent } from '../../shared/components/grid-view/grid-view.component';
-import { LeagueFormComponent } from '../league-form/league-form.component';
 import { ToastService } from '../../shared/services/toast.service';
+import { CardViewComponent } from '../../shared/components/card-view/card-view.component';
 
 // Definindo o tipo para os layouts
-type ViewLayout = 'grid' | 'list' | 'table';
+type ViewLayout = 'grid' | 'cards' | 'table';
 
 export interface ILayout {
   value: ViewLayout;
@@ -27,7 +27,7 @@ export interface ILayout {
     RouterModule,
     DataTableComponent,
     GridViewComponent,
-    LeagueFormComponent,
+    CardViewComponent,
   ],
   templateUrl: './leagues-list.component.html',
   styleUrl: './leagues-list.component.scss',
@@ -47,6 +47,9 @@ export class LeaguesListComponent {
       description:
         'Principal campeonato de futebol da Inglaterra, disputado por 20 clubes.',
       location: 'Inglaterra',
+      createdAt: '2023-06-01',
+      registeredTeams: 20,
+      logo: 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp',
     },
     {
       id: 2,
@@ -60,6 +63,9 @@ export class LeaguesListComponent {
       description:
         'Campeonato Espanhol de Futebol, organizado pela Liga Nacional de Fútbol Profesional.',
       location: 'Espanha',
+      createdAt: '2023-05-15',
+      registeredTeams: 20,
+      logo: 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp',
     },
     {
       id: 3,
@@ -73,6 +79,9 @@ export class LeaguesListComponent {
       description:
         'Principal campeonato de futebol da Alemanha, disputado por 18 clubes.',
       location: 'Alemanha',
+      createdAt: '2023-04-20',
+      registeredTeams: 18,
+      logo: 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp',
     },
     {
       id: 4,
@@ -86,6 +95,9 @@ export class LeaguesListComponent {
       description:
         'Campeonato Italiano de Futebol, organizado pela Lega Serie A.',
       location: 'Itália',
+      createdAt: '2023-03-10',
+      registeredTeams: 20,
+      logo: 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp',
     },
     {
       id: 5,
@@ -99,6 +111,9 @@ export class LeaguesListComponent {
       description:
         'Principal campeonato de futebol da França, disputado por 18 clubes.',
       location: 'França',
+      createdAt: '2023-02-28',
+      registeredTeams: 18,
+      logo: 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp',
     },
   ];
 
@@ -116,6 +131,7 @@ export class LeaguesListComponent {
   layouts: ILayout[] = [
     { value: 'grid', label: 'Grid View', icon: 'ri-layout-grid-line' },
     { value: 'table', label: 'Table View', icon: 'ri-table-line' },
+    { value: 'cards', label: 'Card View', icon: 'ri-layout-card-line' },
   ];
 
   currentLayout = signal<ViewLayout>('table');
@@ -135,7 +151,6 @@ export class LeaguesListComponent {
     private router: Router,
     private toastService: ToastService
   ) {
-    // Initialize filteredLeagues with all leagues
     this.filteredLeagues = [...this.leagues];
 
     // Simulate loading delay
@@ -149,13 +164,7 @@ export class LeaguesListComponent {
   }
 
   onEditLeague(league: ILeague): void {
-    console.log('Edit team:', league);
-    // Armazenar o time selecionado para edição
-    this.selectedLeague = league;
-
-    // Abrir o modal de edição
-    const modal = document.getElementById('my_modal_1') as HTMLDialogElement;
-    modal?.showModal();
+    this.router.navigate(['/leagues', league.id, 'edit']);
   }
 
   onDeleteLeague(league: ILeague): void {
@@ -177,13 +186,8 @@ export class LeaguesListComponent {
     // Implement pagination logic
   }
 
-  navigateToCreateLeague(): void {
-    console.log('Create new league');
-    // Abrir modal de criação de liga
-    const modal = document.getElementById(
-      'create-league-modal'
-    ) as HTMLDialogElement;
-    modal?.showModal();
+  navigateToNewLeague(): void {
+    this.router.navigate(['/leagues/new']);
   }
 
   setLayout(layout: ViewLayout): void {
@@ -231,6 +235,8 @@ export class LeaguesListComponent {
             season: leagueData.season || this.selectedLeague.season,
             startDate: leagueData.startDate || this.selectedLeague.startDate,
             endDate: leagueData.endDate || this.selectedLeague.endDate,
+            createdAt: this.selectedLeague.createdAt,
+            registeredTeams: this.selectedLeague.registeredTeams,
           };
           console.log('League updated:', this.leagues[index]);
 
@@ -253,6 +259,9 @@ export class LeaguesListComponent {
           matchesCount: 0,
           description: leagueData.description,
           location: leagueData.location,
+          createdAt: new Date().toISOString().split('T')[0],
+          registeredTeams: 0,
+          logo: '',
         };
 
         this.leagues.push(newLeague);

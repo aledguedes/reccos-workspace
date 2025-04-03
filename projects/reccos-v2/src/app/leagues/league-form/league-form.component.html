@@ -1,164 +1,165 @@
-<div class="mb-1">
-  <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-primary">
-    {{ league ? 'Editar Liga' : 'Nova Liga' }}
-  </h2>
-  <p
-    class="text-xs sm:text-sm md:text-base lg:text-lg text-muted-foreground mt-2 max-w-prose break-words whitespace-normal"
-  >
-    Configure as informações básicas da sua nova liga de futebol.
-  </p>
-</div>
-
-<div class="glass-panel" rounded-xl p-4 md:p-8 subtle-shadow>
-  <form
-    [formGroup]="leagueForm"
-    (ngSubmit)="onSubmit()"
-    class="space-y-4 md:space-y-6 p-0 md:p-6"
-  >
-    <!-- Name Field -->
-    <div class="form-control">
-      <label class="label">
-        <span
-          class="label-text text-xs sm:text-sm md:text-base font-bold text-gray-700 mb-1"
-          >Nome da Liga</span
-        >
-      </label>
-      <input
-        type="text"
-        placeholder="Digite o nome da liga"
-        class="input input-bordered w-full"
-        [class.input-error]="submitted && leagueForm.get('name')?.invalid"
-        formControlName="name"
-      />
-      @if (submitted && leagueForm.get('name')?.invalid) {
-        <div class="text-error text-xs sm:text-sm md:text-base mt-1">
-          @if (leagueForm.get('name')?.errors?.['required']) {
-            <span>Nome é obrigatório</span>
-          }
-          @if (leagueForm.get('name')?.errors?.['minlength']) {
-            <span>Nome deve ter pelo menos 3 caracteres</span>
-          }
-        </div>
-      } @else {
-        <label class="label">
-          <span
-            class="label-text-alt text-muted-foreground text-xs sm:text-sm md:text-base break-words whitespace-normal max-w-prose"
-          >
-            Este será o nome principal da sua liga de futebol.
-          </span>
-        </label>
-      }
-    </div>
-
-    <!-- Description Field -->
-    <div class="form-control">
-      <label
-        class="block text-xs sm:text-sm md:text-base font-bold text-gray-700 mb-1"
-        >Descrição</label
-      >
-      <textarea
-        class="textarea textarea-bordered h-24 w-full"
-        placeholder="Digite uma descrição para a liga"
-        formControlName="description"
-      ></textarea>
-      <label class="label">
-        <span
-          class="label-text-alt text-muted-foreground text-xs sm:text-sm md:text-base break-words whitespace-normal max-w-prose"
-        >
-          Uma breve descrição sobre a liga e seu propósito.
-        </span>
-      </label>
-    </div>
-
-    <!-- Campos Localização e Status -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <!-- Localização -->
+<div class="container mx-auto max-w-4xl">
+  <div class="glass-panel" rounded-xl p-6 md:p-8 subtle-shadow>
+    <form
+      [formGroup]="leagueForm"
+      (ngSubmit)="onSubmit()"
+      class="space-y-4 md:space-y-6 p-0 md:p-6"
+    >
+      <!-- Name Field -->
       <div class="form-control">
         <label class="label">
           <span
             class="label-text text-xs sm:text-sm md:text-base font-bold text-gray-700 mb-1"
-            >Localização</span
+            >Nome da Liga</span
           >
         </label>
-        <div class="flex items-center">
-          <!-- <i class="ri-map-pin-line mr-2 h-4 w-4 text-base-300"></i> -->
-          <input
-            type="text"
-            placeholder="Ex: São Paulo, SP"
-            class="input input-bordered w-full"
-            formControlName="location"
-            [ngClass]="{
-              'input-error': submitted && leagueForm.get('location')?.invalid,
-            }"
-          />
-        </div>
-        @if (submitted && leagueForm.get('location')?.invalid) {
-          <span class="text-error text-xs sm:text-sm md:text-base">
-            A localização é obrigatória.
-          </span>
+        <input
+          type="text"
+          placeholder="Digite o nome da liga"
+          class="input input-bordered w-full"
+          [class.input-error]="submitted && leagueForm.get('name')?.invalid"
+          formControlName="name"
+        />
+        @if (submitted && leagueForm.get('name')?.invalid) {
+          <div class="text-error text-xs sm:text-sm md:text-base mt-1">
+            @if (leagueForm.get('name')?.errors?.['required']) {
+              <span>Nome é obrigatório</span>
+            }
+            @if (leagueForm.get('name')?.errors?.['minlength']) {
+              <span>Nome deve ter pelo menos 3 caracteres</span>
+            }
+          </div>
         } @else {
           <label class="label">
             <span
               class="label-text-alt text-muted-foreground text-xs sm:text-sm md:text-base break-words whitespace-normal max-w-prose"
             >
-              Onde a liga será realizada.
+              Este será o nome principal da sua liga de futebol.
             </span>
           </label>
         }
       </div>
 
-      <!-- Status -->
+      <!-- Description Field -->
       <div class="form-control">
+        <label
+          class="block text-xs sm:text-sm md:text-base font-bold text-gray-700 mb-1"
+          >Descrição</label
+        >
+        <textarea
+          class="textarea textarea-bordered h-24 w-full"
+          placeholder="Digite uma descrição para a liga"
+          formControlName="description"
+        ></textarea>
         <label class="label">
           <span
-            class="label-text text-xs sm:text-sm md:text-base font-semibold text-gray-700 mb-1"
-            >Status da Liga</span
+            class="label-text-alt text-muted-foreground text-xs sm:text-sm md:text-base break-words whitespace-normal max-w-prose"
           >
+            Uma breve descrição sobre a liga e seu propósito.
+          </span>
         </label>
-        <select
-          class="select select-bordered w-full"
-          formControlName="status"
-          [ngClass]="{
-            'input-error': submitted && leagueForm.get('status')?.invalid,
-          }"
-        >
-          <option value="" disabled selected>Selecione o status</option>
-          <option value="active">Ativa</option>
-          <option value="canceled">Cancelada</option>
-          <option value="archived">Arquivada</option>
-        </select>
-        @if (submitted && leagueForm.get('status')?.invalid) {
-          <span class="text-error text-xs sm:text-sm md:text-base"
-            >O status é obrigatório.</span
-          >
-        } @else {
+      </div>
+
+      <!-- Campos Localização e Status -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Localização -->
+        <div class="form-control">
           <label class="label">
             <span
-              class="label-text-alt text-muted-foreground text-xs sm:text-sm md:text-base break-words whitespace-normal max-w-prose"
+              class="label-text text-xs sm:text-sm md:text-base font-bold text-gray-700 mb-1"
+              >Localização</span
             >
-              Status atual da liga.
-            </span>
           </label>
-        }
-      </div>
-    </div>
+          <div class="flex items-center">
+            <!-- <i class="ri-map-pin-line mr-2 h-4 w-4 text-base-300"></i> -->
+            <input
+              type="text"
+              placeholder="Ex: São Paulo, SP"
+              class="input input-bordered w-full"
+              formControlName="location"
+              [ngClass]="{
+                'input-error': submitted && leagueForm.get('location')?.invalid,
+              }"
+            />
+          </div>
+          @if (submitted && leagueForm.get('location')?.invalid) {
+            <span class="text-error text-xs sm:text-sm md:text-base">
+              A localização é obrigatória.
+            </span>
+          } @else {
+            <label class="label">
+              <span
+                class="label-text-alt text-muted-foreground text-xs sm:text-sm md:text-base break-words whitespace-normal max-w-prose"
+              >
+                Onde a liga será realizada.
+              </span>
+            </label>
+          }
+        </div>
 
-    <!-- Form Actions -->
-    <div class="card-actions justify-end mt-6">
-      <button
-        type="button"
-        class="btn btn-ghost text-xs sm:text-sm md:text-base px-2 sm:px-3 md:px-4"
-        (click)="onCancel()"
-      >
-        Cancelar
-      </button>
-      <button
-        type="submit"
-        class="btn btn-primary gap-2 text-xs sm:text-sm md:text-base px-2 sm:px-3 md:px-4"
-      >
-        <i class="ri-save-line"></i>
-        Salvar
-      </button>
-    </div>
-  </form>
+        <!-- Status -->
+        <div class="form-control">
+          <label class="label">
+            <span
+              class="label-text text-xs sm:text-sm md:text-base font-semibold text-gray-700 mb-1"
+              >Status da Liga</span
+            >
+          </label>
+          <select
+            class="select select-bordered w-full"
+            formControlName="status"
+            [ngClass]="{
+              'input-error': submitted && leagueForm.get('status')?.invalid,
+            }"
+          >
+            <option value="" disabled selected>Selecione o status</option>
+            <option value="active">Ativa</option>
+            <option value="canceled">Cancelada</option>
+            <option value="archived">Arquivada</option>
+          </select>
+          @if (submitted && leagueForm.get('status')?.invalid) {
+            <span class="text-error text-xs sm:text-sm md:text-base"
+              >O status é obrigatório.</span
+            >
+          } @else {
+            <label class="label">
+              <span
+                class="label-text-alt text-muted-foreground text-xs sm:text-sm md:text-base break-words whitespace-normal max-w-prose"
+              >
+                Status atual da liga.
+              </span>
+            </label>
+          }
+        </div>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="card-actions justify-between mt-8">
+        <button
+          type="button"
+          class="btn btn-ghost text-xs sm:text-sm md:text-base px-2 sm:px-3 md:px-4"
+          (click)="onCancel()"
+        >
+          <i class="ri-arrow-left-line mr-2"></i>
+          Voltar
+        </button>
+        <div>
+          <button
+            type="button"
+            class="btn btn-ghost text-xs sm:text-sm md:text-base px-2 sm:px-3 md:px-4 mr-2"
+            (click)="onCancel()"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary gap-2 text-xs sm:text-sm md:text-base px-2 sm:px-3 md:px-4"
+          >
+            <i class="ri-save-line"></i>
+            Salvar
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
