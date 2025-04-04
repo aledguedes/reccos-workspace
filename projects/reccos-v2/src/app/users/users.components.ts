@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
-  selector: 'app-teams',
+  selector: 'app-users',
   standalone: true,
   imports: [RouterOutlet],
-  template: `<router-outlet />`,
+  template: `<router-outlet></router-outlet>`,
 })
-export class TeamsComponent {}
+export class UsersComponent {}

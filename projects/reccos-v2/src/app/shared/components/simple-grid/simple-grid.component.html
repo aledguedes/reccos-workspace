@@ -1,0 +1,83 @@
+<div
+  class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+>
+  @if (users.length === 0) {
+    <div class="col-span-full text-center py-10">No users found.</div>
+  }
+
+  @for (user of users; track user.id) {
+    <div
+      class="card overflow-hidden flex flex-col shadow-sm hover:shadow-md transition-shadow"
+    >
+      <div class="aspect-[4/3] relative bg-gray-300 w-full">
+        @if (user.avatar) {
+          <img
+            [src]="user.avatar"
+            [alt]="user.name"
+            class="h-full w-full object-cover"
+          />
+        }
+        @if (!user.avatar) {
+          <div
+            class="h-full w-full flex items-center justify-center bg-gray-300"
+          >
+            <div class="text-5xl font-bold text-gray-400">
+              {{ user.name.charAt(0) }}
+            </div>
+          </div>
+        }
+        <span
+          class="badge {{
+            getRoleBadgeColor(user.role)
+          }} text-white absolute top-2 right-2 border-0"
+        >
+          {{ user.role }}
+        </span>
+      </div>
+
+      <div class="p-4 flex-1 space-y-2 bg-white">
+        <h3 class="font-semibold line-clamp-1">{{ user.name }}</h3>
+        <p class="text-sm text-base-content/70 line-clamp-1">
+          {{ user.email }}
+        </p>
+        <p class="text-sm line-clamp-1">
+          <span class="text-base-content/70">Federation: </span>
+          {{ user.federation.name }}
+        </p>
+      </div>
+
+      <div class="p-4 pt-0 flex justify-between items-center bg-white">
+        <span
+          class="badge {{
+            getStatusBadgeVariant(user.status)
+          }} border-0 text-white"
+        >
+          {{ user.status }}
+        </span>
+        <div class="flex gap-1">
+          <a
+            [routerLink]="['/user', user.id]"
+            class="btn btn-ghost btn-square btn-sm"
+            title="View details"
+          >
+            <i class="ri-eye-line"></i>
+          </a>
+          <a
+            [routerLink]="['/user', user.id, 'edit']"
+            class="btn btn-ghost btn-square btn-sm"
+            title="Edit user"
+          >
+            <i class="ri-edit-line"></i>
+          </a>
+          <button
+            class="btn btn-ghost btn-square btn-sm"
+            (click)="handleViewFederation(user.federation.id)"
+            title="View federation"
+          >
+            <i class="ri-building-2-line"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>
