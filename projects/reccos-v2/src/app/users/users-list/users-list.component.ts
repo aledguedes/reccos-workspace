@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { IFederation, IUser } from '../../core/models/user.models';
 import { SimpleGridComponent } from '../../shared/components/simple-grid/simple-grid.component';
+import { CardViewComponent } from '../../shared/components/card-view/card-view.component';
 
 @Component({
   selector: 'app-users-list',
-  imports: [SimpleGridComponent],
+  imports: [SimpleGridComponent, CardViewComponent],
   templateUrl: './users-list.component.html',
   styleUrl: './users-list.component.scss',
 })
