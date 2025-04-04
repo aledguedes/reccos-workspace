@@ -26,6 +26,13 @@ export class MainLayoutComponent implements OnInit {
 
   // Links da sidebar organizados por categorias
   sidebarLinks = [
+    { name: 'Usuários', isHeader: true },
+    {
+      name: 'Usuário',
+      path: '/users',
+      icon: 'user',
+      description: 'Gerenciar usuários do sistema',
+    },
     // Categoria: Competições
     { name: 'Competições', isHeader: true },
     {

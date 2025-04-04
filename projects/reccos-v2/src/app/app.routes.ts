@@ -21,7 +21,12 @@ export const routes: Routes = [
       {
         path: 'teams',
         loadChildren: () =>
-          import('./teams/team.routes').then(mod => mod.TEAM_ROUTES),
+          import('./teams/team.routes').then(r => r.TEAM_ROUTES),
+      },
+      {
+        path: 'users',
+        loadChildren: () =>
+          import('./users/user.routes').then(r => r.USER_ROUTES),
       },
       {
         path: 'federations',
