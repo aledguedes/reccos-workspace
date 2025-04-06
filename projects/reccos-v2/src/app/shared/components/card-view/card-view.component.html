@@ -1,102 +1,120 @@
-<!-- users-list.component.html -->
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
   @if (items.length === 0) {
-    <div class="col-span-full text-center py-10">No users found.</div>
+    <div class="col-span-full text-center py-10">No records found.</div>
   } @else {
-    @for (user of items; track user.id) {
+    @for (item of items; track item.id) {
       <div class="card bg-white overflow-hidden">
         <div class="p-6">
+          <!-- Avatar e nome/email -->
           <div class="flex items-center gap-4">
             <div
-              class="h-12 w-12 rounded-full bg-muted flex items-center justify-center overflow-hidden aspect-square"
+              class="h-12 w-12 rounded-full bg-muted flex-shrink-0 flex items-center justify-center overflow-hidden aspect-square"
             >
-              @if (user.avatar) {
+              @if (item.avatar) {
                 <img
-                  [src]="user.avatar"
-                  [alt]="user.name"
+                  [src]="item.avatar"
+                  [alt]="item.name"
                   class="h-full w-full object-cover rounded-full"
                 />
               } @else {
                 <div
                   class="bg-gray-300 text-2xl font-bold text-muted-foreground rounded-full flex items-center justify-center h-full w-full aspect-square"
                 >
-                  {{ user.name.charAt(0) }}
+                  {{ item.name?.charAt(0) }}
                 </div>
               }
             </div>
-            <div class="flex flex-col w-full">
-              <div class="flex justify-between items-center w-full">
-                <h3 class="font-semibold truncate">{{ user.name }}</h3>
-                <span
-                  [class]="
-                    'badge badge-outline ' + getStatusBadgeVariant(user.status)
-                  "
-                  >{{ user.status }}</span
-                >
-              </div>
+            <div class="flex flex-col flex-1 min-w-0">
+              <h3 class="font-semibold truncate">{{ item.name }}</h3>
               <p class="text-sm text-muted-foreground truncate">
-                {{ user.email }}
+                {{ item.email }}
               </p>
             </div>
           </div>
+
+          <!-- Campos dinâmicos -->
           <div class="mt-4 space-y-2">
-            <div class="flex justify-between">
-              <span class="text-sm text-muted-foreground">Role:</span>
-              <span
-                [class]="
-                  'badge ' + getRoleBadgeColor(user.role) + ' text-white'
-                "
-                >{{ user.role }}</span
-              >
-            </div>
-            <div class="flex justify-between">
-              <span class="text-sm text-muted-foreground">Federation:</span>
-              <span
-                class="text-sm font-medium truncate max-w-[70%] text-right"
-                >{{ user.federation.name }}</span
-              >
-            </div>
-            <div class="flex justify-between">
-              <span class="text-sm text-muted-foreground">Status:</span>
-              <span
-                [class]="
-                  'badge badge-outline ' + getStatusBadgeVariant(user.status)
-                "
-                >{{ user.status }}</span
-              >
-            </div>
+            @for (entry of item | keyvalue: originalOrder; track entry.key) {
+              @if (shouldDisplay(entry.key)) {
+                <div class="flex justify-between">
+                  <span class="text-sm text-muted-foreground capitalize">
+                    {{ entry.key }}:
+                  </span>
+
+                  <!-- Badge para status -->
+                  @if (entry.key === 'status') {
+                    <span
+                      [class]="
+                        'badge badge-outline ' +
+                        getStatusBadgeVariant(entry.value)
+                      "
+                    >
+                      {{ entry.value }}
+                    </span>
+                  }
+
+                  <!-- Badge para role -->
+                  @else if (entry.key === 'role') {
+                    <span
+                      [class]="
+                        'badge ' +
+                        getRoleBadgeColor(entry.value) +
+                        ' text-white'
+                      "
+                    >
+                      {{ entry.value }}
+                    </span>
+                  }
+
+                  <!-- Se for objeto com nome -->
+                  @else if (isObject(entry.value)) {
+                    <span
+                      class="text-sm font-medium truncate max-w-[70%] text-right"
+                    >
+                      {{ entry.value?.name || '[Unnamed]' }}
+                    </span>
+                  }
+
+                  <!-- Valor simples -->
+                  @else {
+                    <span
+                      class="text-sm font-medium truncate max-w-[70%] text-right"
+                    >
+                      {{ entry.value }}
+                    </span>
+                  }
+                </div>
+              }
+            }
           </div>
         </div>
-        <div class="card-footer bg-muted/50 p-4 flex justify-between">
-          <div>
-            <span
-              [class]="
-                'badge badge-outline ' + getStatusBadgeVariant(user.status)
-              "
-              >{{ user.status }}</span
-            >
-          </div>
-          <div class="flex gap-2">
+
+        <!-- Rodapé -->
+        <div class="card-footer bg-muted/50 p-4">
+          <div class="flex justify-between">
             <a
-              [routerLink]="['/user', user.id]"
-              class="btn btn-ghost btn-square btn-sm"
+              [routerLink]="['/', flag, item.id]"
+              class="btn border border-primary text-primary hover:bg-primary/10 flex items-center gap-2 px-3 py-2 rounded-md"
               title="View details"
             >
-              <i class="ri-eye-line"></i>
+              <i class="ri-eye-line text-primary"></i>
+              <span>Visualizar</span>
             </a>
             <a
-              [routerLink]="['/user', user.id, 'edit']"
-              class="btn btn-ghost btn-square btn-sm"
-              title="Edit user"
+              [routerLink]="['/', flag, item.id, 'edit']"
+              class="btn border border-success text-success hover:bg-success/10 flex items-center gap-2 px-3 py-2 rounded-md"
+              title="Edit"
             >
-              <i class="ri-edit-line"></i>
+              <i class="ri-edit-line text-success"></i>
+              <span>Editar</span>
             </a>
             <button
-              class="btn btn-ghost btn-square btn-sm"
-              (click)="handleViewFederation(user.federation.id)"
-              title="View federation"
+              (click)="delete.emit(item)"
+              class="btn border border-error text-error hover:bg-error/10 flex items-center gap-2 px-3 py-2 rounded-md"
+              title="Delete"
             >
-              <i class="ri-building-2-line"></i>
+              <i class="ri-delete-bin-line text-error"></i>
+              <span>Excluir</span>
             </button>
           </div>
         </div>

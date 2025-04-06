@@ -9,7 +9,7 @@ import { RouterLink } from '@angular/router';
   styleUrl: './simple-grid.component.scss',
 })
 export class SimpleGridComponent {
-  @Input() users: IUser[] = [];
+  @Input() items: any[] = [];
   @Input() flag: string = '';
   mappedUsers: IUser[] = [];
 

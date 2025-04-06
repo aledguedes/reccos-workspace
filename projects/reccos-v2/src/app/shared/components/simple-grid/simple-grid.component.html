@@ -1,11 +1,11 @@
 <div
   class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
 >
-  @if (users.length === 0) {
-    <div class="col-span-full text-center py-10">No users found.</div>
+  @if (items.length === 0) {
+    <div class="col-span-full text-center py-10">No items found.</div>
   }
 
-  @for (user of users; track user.id) {
+  @for (user of items; track user.id) {
     <div
       class="card overflow-hidden flex flex-col shadow-sm hover:shadow-md transition-shadow"
     >
