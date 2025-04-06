@@ -1,11 +1,13 @@
+import { KeyValuePipe } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { KeyValue } from '@angular/common';
 
 @Component({
   selector: 'app-card-view',
   templateUrl: './card-view.component.html',
   styleUrls: ['./card-view.component.scss'],
-  imports: [RouterLink], // Adicione o TitleCasePipe ao array de imports do componente
+  imports: [RouterLink, KeyValuePipe], // Adicione o TitleCasePipe ao array de imports do componente
 })
 export class CardViewComponent {
   @Input() items: any[] = [];
@@ -14,9 +16,46 @@ export class CardViewComponent {
   @Output() edit = new EventEmitter<any>();
   @Output() delete = new EventEmitter<any>();
 
+  // Lista de propriedades que não devem ser exibidas na lista de campos dinâmicos
+  private excludedProperties: string[] = [
+    'id',
+    'name',
+    'email',
+    'avatar',
+    'createdAt',
+    'updatedAt',
+    // 'status' removido para permitir exibição na lista de campos dinâmicos
+  ];
+
   constructor() {
     console.log('items', this.items);
   }
+
+  // Método para verificar se uma propriedade deve ser exibida
+  shouldDisplay(key: string): boolean {
+    return !this.excludedProperties.includes(key);
+  }
+
+  // Método para verificar se um valor é um objeto
+  isObject(value: any): boolean {
+    return value !== null && typeof value === 'object' && !Array.isArray(value);
+  }
+
+  // Função de comparação personalizada para ordenar as chaves
+  originalOrder = (
+    a: KeyValue<string, any>,
+    b: KeyValue<string, any>
+  ): number => {
+    // Colocar 'status' por último
+    if (a.key === 'status') return 1;
+    if (b.key === 'status') return -1;
+    // Priorizar 'role' no topo
+    if (a.key === 'role') return -1;
+    if (b.key === 'role') return 1;
+
+    // Ordem alfabética para as demais propriedades
+    return a.key.localeCompare(b.key);
+  };
 
   getRoleBadgeColor(role: string): string {
     switch (role.toLowerCase()) {
