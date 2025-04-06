@@ -5,65 +5,97 @@
     <div class="col-span-full text-center py-10">No items found.</div>
   }
 
-  @for (user of items; track user.id) {
+  @for (item of items; track item.id) {
     <div
       class="card overflow-hidden flex flex-col shadow-sm hover:shadow-md transition-shadow"
     >
       <div class="aspect-[4/3] relative bg-gray-300 w-full">
-        @if (user.avatar) {
+        @if (item.avatar) {
           <img
-            [src]="user.avatar"
-            [alt]="user.name"
+            [src]="item.avatar"
+            [alt]="item.name"
             class="h-full w-full object-cover"
           />
         }
-        @if (!user.avatar) {
+        @if (!item.avatar) {
           <div
             class="h-full w-full flex items-center justify-center bg-gray-300"
           >
             <div class="text-5xl font-bold text-gray-400">
-              {{ user.name.charAt(0) }}
+              {{ item.name.charAt(0) }}
             </div>
           </div>
         }
         <span
           class="badge {{
-            getRoleBadgeColor(user.role)
+            getRoleBadgeColor(item.role)
           }} text-white absolute top-2 right-2 border-0"
         >
-          {{ user.role }}
+          {{ item.role }}
         </span>
       </div>
 
       <div class="p-4 flex-1 space-y-2 bg-white">
-        <h3 class="font-semibold line-clamp-1">{{ user.name }}</h3>
+        <h3 class="font-semibold line-clamp-1">{{ item.name }}</h3>
         <p class="text-sm text-base-content/70 line-clamp-1">
-          {{ user.email }}
+          {{ item.email }}
         </p>
-        <p class="text-sm line-clamp-1">
-          <span class="text-base-content/70">Federation: </span>
-          {{ user.federation.name }}
-        </p>
+        @switch (flag) {
+          @case ('users') {
+            <p class="text-sm line-clamp-1">
+              <span class="text-base-content/70">Federation: </span>
+              {{ item.federation?.name || '[Unnamed]' }}
+            </p>
+          }
+
+          @case ('leagues') {
+            <p class="text-sm line-clamp-1">
+              <span class="text-base-content/70">Federation: </span>
+              {{ item.federation || '[Unnamed]' }}
+            </p>
+          }
+
+          @case ('teams') {
+            <p class="text-sm line-clamp-1">
+              <span class="text-base-content/70">League: </span>
+              {{ item.league || '[Unnamed]' }}
+            </p>
+          }
+
+          @case ('referees') {
+            <p class="text-sm line-clamp-1">
+              <span class="text-base-content/70">League: </span>
+              {{ item.league?.name || '[Unnamed]' }}
+            </p>
+          }
+
+          @case ('players') {
+            <p class="text-sm line-clamp-1">
+              <span class="text-base-content/70">Team: </span>
+              {{ item.team?.name || '[Unnamed]' }}
+            </p>
+          }
+        }
       </div>
 
       <div class="p-4 pt-0 flex justify-between items-center bg-white">
         <span
           class="badge {{
-            getStatusBadgeVariant(user.status)
+            getStatusBadgeVariant(item.status)
           }} border-0 text-white"
         >
-          {{ user.status }}
+          {{ item.status }}
         </span>
         <div class="flex gap-1">
           <a
-            [routerLink]="['/user', user.id]"
+            [routerLink]="['/user', item.id]"
             class="btn btn-ghost btn-square btn-sm"
             title="View details"
           >
             <i class="ri-eye-line"></i>
           </a>
           <a
-            [routerLink]="['/user', user.id, 'edit']"
+            [routerLink]="['/user', item.id, 'edit']"
             class="btn btn-ghost btn-square btn-sm"
             title="Edit user"
           >
@@ -71,7 +103,7 @@
           </a>
           <button
             class="btn btn-ghost btn-square btn-sm"
-            (click)="handleViewFederation(user.federation.id)"
+            (click)="handleViewFederation(item.federation.id)"
             title="View federation"
           >
             <i class="ri-building-2-line"></i>
