@@ -1,11 +1,11 @@
 import { Routes } from '@angular/router';
-import { UsersComponent } from './users.components';
+import { PlayerssComponent } from './players.components';
 import { ListDefaultComponent } from '../shared/components/list-default/list-default.component';
 
-export const USER_ROUTES: Routes = [
+export const PLAYER_ROUTES: Routes = [
   {
     path: '',
-    component: UsersComponent,
+    component: PlayerssComponent,
     children: [
       {
         path: '',

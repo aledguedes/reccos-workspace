@@ -26,13 +26,15 @@
             </div>
           </div>
         }
-        <span
-          class="badge {{
-            getRoleBadgeColor(item.role)
-          }} text-white absolute top-3 right-3 border-0"
-        >
-          {{ item.role }}
-        </span>
+        @if (flag === 'users') {
+          <span
+            class="badge {{
+              getRoleBadgeColor(item.role)
+            }} text-white absolute top-3 right-3 border-0"
+          >
+            {{ item.role }}
+          </span>
+        }
       </div>
 
       <div class="p-4 flex-1 space-y-2 bg-white">
@@ -42,7 +44,7 @@
         </p>
         @if (item.relatedEntity) {
           <p class="text-sm text-base-content/70 line-clamp-1">
-            <strong>{{ item.relatedEntity.type | titlecase }}</strong
+            <strong>{{ item.relatedEntity.label | titlecase }}</strong
             >:
             {{ item.relatedEntity.name }}
           </p>

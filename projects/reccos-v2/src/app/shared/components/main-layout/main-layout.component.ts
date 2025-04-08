@@ -73,7 +73,7 @@ export class MainLayoutComponent implements OnInit {
     { name: 'Operacional', isHeader: true },
     {
       name: 'Árbitros',
-      path: '/referees',
+      path: '/refrees',
       icon: 'user-star',
       description: 'Gestão de árbitros',
     },

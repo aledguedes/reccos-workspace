@@ -29,11 +29,21 @@ export const routes: Routes = [
           import('./users/user.routes').then(r => r.USER_ROUTES),
       },
       {
+        path: 'players',
+        loadChildren: () =>
+          import('./players/player.routes').then(r => r.PLAYER_ROUTES),
+      },
+      {
         path: 'federations',
-        loadComponent: () =>
-          import('./federations/federations.component').then(
-            m => m.FederationsComponent
+        loadChildren: () =>
+          import('./federations/federation.routes').then(
+            r => r.FEDERATION_ROUTES
           ),
+      },
+      {
+        path: 'refrees',
+        loadChildren: () =>
+          import('./refrees/refree.routes').then(r => r.REFREE_ROUTES),
       },
       // Future routes will be added here
     ],

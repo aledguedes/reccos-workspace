@@ -1,11 +1,11 @@
 import { Routes } from '@angular/router';
-import { UsersComponent } from './users.components';
+import { RefreesComponent } from './refrees.component';
 import { ListDefaultComponent } from '../shared/components/list-default/list-default.component';
 
-export const USER_ROUTES: Routes = [
+export const REFREE_ROUTES: Routes = [
   {
     path: '',
-    component: UsersComponent,
+    component: RefreesComponent,
     children: [
       {
         path: '',

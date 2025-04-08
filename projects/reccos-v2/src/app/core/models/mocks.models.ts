@@ -17,6 +17,7 @@ export interface IEntity {
     type: 'federation' | 'league' | 'team' | null; // Tipo da entidade relacionada
     id: number;
     name: string;
+    label: string;
   } | null;
 }
 
@@ -26,9 +27,21 @@ export interface EntityTypeMap {
   teams: IEntity;
   leagues: IEntity;
   players: IEntity;
-  referees: IEntity;
+  refrees: IEntity;
   federations: IEntity;
 }
+
+export const federations: IEntity[] = [
+  {
+    id: 1,
+    name: 'Spanish Football Federation',
+    email: 'contact@spanishfederation.com',
+    role: 'federation',
+    avatar: '',
+    status: 'active',
+    relatedEntity: null, // Federações não têm entidade relacionada
+  },
+];
 
 // Dados mock ajustados
 export const leagues: IEntity[] = [
@@ -43,6 +56,7 @@ export const leagues: IEntity[] = [
       type: 'federation',
       id: 1,
       name: 'Spanish Football Federation',
+      label: 'Federação',
     },
   },
 ];
@@ -55,7 +69,12 @@ export const teams: IEntity[] = [
     role: 'club',
     avatar: '',
     status: 'active',
-    relatedEntity: { type: 'league', id: 1, name: 'La Liga Española' },
+    relatedEntity: {
+      type: 'league',
+      id: 1,
+      name: 'La Liga Española',
+      label: 'Liga',
+    },
   },
   {
     id: 2,
@@ -64,7 +83,12 @@ export const teams: IEntity[] = [
     role: 'club',
     avatar: '',
     status: 'active',
-    relatedEntity: { type: 'league', id: 1, name: 'La Liga Española' },
+    relatedEntity: {
+      type: 'league',
+      id: 1,
+      name: 'La Liga Española',
+      label: 'Liga',
+    },
   },
 ];
 
@@ -76,7 +100,7 @@ export const players: IEntity[] = [
     role: 'forward',
     avatar: '',
     status: 'active',
-    relatedEntity: { type: 'team', id: 1, name: 'Real Madrid' },
+    relatedEntity: { type: 'team', id: 1, name: 'Real Madrid', label: 'Time' },
   },
   {
     id: 2,
@@ -85,11 +109,11 @@ export const players: IEntity[] = [
     role: 'midfielder',
     avatar: '',
     status: 'active',
-    relatedEntity: { type: 'team', id: 2, name: 'FC Barcelona' },
+    relatedEntity: { type: 'team', id: 2, name: 'FC Barcelona', label: 'Time' },
   },
 ];
 
-export const referees: IEntity[] = [
+export const refrees: IEntity[] = [
   {
     id: 1,
     name: 'Antonio Mateu Lahoz',
@@ -97,7 +121,12 @@ export const referees: IEntity[] = [
     role: 'main',
     avatar: '',
     status: 'active',
-    relatedEntity: { type: 'league', id: 1, name: 'La Liga Española' },
+    relatedEntity: {
+      type: 'league',
+      id: 1,
+      name: 'La Liga Española',
+      label: 'Liga',
+    },
   },
   {
     id: 2,
@@ -106,7 +135,12 @@ export const referees: IEntity[] = [
     role: 'assistant',
     avatar: '',
     status: 'retired',
-    relatedEntity: { type: 'league', id: 1, name: 'La Liga Española' },
+    relatedEntity: {
+      type: 'league',
+      id: 1,
+      name: 'La Liga Española',
+      label: 'Liga',
+    },
   },
 ];
 
@@ -122,6 +156,7 @@ export const users: IEntity[] = [
       type: 'federation',
       id: 1,
       name: 'Spanish Football Federation',
+      label: 'Federação',
     },
   },
   {
@@ -135,18 +170,7 @@ export const users: IEntity[] = [
       type: 'federation',
       id: 1,
       name: 'Spanish Football Federation',
+      label: 'Federação',
     },
-  },
-];
-
-export const federations: IEntity[] = [
-  {
-    id: 1,
-    name: 'Spanish Football Federation',
-    email: 'contact@spanishfederation.com',
-    role: 'federation',
-    avatar: '',
-    status: 'active',
-    relatedEntity: null, // Federações não têm entidade relacionada
   },
 ];
