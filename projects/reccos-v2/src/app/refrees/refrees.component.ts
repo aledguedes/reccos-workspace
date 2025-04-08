@@ -2,9 +2,12 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
-  selector: 'app-users',
+  selector: 'app-federations',
   standalone: true,
   imports: [RouterOutlet],
   template: `<router-outlet />`,
+  styles: [],
 })
-export class UsersComponent {}
+export class RefreesComponent {
+  constructor() {}
+}

@@ -11,7 +11,7 @@ import {
   LayoutOption,
   leagues,
   players,
-  referees,
+  refrees,
   teams,
   users,
 } from '../../core/models/mocks.models';
@@ -57,7 +57,7 @@ export class UsersListComponent implements OnInit {
     teams: 'Time',
     leagues: 'Liga',
     players: 'Jogador',
-    referees: 'Árbitro',
+    refrees: 'Árbitro',
     federations: 'Federação',
   };
 
@@ -80,7 +80,7 @@ export class UsersListComponent implements OnInit {
         'teams',
         'leagues',
         'players',
-        'referees',
+        'refrees',
         'federations',
       ];
       if (!validFlags.includes(this.flag)) {
@@ -107,7 +107,7 @@ export class UsersListComponent implements OnInit {
       teams: teams,
       leagues: leagues,
       players: players,
-      referees: referees,
+      refrees: refrees,
       federations: federations,
     };
     const items = dataMap[this.flag] || [];

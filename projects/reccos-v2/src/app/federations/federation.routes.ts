@@ -1,11 +1,11 @@
 import { Routes } from '@angular/router';
-import { UsersComponent } from './users.components';
+import { FederationsComponent } from './federations.component';
 import { ListDefaultComponent } from '../shared/components/list-default/list-default.component';
 
-export const USER_ROUTES: Routes = [
+export const FEDERATION_ROUTES: Routes = [
   {
     path: '',
-    component: UsersComponent,
+    component: FederationsComponent,
     children: [
       {
         path: '',

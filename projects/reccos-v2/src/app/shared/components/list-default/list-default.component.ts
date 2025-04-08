@@ -7,7 +7,7 @@ import {
   LayoutOption,
   leagues,
   players,
-  referees,
+  refrees,
   teams,
   users,
 } from '../../../core/models/mocks.models';
@@ -15,12 +15,18 @@ import { SimpleGridComponent } from '../simple-grid/simple-grid.component';
 import { CardViewComponent } from '../card-view/card-view.component';
 import { TitleCasePipe } from '@angular/common';
 import { Subscription } from 'rxjs';
+import { DataTableComponent } from '../data-table/data-table.component';
 
 type ViewLayout = 'grid' | 'simple' | 'table';
 
 @Component({
   selector: 'app-list-default',
-  imports: [SimpleGridComponent, CardViewComponent, TitleCasePipe],
+  imports: [
+    SimpleGridComponent,
+    CardViewComponent,
+    DataTableComponent,
+    TitleCasePipe,
+  ],
   templateUrl: './list-default.component.html',
   styleUrl: './list-default.component.scss',
 })
@@ -48,7 +54,7 @@ export class ListDefaultComponent {
     teams: 'Time',
     leagues: 'Liga',
     players: 'Jogador',
-    referees: 'Árbitro',
+    refrees: 'Árbitro',
     federations: 'Federação',
   };
 
@@ -143,7 +149,7 @@ export class ListDefaultComponent {
       teams: teams,
       leagues: leagues,
       players: players,
-      referees: referees,
+      refrees: refrees,
       federations: federations,
     };
     const items = dataMap[this.flag] || [];

@@ -7,7 +7,7 @@ import { TitleCasePipe } from '@angular/common';
   selector: 'app-card-view',
   templateUrl: './card-view.component.html',
   styleUrls: ['./card-view.component.scss'],
-  imports: [RouterLink, TitleCasePipe], // Adicione o TitleCasePipe ao array de imports do componente
+  imports: [RouterLink, TitleCasePipe], // Adicione o TitleCasePipe e JsonPipe ao array de imports do componente
 })
 export class CardViewComponent {
   @Input() items: IEntity[] = [];
