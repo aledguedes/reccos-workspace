@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Output, signal } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { ToastService } from '../../services/toast.service';
+import { NavigationEnd, Router } from '@angular/router';
 import {
   EntityTypeMap,
   federations,
@@ -52,13 +51,10 @@ export class ListDefaultComponent {
     referees: 'Árbitro',
     federations: 'Federação',
   };
+
   private routeSubscription!: Subscription;
 
-  constructor(
-    private route: Router,
-    private toastService: ToastService,
-    private activatedRoute: ActivatedRoute
-  ) {}
+  constructor(private route: Router) {}
   ngOnInit(): void {
     // Usar o ActivatedRoute para obter o primeiro segmento da URL
     const updateFlagFromUrl = () => {
