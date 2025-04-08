@@ -1,10 +1,21 @@
-import { Component, EventEmitter, Output, signal } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, signal } from '@angular/core';
 import { IFederation, IUser } from '../../core/models/user.models';
 import { SimpleGridComponent } from '../../shared/components/simple-grid/simple-grid.component';
 import { CardViewComponent } from '../../shared/components/card-view/card-view.component';
-import { IUserMock, usersMock } from '../../core/models/mocks.models';
 import { ToastService } from '../../shared/services/toast.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import {
+  EntityTypeMap,
+  federations,
+  IEntity,
+  LayoutOption,
+  leagues,
+  players,
+  referees,
+  teams,
+  users,
+} from '../../core/models/mocks.models';
+import { TitleCasePipe } from '@angular/common';
 
 type ViewLayout = 'grid' | 'simple' | 'table';
 
@@ -16,34 +27,72 @@ export interface ILayout {
 
 @Component({
   selector: 'app-users-list',
-  imports: [SimpleGridComponent, CardViewComponent],
+  imports: [SimpleGridComponent, CardViewComponent, TitleCasePipe],
   templateUrl: './users-list.component.html',
   styleUrl: './users-list.component.scss',
 })
-export class UsersListComponent {
+export class UsersListComponent implements OnInit {
   @Output() search = new EventEmitter<string>();
 
   mappedUsers: IUser[] = [];
-  filteredUsers: IUserMock[] = [];
+
+  flag!: keyof EntityTypeMap;
+  items = signal<IEntity[]>([]);
+  filteredItems = signal<IEntity[]>([]);
+  flagTranslation: string = '';
 
   // Add this with your other signals
   searchQuery = signal<string>('');
   isLoading = signal<boolean>(true);
   currentLayout = signal<ViewLayout>('grid');
 
-  layouts: ILayout[] = [
-    { value: 'grid', label: 'Grid View', icon: 'ri-layout-grid-line' },
-    { value: 'table', label: 'Table View', icon: 'ri-table-line' },
-    { value: 'simple', label: 'Simple Card View', icon: 'ri-layout-card-line' },
+  layouts: LayoutOption[] = [
+    { value: 'grid', label: 'Grid', icon: 'ri-grid-line' },
+    { value: 'simple', label: 'Simples', icon: 'ri-layout-line' },
+    { value: 'table', label: 'Tabela', icon: 'ri-table-line' },
   ];
 
-  // Mock data for users
-  users: IUserMock[] = usersMock;
+  private flagTranslations: { [key in keyof EntityTypeMap]: string } = {
+    users: 'Usuário',
+    teams: 'Time',
+    leagues: 'Liga',
+    players: 'Jogador',
+    referees: 'Árbitro',
+    federations: 'Federação',
+  };
+
   constructor(
-    private router: Router,
-    private toastService: ToastService
-  ) {
-    this.filteredUsers = [...this.users];
+    private route: Router,
+    private toastService: ToastService,
+    private activatedRoute: ActivatedRoute
+  ) {}
+  ngOnInit(): void {
+    // Usar o ActivatedRoute para obter o primeiro segmento da URL
+    this.activatedRoute.url.subscribe(segments => {
+      const segment = segments.length > 0 ? segments[0].path : 'users'; // Default para 'users' se não houver segmento
+
+      // Define o flag diretamente como o segmento da URL
+      this.flag = segment as keyof EntityTypeMap;
+
+      // Verifica se o flag é válido, caso contrário usa 'users' como fallback
+      const validFlags = [
+        'users',
+        'teams',
+        'leagues',
+        'players',
+        'referees',
+        'federations',
+      ];
+      if (!validFlags.includes(this.flag)) {
+        console.warn('Flag inválido:', this.flag, 'Usando default "leagues"');
+        this.flag = 'leagues';
+      }
+
+      this.flagTranslation =
+        this.flagTranslations[this.flag].toLocaleLowerCase();
+      console.log(this.flagTranslation);
+      this.loadItems();
+    });
 
     // Simulate loading delay
     setTimeout(() => {
@@ -51,29 +100,53 @@ export class UsersListComponent {
     }, 1500); // 1.5 second fake loading time
   }
 
-  setLayout(layout: ViewLayout): void {
+  private loadItems(): void {
+    this.isLoading.set(true);
+    const dataMap: { [key in keyof EntityTypeMap]: IEntity[] } = {
+      users: users,
+      teams: teams,
+      leagues: leagues,
+      players: players,
+      referees: referees,
+      federations: federations,
+    };
+    const items = dataMap[this.flag] || [];
+    this.items.set(items);
+    this.filteredItems.set(items);
+    this.isLoading.set(false);
+  }
+
+  getTranslatedFlag(): string {
+    return this.flagTranslations[this.flag];
+  }
+
+  onSearchChange(event: Event): void {
+    const query = (event.target as HTMLInputElement).value;
+    this.searchQuery.set(query);
+    this.filterItems(query);
+  }
+
+  private filterItems(query: string): void {
+    if (!query) {
+      this.filteredItems.set(this.items());
+    } else {
+      this.filteredItems.set(
+        this.items().filter(item =>
+          this.searchInItem(item, query.toLowerCase())
+        )
+      );
+    }
+  }
+
+  private searchInItem(item: IEntity, query: string): boolean {
+    return JSON.stringify(item).toLowerCase().includes(query);
+  }
+
+  setLayout(layout: 'grid' | 'simple' | 'table'): void {
     this.currentLayout.set(layout);
   }
 
-  navigateToNewUser(): void {
-    this.router.navigate(['/users/new']);
-  }
-
-  onSearchChange(event: Event) {
-    const value = (event.target as HTMLInputElement).value;
-    this.searchQuery.set(value);
-    this.search.emit(value);
-    this.filterUsers(); // Call filter function when search changes
-  }
-
-  filterUsers(): void {
-    const query = this.searchQuery().toLowerCase();
-    this.filteredUsers = this.users.filter(
-      user =>
-        !query ||
-        user.name.toLowerCase().includes(query) ||
-        user.email.toLowerCase().includes(query) ||
-        false
-    );
+  navigateToNew(): void {
+    this.route.navigate([`/${this.flag}/new`]);
   }
 }

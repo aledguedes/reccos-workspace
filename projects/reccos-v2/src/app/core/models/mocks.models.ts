@@ -1,67 +1,37 @@
-export interface ITeamMock {
-  id: number;
-  name: string;
-  avatar: string;
-  status: string;
-  role: string;
-  league: ILeagueMock;
-  email: string;
+export interface LayoutOption {
+  value: 'grid' | 'simple' | 'table'; // Restringe value à union desejada
+  label: string;
+  icon: string;
 }
 
-export interface ILeagueMock {
+// Interface base para todas as entidades
+export interface IEntity {
   id: number;
   name: string;
   email: string;
   role: string;
   avatar: string;
   status: string;
-  federation: {
+  relatedEntity?: {
+    // Propriedade que varia por entidade
+    type: 'federation' | 'league' | 'team' | null; // Tipo da entidade relacionada
     id: number;
     name: string;
-  };
+  } | null;
 }
 
-export interface IPlayerMock {
-  id: number;
-  name: string;
-  email: string;
-  role: string;
-  avatar: string;
-  status: string;
-  team: ITeamMock;
+// Mapeamento de tipos (todos usam IEntity)
+export interface EntityTypeMap {
+  users: IEntity;
+  teams: IEntity;
+  leagues: IEntity;
+  players: IEntity;
+  referees: IEntity;
+  federations: IEntity;
 }
 
-export interface IRefereeMock {
-  id: number;
-  name: string;
-  email: string;
-  role: string;
-  avatar: string;
-  status: string;
-  league: ILeagueMock;
-}
-
-export interface IUserMock {
-  id: number;
-  name: string;
-  email: string;
-  role: string;
-  avatar: string;
-  status: string;
-  federation: string;
-}
-
-export interface IFederationMock {
-  id: number;
-  name: string;
-  email: string;
-  role: string;
-  avatar: string;
-  status: string;
-  federation: null;
-}
-
-export const leagues: ILeagueMock[] = [
+// Dados mock ajustados
+export const leagues: IEntity[] = [
   {
     id: 1,
     name: 'La Liga Española',
@@ -69,14 +39,15 @@ export const leagues: ILeagueMock[] = [
     role: 'national-league',
     avatar: '',
     status: 'active',
-    federation: {
+    relatedEntity: {
+      type: 'federation',
       id: 1,
       name: 'Spanish Football Federation',
     },
   },
 ];
 
-export const teams: ITeamMock[] = [
+export const teams: IEntity[] = [
   {
     id: 1,
     name: 'Real Madrid',
@@ -84,7 +55,7 @@ export const teams: ITeamMock[] = [
     role: 'club',
     avatar: '',
     status: 'active',
-    league: leagues[0],
+    relatedEntity: { type: 'league', id: 1, name: 'La Liga Española' },
   },
   {
     id: 2,
@@ -93,11 +64,11 @@ export const teams: ITeamMock[] = [
     role: 'club',
     avatar: '',
     status: 'active',
-    league: leagues[0],
+    relatedEntity: { type: 'league', id: 1, name: 'La Liga Española' },
   },
 ];
 
-export const players: IPlayerMock[] = [
+export const players: IEntity[] = [
   {
     id: 1,
     name: 'Vinícius Júnior',
@@ -105,7 +76,7 @@ export const players: IPlayerMock[] = [
     role: 'forward',
     avatar: '',
     status: 'active',
-    team: teams[0],
+    relatedEntity: { type: 'team', id: 1, name: 'Real Madrid' },
   },
   {
     id: 2,
@@ -114,11 +85,11 @@ export const players: IPlayerMock[] = [
     role: 'midfielder',
     avatar: '',
     status: 'active',
-    team: teams[1],
+    relatedEntity: { type: 'team', id: 2, name: 'FC Barcelona' },
   },
 ];
 
-export const referees: IRefereeMock[] = [
+export const referees: IEntity[] = [
   {
     id: 1,
     name: 'Antonio Mateu Lahoz',
@@ -126,7 +97,7 @@ export const referees: IRefereeMock[] = [
     role: 'main',
     avatar: '',
     status: 'active',
-    league: leagues[0],
+    relatedEntity: { type: 'league', id: 1, name: 'La Liga Española' },
   },
   {
     id: 2,
@@ -135,11 +106,11 @@ export const referees: IRefereeMock[] = [
     role: 'assistant',
     avatar: '',
     status: 'retired',
-    league: leagues[0],
+    relatedEntity: { type: 'league', id: 1, name: 'La Liga Española' },
   },
 ];
 
-export const usersMock: IUserMock[] = [
+export const users: IEntity[] = [
   {
     id: 1,
     name: 'João Silva',
@@ -147,7 +118,11 @@ export const usersMock: IUserMock[] = [
     role: 'admin',
     avatar: '',
     status: 'active',
-    federation: 'Spanish Football Federation',
+    relatedEntity: {
+      type: 'federation',
+      id: 1,
+      name: 'Spanish Football Federation',
+    },
   },
   {
     id: 2,
@@ -156,24 +131,22 @@ export const usersMock: IUserMock[] = [
     role: 'manager',
     avatar: '',
     status: 'active',
-    federation: 'Catalan Football Federation',
+    relatedEntity: {
+      type: 'federation',
+      id: 1,
+      name: 'Spanish Football Federation',
+    },
   },
+];
+
+export const federations: IEntity[] = [
   {
-    id: 3,
-    name: 'Carlos Martínez',
-    email: 'carlos.martinez@example.com',
-    role: 'editor',
+    id: 1,
+    name: 'Spanish Football Federation',
+    email: 'contact@spanishfederation.com',
+    role: 'federation',
     avatar: '',
-    status: 'inactive',
-    federation: 'Andalusian Football Federation',
-  },
-  {
-    id: 4,
-    name: 'Ana López',
-    email: 'ana.lopez@example.com',
-    role: 'viewer',
-    avatar: '',
-    status: 'pending',
-    federation: 'Basque Football Federation',
+    status: 'active',
+    relatedEntity: null, // Federações não têm entidade relacionada
   },
 ];

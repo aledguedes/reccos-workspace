@@ -13,11 +13,11 @@
           <i class="ri-search-line text-base-content/70"></i>
           <input
             type="text"
-            placeholder="Buscar usuários..."
+            [placeholder]="'Busca por ' + flagTranslation + '...'"
             class="grow"
             [value]="searchQuery()"
             (input)="onSearchChange($event)"
-            aria-label="Buscar usuários"
+            [attr.aria-label]="'Busca por ' + flagTranslation"
           />
         </label>
       </div>
@@ -33,18 +33,18 @@
               [attr.aria-label]="layout.label"
             >
               <i class="{{ layout.icon }} text-xl hover:text-primary"></i>
-              {{ layout.label }}
+              <!-- {{ layout.label }} -->
             </button>
           }
         </div>
 
         <!-- Add button -->
         <button
-          (click)="navigateToNewUser()"
+          (click)="navigateToNew()"
           class="btn btn-primary flex items-center gap-2"
           aria-label="Criar novo usuário"
         >
-          <i class="ri-add-line"></i> Novo Usuário
+          <i class="ri-add-line"></i> Novo {{ flagTranslation | titlecase }}
         </button>
       </div>
     </div>
@@ -60,16 +60,16 @@
     </div>
   } @else {
     <!-- Content area -->
-    @if (filteredUsers.length > 0) {
+    @if (filteredItems().length > 0) {
       @switch (currentLayout()) {
         @case ('grid') {
-          <app-card-view [flag]="'users'" [items]="filteredUsers" />
+          <app-card-view [flag]="flag" [items]="filteredItems()" />
         }
         @case ('simple') {
-          <app-simple-grid [flag]="'users'" [items]="filteredUsers" />
+          <app-simple-grid [flag]="flag" [items]="filteredItems()" />
         }
         @case ('table') {
-          <!-- <app-card-view [flag]="'users'" [items]="filteredUsers"></app-card-view> -->
+          <!-- <app-card-view [flag]="'users'" [items]="filteredItems()"></app-card-view> -->
         }
       }
     } @else {
