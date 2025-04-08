@@ -36,15 +36,19 @@
 
           <!-- Informações fixas: role e relatedEntity -->
           <div class="mt-4 space-y-2">
-            <!-- Role -->
-            <div class="flex justify-between">
-              <span class="text-sm text-muted-foreground capitalize"
-                >Função:</span
-              >
-              <span class="badge {{ getRoleBadgeColor(item.role) }} text-white">
-                {{ item.role }}
-              </span>
-            </div>
+            @if (flag === 'users') {
+              <!-- Role -->
+              <div class="flex justify-between">
+                <span class="text-sm text-muted-foreground capitalize"
+                  >Role:</span
+                >
+                <span
+                  class="badge {{ getRoleBadgeColor(item.role) }} text-white"
+                >
+                  {{ item.role }}
+                </span>
+              </div>
+            }
 
             <!-- Related Entity (se existir) -->
             @if (item.relatedEntity) {
