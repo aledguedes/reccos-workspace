@@ -29,7 +29,7 @@
         <span
           class="badge {{
             getRoleBadgeColor(item.role)
-          }} text-white absolute top-2 right-2 border-0"
+          }} text-white absolute top-3 right-3 border-0"
         >
           {{ item.role }}
         </span>
@@ -41,8 +41,9 @@
           {{ item.email }}
         </p>
         @if (item.relatedEntity) {
-          <p>
-            {{ item.relatedEntity.type | titlecase }}:
+          <p class="text-sm text-base-content/70 line-clamp-1">
+            <strong>{{ item.relatedEntity.type | titlecase }}</strong
+            >:
             {{ item.relatedEntity.name }}
           </p>
         }
