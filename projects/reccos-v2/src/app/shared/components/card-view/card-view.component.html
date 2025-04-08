@@ -1,6 +1,8 @@
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
   @if (items.length === 0) {
-    <div class="col-span-full text-center py-10">No records found.</div>
+    <div class="col-span-full text-center py-10">
+      Nenhum registro encontrado.
+    </div>
   } @else {
     @for (item of items; track item.id) {
       <div class="card bg-white overflow-hidden">
@@ -20,7 +22,7 @@
                 <div
                   class="bg-gray-300 text-2xl font-bold text-muted-foreground rounded-full flex items-center justify-center h-full w-full aspect-square"
                 >
-                  {{ item.name?.charAt(0) }}
+                  {{ item.name.charAt(0) }}
                 </div>
               }
             </div>
@@ -32,60 +34,45 @@
             </div>
           </div>
 
-          <!-- Campos dinâmicos -->
+          <!-- Informações fixas: role e relatedEntity -->
           <div class="mt-4 space-y-2">
-            @for (entry of item | keyvalue: originalOrder; track entry.key) {
-              @if (shouldDisplay(entry.key)) {
-                <div class="flex justify-between">
-                  <span class="text-sm text-muted-foreground capitalize">
-                    {{ entry.key }}:
-                  </span>
+            <!-- Role -->
+            <div class="flex justify-between">
+              <span class="text-sm text-muted-foreground capitalize"
+                >Função:</span
+              >
+              <span class="badge {{ getRoleBadgeColor(item.role) }} text-white">
+                {{ item.role }}
+              </span>
+            </div>
 
-                  <!-- Badge para status -->
-                  @if (entry.key === 'status') {
-                    <span
-                      [class]="
-                        'badge badge-outline ' +
-                        getStatusBadgeVariant(entry.value)
-                      "
-                    >
-                      {{ entry.value }}
-                    </span>
-                  }
-
-                  <!-- Badge para role -->
-                  @else if (entry.key === 'role') {
-                    <span
-                      [class]="
-                        'badge ' +
-                        getRoleBadgeColor(entry.value) +
-                        ' text-white'
-                      "
-                    >
-                      {{ entry.value }}
-                    </span>
-                  }
-
-                  <!-- Se for objeto com nome -->
-                  @else if (isObject(entry.value)) {
-                    <span
-                      class="text-sm font-medium truncate max-w-[70%] text-right"
-                    >
-                      {{ entry.value?.name || '[Unnamed]' }}
-                    </span>
-                  }
-
-                  <!-- Valor simples -->
-                  @else {
-                    <span
-                      class="text-sm font-medium truncate max-w-[70%] text-right"
-                    >
-                      {{ entry.value }}
-                    </span>
-                  }
-                </div>
-              }
+            <!-- Related Entity (se existir) -->
+            @if (item.relatedEntity) {
+              <div class="flex justify-between">
+                <span class="text-sm text-muted-foreground capitalize">
+                  {{ item.relatedEntity.type | titlecase }}:
+                </span>
+                <span
+                  class="text-sm font-medium truncate max-w-[70%] text-right"
+                >
+                  {{ item.relatedEntity.name }}
+                </span>
+              </div>
             }
+
+            <!-- Status -->
+            <div class="flex justify-between">
+              <span class="text-sm text-muted-foreground capitalize"
+                >Status:</span
+              >
+              <span
+                class="badge {{
+                  getStatusBadgeVariant(item.status)
+                }} text-white"
+              >
+                {{ item.status }}
+              </span>
+            </div>
           </div>
         </div>
 

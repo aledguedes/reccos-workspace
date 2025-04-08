@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { LeaguesComponent } from './leagues.component';
-import { LeaguesListComponent } from './leagues-list/leagues-list.component';
 import { LeagueFormComponent } from './league-form/league-form.component';
+import { ListDefaultComponent } from '../shared/components/list-default/list-default.component';
 
 export const LEAGUE_ROUTES: Routes = [
   {
@@ -10,7 +10,7 @@ export const LEAGUE_ROUTES: Routes = [
     children: [
       {
         path: '',
-        component: LeaguesListComponent,
+        component: ListDefaultComponent,
         title: 'Ligas',
       },
       {

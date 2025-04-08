@@ -1,17 +1,18 @@
-import { Component, input, Input } from '@angular/core';
-import { IUser } from '../../../core/models/user.models';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { EntityTypeMap, IEntity } from '../../../core/models/mocks.models';
+import { TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-simple-grid',
-  imports: [RouterLink],
+  imports: [RouterLink, TitleCasePipe],
   templateUrl: './simple-grid.component.html',
   styleUrl: './simple-grid.component.scss',
 })
 export class SimpleGridComponent {
-  @Input() items: any[] = [];
-  @Input() flag: string = '';
-  mappedUsers: IUser[] = [];
+  @Input() items: IEntity[] = [];
+  @Input() flag: keyof EntityTypeMap = 'users';
+  @Output() onDelete: EventEmitter<number> = new EventEmitter<number>();
 
   getRoleBadgeColor(role: string): string {
     switch (role.toLowerCase()) {

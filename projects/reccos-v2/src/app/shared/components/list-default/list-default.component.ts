@@ -1,9 +1,6 @@
-import { Component, EventEmitter, OnInit, Output, signal } from '@angular/core';
-import { IFederation, IUser } from '../../core/models/user.models';
-import { SimpleGridComponent } from '../../shared/components/simple-grid/simple-grid.component';
-import { CardViewComponent } from '../../shared/components/card-view/card-view.component';
-import { ToastService } from '../../shared/services/toast.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, EventEmitter, Output, signal } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ToastService } from '../../services/toast.service';
 import {
   EntityTypeMap,
   federations,
@@ -14,27 +11,22 @@ import {
   referees,
   teams,
   users,
-} from '../../core/models/mocks.models';
+} from '../../../core/models/mocks.models';
+import { SimpleGridComponent } from '../simple-grid/simple-grid.component';
+import { CardViewComponent } from '../card-view/card-view.component';
 import { TitleCasePipe } from '@angular/common';
+import { Subscription } from 'rxjs';
 
 type ViewLayout = 'grid' | 'simple' | 'table';
 
-export interface ILayout {
-  value: ViewLayout;
-  label: string;
-  icon: string;
-}
-
 @Component({
-  selector: 'app-users-list',
+  selector: 'app-list-default',
   imports: [SimpleGridComponent, CardViewComponent, TitleCasePipe],
-  templateUrl: './users-list.component.html',
-  styleUrl: './users-list.component.scss',
+  templateUrl: './list-default.component.html',
+  styleUrl: './list-default.component.scss',
 })
-export class UsersListComponent implements OnInit {
+export class ListDefaultComponent {
   @Output() search = new EventEmitter<string>();
-
-  mappedUsers: IUser[] = [];
 
   flag!: keyof EntityTypeMap;
   items = signal<IEntity[]>([]);
@@ -60,6 +52,7 @@ export class UsersListComponent implements OnInit {
     referees: 'Árbitro',
     federations: 'Federação',
   };
+  private routeSubscription!: Subscription;
 
   constructor(
     private route: Router,
@@ -68,13 +61,13 @@ export class UsersListComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     // Usar o ActivatedRoute para obter o primeiro segmento da URL
-    this.activatedRoute.url.subscribe(segments => {
-      const segment = segments.length > 0 ? segments[0].path : 'users'; // Default para 'users' se não houver segmento
+    const updateFlagFromUrl = () => {
+      // Extrai o segmento raiz da URL completa (ex.: 'users' de '/users/list-all')
+      const urlSegments = this.route.url.split('/');
+      const segment = urlSegments[1] || 'users'; // Pega 'users', 'leagues', etc.
 
-      // Define o flag diretamente como o segmento da URL
-      this.flag = segment as keyof EntityTypeMap;
+      const newFlag = segment as keyof EntityTypeMap;
 
-      // Verifica se o flag é válido, caso contrário usa 'users' como fallback
       const validFlags = [
         'users',
         'teams',
@@ -83,21 +76,68 @@ export class UsersListComponent implements OnInit {
         'referees',
         'federations',
       ];
-      if (!validFlags.includes(this.flag)) {
-        console.warn('Flag inválido:', this.flag, 'Usando default "leagues"');
-        this.flag = 'leagues';
+
+      if (!validFlags.includes(newFlag)) {
+        console.warn('Flag inválido:', newFlag, 'Usando default "users"');
+        this.flag = 'users';
+      } else {
+        this.flag = newFlag;
+        console.log('Flag atualizado:', this.flag);
       }
 
       this.flagTranslation =
         this.flagTranslations[this.flag].toLocaleLowerCase();
-      console.log(this.flagTranslation);
       this.loadItems();
-    });
 
-    // Simulate loading delay
-    setTimeout(() => {
-      this.isLoading.set(false);
-    }, 1500); // 1.5 second fake loading time
+      this.isLoading.set(true);
+      setTimeout(() => {
+        this.isLoading.set(false);
+      }, 1500);
+    };
+
+    // Chama inicialmente
+    updateFlagFromUrl();
+
+    // Observa mudanças na URL usando Router.events
+    this.routeSubscription = this.route.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        const urlSegments = this.route.url.split('/');
+        const segment = urlSegments[1] || 'users';
+        const newFlag = segment as keyof EntityTypeMap;
+
+        const validFlags = [
+          'users',
+          'teams',
+          'leagues',
+          'players',
+          'referees',
+          'federations',
+        ];
+
+        if (!validFlags.includes(newFlag)) {
+          console.warn('Flag inválido:', newFlag, 'Usando default "users"');
+          this.flag = 'users';
+        } else if (this.flag !== newFlag) {
+          // Só atualiza se o flag mudou
+          this.flag = newFlag;
+          console.log('Flag atualizado:', this.flag);
+          this.flagTranslation =
+            this.flagTranslations[this.flag].toLocaleLowerCase();
+          this.loadItems();
+
+          this.isLoading.set(true);
+          setTimeout(() => {
+            this.isLoading.set(false);
+          }, 1500);
+        }
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.routeSubscription) {
+      this.routeSubscription.unsubscribe();
+    }
   }
 
   private loadItems(): void {
@@ -111,6 +151,8 @@ export class UsersListComponent implements OnInit {
       federations: federations,
     };
     const items = dataMap[this.flag] || [];
+    console.log(this.flag);
+    // console.log(items);
     this.items.set(items);
     this.filteredItems.set(items);
     this.isLoading.set(false);
