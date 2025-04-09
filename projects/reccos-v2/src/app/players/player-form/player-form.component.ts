@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { IPlayer, PLAYER_POSITIONS } from '../../core/models/player.model';
 import { ITeam } from '../../core/models/team.model';
+import { CepService } from '../../shared/services/cep.service';
 
 @Component({
   selector: 'app-player-form',
@@ -23,15 +24,23 @@ export class PlayerFormComponent implements OnInit {
 
   playerForm!: FormGroup;
   photoPreview: string | null = null;
-  isSubmitting = false;
-  currentStep = 1;
   totalSteps = 5;
+  currentStep = 1;
+
   positions = PLAYER_POSITIONS;
   teams: ITeam[] = [];
-  addressLoading = false;
-  cepError = false;
+  positionLabel = '';
+  teamName = '';
 
-  constructor(private fb: FormBuilder) {}
+  cepError = false;
+  cepLoading = false;
+  isSubmitting = false;
+  addressLoading = false;
+
+  constructor(
+    private fb: FormBuilder,
+    private cepService: CepService
+  ) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -88,6 +97,10 @@ export class PlayerFormComponent implements OnInit {
   }
 
   initForm(): void {
+    this.positionLabel =
+      this.positions.find(p => p.value === this.player?.position)?.label || '';
+    this.teamName = this.player?.teamName || '';
+
     this.playerForm = this.fb.group({
       // Etapa 1: Dados básicos de identificação
       personalInfo: this.fb.group({
@@ -105,11 +118,8 @@ export class PlayerFormComponent implements OnInit {
 
       // Etapa 2: Dados de contato
       contactInfo: this.fb.group({
-        cep: ['', [Validators.pattern(/^[0-9]{8}$/)]],
-        phone: [
-          this.player?.phone || '',
-          [Validators.required, Validators.pattern(/^\d{10,11}$/)],
-        ],
+        cep: ['', [Validators.required, Validators.pattern(/^\d{5}-?\d{3}$/)]],
+        phone: ['', [Validators.required, Validators.pattern(/^\d{10,11}$/)]],
         email: [
           this.player?.email || '',
           [Validators.email, Validators.maxLength(100)],
@@ -122,7 +132,7 @@ export class PlayerFormComponent implements OnInit {
       // Etapa 3: Dados relacionados ao esporte
       sportInfo: this.fb.group({
         position: [this.player?.position || '', Validators.required],
-        teamId: [this.player?.teamId || null],
+        teamId: [this.player?.teamId || null, Validators.required],
         teamName: [this.player?.teamName || ''],
         jerseyNumber: [
           this.player?.jerseyNumber || null,
@@ -216,6 +226,13 @@ export class PlayerFormComponent implements OnInit {
         break;
       case 3:
         currentFormGroup = this.playerForm.get('sportInfo') as FormGroup;
+        // Atualiza positionLabel e teamName quando a etapa 3 é validada
+        this.positionLabel =
+          this.positions.find(
+            p => p.value === this.playerForm.get('sportInfo.position')?.value
+          )?.label || '';
+        const teamId = this.playerForm.get('sportInfo.teamId')?.value;
+        this.teamName = this.teams.find(t => t.id === teamId)?.name || '';
         break;
       case 4:
         currentFormGroup = this.playerForm.get('healthInfo') as FormGroup;
@@ -321,5 +338,27 @@ export class PlayerFormComponent implements OnInit {
 
   onCancel(): void {
     this.cancel.emit();
+  }
+
+  async buscarCEP() {
+    this.cepLoading = true;
+    const cepControl = this.playerForm.get('contactInfo.cep')?.value;
+    this.cepService.buscarCEP(cepControl).subscribe({
+      next: (endereco: any) => {
+        if (endereco) {
+          this.playerForm.patchValue({
+            contactInfo: {
+              address: endereco.logradouro,
+              city: endereco.localidade,
+              state: endereco.uf,
+            },
+          });
+        }
+      },
+      error: (error: any) => {
+        console.error(error);
+        this.cepLoading = false;
+      },
+    });
   }
 }
