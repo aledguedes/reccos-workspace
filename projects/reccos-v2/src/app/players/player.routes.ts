@@ -10,7 +10,23 @@ export const PLAYER_ROUTES: Routes = [
       {
         path: '',
         component: ListDefaultComponent,
-        title: 'Usuários',
+        title: 'Jogadores',
+      },
+      {
+        path: 'new',
+        loadComponent: () =>
+          import('./player-form-page/player-form-page.component').then(
+            c => c.PlayerFormPageComponent
+          ),
+        title: 'Novo Jogador',
+      },
+      {
+        path: 'edit/:id',
+        loadComponent: () =>
+          import('./player-form-page/player-form-page.component').then(
+            c => c.PlayerFormPageComponent
+          ),
+        title: 'Editar Jogador',
       },
     ],
   },

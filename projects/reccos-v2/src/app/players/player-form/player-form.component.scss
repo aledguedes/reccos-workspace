@@ -1,0 +1,35 @@
+// Estilos específicos para o formulário de jogadores
+// A maioria dos estilos vem do Tailwind e DaisyUI
+
+.form-control {
+  margin-bottom: 0.5rem;
+}
+
+// Estilo para o preview da foto
+.photo-preview {
+  transition: all 0.3s ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+// Estilos para labels com fonte mais pesada
+.label-text {
+  font-weight: 600;
+}
+
+// Ajuste para o select de tipo sanguíneo
+select.select-bordered {
+  height: 3rem;
+}
+
+// Estilo para os textareas
+textarea.textarea-bordered {
+  width: 100%;
+}
+
+// Estilo para o card do formulário
+.shadow-md {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
