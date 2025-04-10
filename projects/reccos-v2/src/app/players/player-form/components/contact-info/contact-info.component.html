@@ -1,0 +1,181 @@
+<div class="space-y-4">
+  <h3 class="text-xl font-semibold text-primary mb-4">
+    Informações de Contato
+  </h3>
+
+  <form [formGroup]="contactForm" class="space-y-4">
+    <!-- Telefone -->
+    <div class="form-control w-full mb-4">
+      <label class="label">
+        <span class="label-text">Telefone*</span>
+      </label>
+      <input
+        type="tel"
+        placeholder="Digite o telefone (apenas números)"
+        class="input input-bordered w-full"
+        [ngClass]="{
+          'input-error':
+            hasError('phone', 'required') || hasError('phone', 'pattern'),
+        }"
+        formControlName="phone"
+      />
+      @if (hasError('phone', 'required') || hasError('phone', 'pattern')) {
+        <label class="label">
+          <span class="label-text-alt text-error">
+            {{ getErrorMessage('phone') }}
+          </span>
+        </label>
+     }
+    </div>
+
+    <!-- E-mail -->
+    <div class="form-control w-full mb-4">
+      <label class="label">
+        <span class="label-text">E-mail (opcional)</span>
+      </label>
+      <input
+        type="email"
+        placeholder="Digite o e-mail"
+        class="input input-bordered w-full"
+        [ngClass]="{
+          'input-error':
+            hasError('email', 'email') || hasError('email', 'maxlength'),
+        }"
+        formControlName="email"
+      />
+      @if (hasError('email', 'email') || hasError('email', 'maxlength')) {
+        <label class="label">
+          <span class="label-text-alt text-error">
+            {{ getErrorMessage('email') }}
+          </span>
+        </label>
+      }
+    </div>
+
+    <!-- CEP -->
+    <div class="form-control w-full mb-4">
+      <label class="label">
+        <span class="label-text">CEP*</span>
+      </label>
+      <div class="flex gap-2">
+        <input
+          type="text"
+          placeholder="Digite o CEP"
+          class="input input-bordered w-full"
+          [ngClass]="{
+            'input-error':
+              hasError('cep', 'required') || hasError('cep', 'pattern'),
+          }"
+          formControlName="cep"
+          (blur)="buscarCEP()"
+        />
+        <button
+          type="button"
+          class="btn btn-square btn-outline"
+          (click)="openCepSearch()"
+          title="Buscar CEP"
+        >
+          <i class="ri-search-line"></i>
+        </button>
+      </div>
+      @if (hasError('cep', 'required') || hasError('cep', 'pattern')) {
+        <label class="label">
+          <span class="label-text-alt text-error">
+            {{ getErrorMessage('cep') }}
+          </span>
+        </label>
+      }
+      @if (cepLoading) {
+        <div class="mt-2">
+          <span class="loading loading-spinner loading-sm"></span>
+          <span class="ml-2 text-sm">Buscando CEP...</span>
+        </div>
+      }
+      @if (cepError) {
+        <div class="mt-2 text-error text-sm">
+          <i class="ri-error-warning-line mr-1"></i>
+          CEP não encontrado
+        </div>
+      }
+    </div>
+
+    <!-- Endereço -->
+    <div class="form-control w-full mb-4">
+      <label class="label">
+        <span class="label-text">Endereço (opcional)</span>
+      </label>
+      <input
+        type="text"
+        placeholder="Digite o endereço"
+        class="input input-bordered w-full"
+        [ngClass]="{
+          'input-error': hasError('address', 'maxlength'),
+        }"
+        formControlName="address"
+      />
+      @if (hasError('address', 'maxlength')) {
+        <label class="label">
+          <span class="label-text-alt text-error">
+            {{ getErrorMessage('address') }}
+          </span>
+        </label>
+      }
+    </div>
+
+    <!-- Cidade e Estado na mesma linha -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+      <div class="form-control w-full mb-4">
+        <label class="label">
+          <span class="label-text">Cidade (opcional)</span>
+        </label>
+        <input
+          type="text"
+          placeholder="Digite a cidade"
+          class="input input-bordered w-full"
+          [ngClass]="{
+            'input-error': hasError('city', 'maxlength'),
+          }"
+          formControlName="city"
+        />
+        @if (hasError('city', 'maxlength')) {
+          <label class="label">
+            <span class="label-text-alt text-error">
+              {{ getErrorMessage('city') }}
+            </span>
+          </label>
+        }
+      </div>
+
+      <div class="form-control w-full mb-4">
+        <label class="label">
+          <span class="label-text">Estado (opcional)</span>
+        </label>
+        <input
+          type="text"
+          placeholder="Digite o estado"
+          class="input input-bordered w-full"
+          [ngClass]="{
+            'input-error': hasError('state', 'maxlength'),
+          }"
+          formControlName="state"
+        />
+        @if (hasError('state', 'maxlength')) {
+          <label class="label">
+            <span class="label-text-alt text-error">
+              {{ getErrorMessage('state') }}
+            </span>
+          </label>
+        }
+      </div>
+    </div>
+  </form>
+
+  <div class="flex justify-between mt-6">
+    <button class="btn btn-outline" (click)="onPrevious()">
+      <i class="ri-arrow-left-line mr-2"></i> Anterior
+    </button>
+    <button class="btn btn-primary" (click)="onNext()">
+      Próximo <i class="ri-arrow-right-line ml-2"></i>
+    </button>
+  </div>
+</div>

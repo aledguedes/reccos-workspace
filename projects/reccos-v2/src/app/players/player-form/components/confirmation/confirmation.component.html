@@ -1,0 +1,159 @@
+<div class="space-y-6">
+  <h3 class="text-2xl font-bold text-primary mb-6">Confirmação dos Dados</h3>
+
+  <div class="bg-base-100 p-6">
+    <h4
+      class="text-lg font-semibold text-primary mb-4 pb-2 border-b border-gray-200"
+    >
+      Dados Pessoais
+    </h4>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="space-y-1">
+        <p class="font-medium text-sm text-gray-500">Nome Completo</p>
+        <p class="text-base">{{ playerData.name }}</p>
+      </div>
+      <div class="space-y-1">
+        <p class="font-medium text-sm text-gray-500">Data de Nascimento</p>
+        <p class="text-base">{{ playerData.birthDate | date: 'dd/MM/yyyy' }}</p>
+      </div>
+      <div class="space-y-1">
+        <p class="font-medium text-sm text-gray-500">CPF</p>
+        <p class="text-base">{{ playerData.document }}</p>
+      </div>
+      <div class="space-y-1">
+        <p class="font-medium text-sm text-gray-500">Foto</p>
+        <div class="w-16 h-16 rounded-full bg-gray-100 overflow-hidden">
+          @if (photoPreview) {
+            <img
+              [src]="photoPreview"
+              alt="Foto"
+              class="w-full h-full object-cover"
+            />
+          }
+          @if (!photoPreview) {
+            <i
+              class="ri-user-line text-2xl text-gray-400 w-full h-full flex items-center justify-center"
+            ></i>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-base-100 p-6">
+    <h4
+      class="text-lg font-semibold text-primary mb-4 pb-2 border-b border-gray-200"
+    >
+      Contato
+    </h4>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="space-y-1">
+        <p class="font-medium text-sm text-gray-500">Telefone</p>
+        <p class="text-base">{{ playerData.phone }}</p>
+      </div>
+      <div class="space-y-1">
+        <p class="font-medium text-sm text-gray-500">E-mail</p>
+        <p class="text-base">{{ playerData.email || 'Não informado' }}</p>
+      </div>
+      <div class="space-y-1">
+        <p class="font-medium text-sm text-gray-500">CEP</p>
+        <p class="text-base">{{ playerData.cep }}</p>
+      </div>
+      <div class="space-y-1">
+        <p class="font-medium text-sm text-gray-500">Endereço</p>
+        <p class="text-base">{{ playerData.address || 'Não informado' }}</p>
+      </div>
+      <div class="space-y-1">
+        <p class="font-medium text-sm text-gray-500">Cidade</p>
+        <p class="text-base">{{ playerData.city || 'Não informado' }}</p>
+      </div>
+      <div class="space-y-1">
+        <p class="font-medium text-sm text-gray-500">Estado</p>
+        <p class="text-base">{{ playerData.state || 'Não informado' }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-base-100 p-6">
+    <h4
+      class="text-lg font-semibold text-primary mb-4 pb-2 border-b border-gray-200"
+    >
+      Informações Esportivas
+    </h4>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="space-y-1">
+        <p class="font-medium text-sm text-gray-500">Posição</p>
+        <p class="text-base">{{ positionLabel }}</p>
+      </div>
+      <div class="space-y-1">
+        <p class="font-medium text-sm text-gray-500">Time</p>
+        <p class="text-base">{{ teamName || 'Não informado' }}</p>
+      </div>
+      <div class="space-y-1">
+        <p class="font-medium text-sm text-gray-500">Número da Camisa</p>
+        <p class="text-base">
+          {{ playerData.jerseyNumber || 'Não informado' }}
+        </p>
+      </div>
+      <div class="space-y-1">
+        <p class="font-medium text-sm text-gray-500">Altura</p>
+        <p class="text-base">
+          {{ playerData.height ? playerData.height + ' cm' : 'Não informado' }}
+        </p>
+      </div>
+      <div class="space-y-1">
+        <p class="font-medium text-sm text-gray-500">Peso</p>
+        <p class="text-base">
+          {{ playerData.weight ? playerData.weight + ' kg' : 'Não informado' }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-base-100 p-6">
+    <h4
+      class="text-lg font-semibold text-primary mb-4 pb-2 border-b border-gray-200"
+    >
+      Informações de Saúde e Emergência
+    </h4>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="space-y-1">
+        <p class="font-medium text-sm text-gray-500">Contato de Emergência</p>
+        <p class="text-base">{{ playerData.emergencyContact?.name }}</p>
+      </div>
+      <div class="space-y-1">
+        <p class="font-medium text-sm text-gray-500">Telefone de Emergência</p>
+        <p class="text-base">{{ playerData.emergencyContact?.phone }}</p>
+      </div>
+      <div class="space-y-1">
+        <p class="font-medium text-sm text-gray-500">Relacionamento</p>
+        <p class="text-base">
+          {{ playerData.emergencyContact?.relationship || 'Não informado' }}
+        </p>
+      </div>
+      <div class="space-y-1">
+        <p class="font-medium text-sm text-gray-500">Tipo Sanguíneo</p>
+        <p class="text-base">{{ playerData.bloodType || 'Não informado' }}</p>
+      </div>
+      <div class="space-y-1 col-span-2">
+        <p class="font-medium text-sm text-gray-500">Alergias</p>
+        <p class="text-base">{{ playerData.allergies || 'Não informado' }}</p>
+      </div>
+      <div class="space-y-1 col-span-2">
+        <p class="font-medium text-sm text-gray-500">Condições Médicas</p>
+        <p class="text-base">
+          {{ playerData.medicalConditions || 'Não informado' }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex justify-between mt-6">
+    <button class="btn btn-outline" (click)="onPrevious()">
+      <i class="ri-arrow-left-line mr-2"></i> Anterior
+    </button>
+    <button class="btn btn-primary" (click)="onSubmit()" [disabled]="false">
+      <i class="ri-save-line mr-2"></i> Salvar Jogador
+    </button>
+  </div>
+</div>
