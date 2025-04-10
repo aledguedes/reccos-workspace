@@ -5,16 +5,16 @@
   >
     <!-- Right side: Search, view toggle and add button -->
     <div
-      class="flex flex-col md:flex-row items-start md:items-center gap-3 w-full md:w-auto"
+      class="flex flex-col md:flex-row items-start md:items-center gap-3 w-full"
     >
       <!-- Search input -->
-      <div class="relative w-full">
-        <label class="input input-bordered flex items-center gap-2">
-          <i class="ri-search-line text-base-content/70"></i>
+      <div class="relative w-full md:w-auto md:flex-grow">
+        <label class="input input-bordered flex items-center gap-2 w-full px-0">
+          <i class="ri-search-line text-base-content/70 ml-3"></i>
           <input
             type="text"
             [placeholder]="'Busca por ' + flagTranslation + '...'"
-            class="grow"
+            class="grow px-2"
             [value]="searchQuery()"
             (input)="onSearchChange($event)"
             [attr.aria-label]="'Busca por ' + flagTranslation"
@@ -22,9 +22,9 @@
         </label>
       </div>
 
-      <!-- Buttons row -->
+      <!-- Buttons row - mobile: justify-between, desktop: flex-row -->
       <div
-        class="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full sm:w-auto"
+        class="flex flex-row justify-between md:justify-start items-center w-full md:w-auto md:flex-shrink-0 md:gap-3"
       >
         <!-- View toggle button with tooltip -->
         <div class="tooltip tooltip-bottom" data-tip="Mudar visualização">
@@ -35,7 +35,6 @@
               [attr.aria-label]="layout.label"
             >
               <i class="{{ layout.icon }} text-xl hover:text-primary"></i>
-              <!-- {{ layout.label }} -->
             </button>
           }
         </div>
@@ -43,7 +42,7 @@
         <!-- Add button -->
         <button
           (click)="navigateToNew()"
-          class="btn btn-primary flex items-center gap-2 mt-3 sm:mt-0"
+          class="btn btn-primary flex items-center gap-2"
           aria-label="Criar novo usuário"
         >
           <i class="ri-add-line"></i> Novo {{ flagTranslation | titlecase }}
