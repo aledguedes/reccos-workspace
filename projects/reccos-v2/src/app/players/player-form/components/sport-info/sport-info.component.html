@@ -1,0 +1,94 @@
+<div class="space-y-4">
+  <h3 class="text-xl font-semibold text-primary mb-4">
+    Informações Esportivas
+  </h3>
+
+  <form [formGroup]="sportForm" class="space-y-4">
+    <!-- Posição principal -->
+    <div class="form-control w-full mb-4">
+      <label class="label">
+        <span class="label-text">Posição Principal*</span>
+      </label>
+      <select
+        class="select select-bordered w-full"
+        [ngClass]="{
+          'select-error': hasError('position', 'required'),
+        }"
+        formControlName="position"
+      >
+        <option value="" disabled selected>Selecione a posição</option>
+        @for (pos of positions; track pos.value) {
+          <option [value]="pos.value">
+            {{ pos.label }}
+          </option>
+        }
+      </select>
+      @if (hasError('position', 'required')) {
+        <label class="label">
+          <span class="label-text-alt text-error">
+            {{ getErrorMessage('position') }}
+          </span>
+        </label>
+      }
+    </div>
+
+    <!-- Time atual -->
+    <div class="form-control w-full mb-4">
+      <label class="label">
+        <span class="label-text">Time Atual*</span>
+      </label>
+      <select
+        formControlName="teamId"
+        class="select select-bordered w-full"
+        [class.select-error]="hasError('teamId', 'required')"
+      >
+        <option value="" disabled selected>Selecione um time</option>
+        @for (team of teams; track team.id) {
+          <option [value]="team.id">
+            {{ team.name }}
+          </option>
+        }
+      </select>
+      @if (hasError('teamId', 'required')) {
+        <label class="label">
+          <span class="label-text-alt text-error">
+            {{ getErrorMessage('teamId') }}
+          </span>
+        </label>
+      }
+    </div>
+
+    <!-- Número da camisa -->
+    <div class="form-control w-full mb-4">
+      <label class="label">
+        <span class="label-text">Número da Camisa (opcional)</span>
+      </label>
+      <input
+        type="number"
+        placeholder="Digite o número da camisa"
+        class="input input-bordered w-full"
+        [ngClass]="{
+          'input-error':
+            hasError('jerseyNumber', 'min') || hasError('jerseyNumber', 'max'),
+        }"
+        formControlName="jerseyNumber"
+      />
+      @if (hasError('jerseyNumber', 'min') || hasError('jerseyNumber', 'max')) {
+        <label class="label">
+          <span class="label-text-alt text-error">
+            {{ getErrorMessage('jerseyNumber') }}
+          </span>
+        </label>
+      }
+    </div>
+  </form>
+
+  <div class="flex justify-between mt-6">
+    <button class="btn btn-outline" (click)="onPrevious()">
+      <i class="ri-arrow-left-line mr-2"></i> Anterior
+    </button>
+    <button class="btn btn-primary" (click)="onNext()">
+      Próximo <i class="ri-arrow-right-line ml-2"></i>
+    </button>
+  </div>
+</div>

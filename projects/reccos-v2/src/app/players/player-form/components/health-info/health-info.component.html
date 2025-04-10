@@ -1,0 +1,174 @@
+<div class="space-y-4">
+  <h3 class="text-xl font-semibold text-primary mb-4">
+    Informações de Saúde e Emergência
+  </h3>
+
+  <form [formGroup]="healthForm" class="space-y-4">
+    <!-- Contato de emergência -->
+    <div
+      formGroupName="emergencyContact"
+      class="space-y-4 p-4 bg-base-200 rounded-lg"
+    >
+      <h4 class="font-medium">Contato de Emergência</h4>
+
+      <!-- Nome do contato de emergência -->
+      <div class="form-control w-full mb-4">
+        <label class="label">
+          <span class="label-text">Nome do Contato*</span>
+        </label>
+        <input
+          type="text"
+          placeholder="Digite o nome do contato"
+          class="input input-bordered w-full"
+          [ngClass]="{
+            'input-error':
+              hasError('emergencyContact.name', 'required') ||
+              hasError('emergencyContact.name', 'maxlength'),
+          }"
+          formControlName="name"
+        />
+        @if (
+          hasError('emergencyContact.name', 'required') ||
+          hasError('emergencyContact.name', 'maxlength')
+        ) {
+          <label class="label">
+            <span class="label-text-alt text-error">
+              {{ getErrorMessage('emergencyContact.name') }}
+            </span>
+          </label>
+        }
+      </div>
+
+      <!-- Telefone do contato de emergência -->
+      <div class="form-control w-full mb-4">
+        <label class="label">
+          <span class="label-text">Telefone do Contato*</span>
+        </label>
+        <input
+          type="tel"
+          placeholder="Digite o telefone (apenas números)"
+          class="input input-bordered w-full"
+          [ngClass]="{
+            'input-error':
+              hasError('emergencyContact.phone', 'required') ||
+              hasError('emergencyContact.phone', 'pattern'),
+          }"
+          formControlName="phone"
+        />
+        @if (
+          hasError('emergencyContact.phone', 'required') ||
+          hasError('emergencyContact.phone', 'pattern')
+        ) {
+          <label class="label">
+            <span class="label-text-alt text-error">
+              {{ getErrorMessage('emergencyContact.phone') }}
+            </span>
+          </label>
+        }
+      </div>
+
+      <!-- Relacionamento com o jogador -->
+      <div class="form-control w-full mb-4">
+        <label class="label">
+          <span class="label-text">Relacionamento (opcional)</span>
+        </label>
+        <input
+          type="text"
+          placeholder="Ex: Pai, Mãe, Irmão"
+          class="input input-bordered w-full"
+          [ngClass]="{
+            'input-error': hasError(
+              'emergencyContact.relationship',
+              'maxlength'
+            ),
+          }"
+          formControlName="relationship"
+        />
+        @if (hasError('emergencyContact.relationship', 'maxlength')) {
+          <label class="label">
+            <span class="label-text-alt text-error">
+              {{ getErrorMessage('emergencyContact.relationship') }}
+            </span>
+          </label>
+        }
+      </div>
+    </div>
+
+    <!-- Informações médicas adicionais -->
+    <div class="space-y-4 p-4 mt-4">
+      <!-- Tipo sanguíneo -->
+      <div class="form-control w-full mb-4">
+        <label class="label">
+          <span class="label-text">Tipo Sanguíneo (opcional)</span>
+        </label>
+        <select
+          class="select select-bordered w-full"
+          formControlName="bloodType"
+        >
+          <option value="" disabled selected>Selecione o tipo sanguíneo</option>
+          <option value="A+">A+</option>
+          <option value="A-">A-</option>
+          <option value="B+">B+</option>
+          <option value="B-">B-</option>
+          <option value="AB+">AB+</option>
+          <option value="AB-">AB-</option>
+          <option value="O+">O+</option>
+          <option value="O-">O-</option>
+        </select>
+      </div>
+
+      <!-- Alergias -->
+      <div class="form-control w-full mb-4">
+        <label class="label">
+          <span class="label-text">Alergias (opcional)</span>
+        </label>
+        <textarea
+          class="textarea textarea-bordered h-20"
+          placeholder="Descreva alergias, se houver"
+          [ngClass]="{
+            'textarea-error': hasError('allergies', 'maxlength'),
+          }"
+          formControlName="allergies"
+        ></textarea>
+        @if (hasError('allergies', 'maxlength')) {
+          <label class="label">
+            <span class="label-text-alt text-error">
+              {{ getErrorMessage('allergies') }}
+            </span>
+          </label>
+        }
+      </div>
+
+      <!-- Condições médicas -->
+      <div class="form-control w-full mb-4">
+        <label class="label">
+          <span class="label-text">Condições Médicas (opcional)</span>
+        </label>
+        <textarea
+          class="textarea textarea-bordered h-20"
+          placeholder="Descreva condições médicas relevantes, se houver"
+          [ngClass]="{
+            'textarea-error': hasError('medicalConditions', 'maxlength'),
+          }"
+          formControlName="medicalConditions"
+        ></textarea>
+        @if (hasError('medicalConditions', 'maxlength')) {
+          <label class="label">
+            <span class="label-text-alt text-error">
+              {{ getErrorMessage('medicalConditions') }}
+            </span>
+          </label>
+        }
+      </div>
+    </div>
+  </form>
+
+  <div class="flex justify-between mt-6">
+    <button class="btn btn-outline" (click)="onPrevious()">
+      <i class="ri-arrow-left-line mr-2"></i> Anterior
+    </button>
+    <button class="btn btn-primary" (click)="onNext()">
+      Próximo <i class="ri-arrow-right-line ml-2"></i>
+    </button>
+  </div>
+</div>
