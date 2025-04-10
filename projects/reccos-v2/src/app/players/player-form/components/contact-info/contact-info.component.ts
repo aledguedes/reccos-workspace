@@ -45,6 +45,8 @@ export class ContactInfoComponent implements OnInit {
       address: [this.initialData?.address || '', Validators.maxLength(200)],
       city: [this.initialData?.city || '', Validators.maxLength(100)],
       state: [this.initialData?.state || '', Validators.maxLength(50)],
+      complement: [''],
+      district: [''],
     });
 
     // Preencher os campos com os dados iniciais, se existirem
@@ -56,6 +58,8 @@ export class ContactInfoComponent implements OnInit {
         address: this.initialData.address || '',
         city: this.initialData.city || '',
         state: this.initialData.state || '',
+        complement: this.initialData.complement || '',
+        district: this.initialData.district || '',
       });
     }
   }
@@ -70,6 +74,8 @@ export class ContactInfoComponent implements OnInit {
             address: endereco.logradouro,
             city: endereco.localidade,
             state: endereco.uf,
+            district: endereco.bairro,
+            complement: endereco.complemento,
           });
         }
         this.cepLoading = false;

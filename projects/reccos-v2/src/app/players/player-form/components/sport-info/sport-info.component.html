@@ -81,52 +81,6 @@
         </label>
       }
     </div>
-
-    <!-- Altura -->
-    <div class="form-control w-full mb-4">
-      <label class="label">
-        <span class="label-text">Altura em cm (opcional)</span>
-      </label>
-      <input
-        type="number"
-        placeholder="Digite a altura em centímetros"
-        class="input input-bordered w-full"
-        [ngClass]="{
-          'input-error': hasError('height', 'min') || hasError('height', 'max'),
-        }"
-        formControlName="height"
-      />
-      @if (hasError('height', 'min') || hasError('height', 'max')) {
-        <label class="label">
-          <span class="label-text-alt text-error">
-            {{ getErrorMessage('height') }}
-          </span>
-        </label>
-      }
-    </div>
-
-    <!-- Peso -->
-    <div class="form-control w-full mb-4">
-      <label class="label">
-        <span class="label-text">Peso em kg (opcional)</span>
-      </label>
-      <input
-        type="number"
-        placeholder="Digite o peso em quilogramas"
-        class="input input-bordered w-full"
-        [ngClass]="{
-          'input-error': hasError('weight', 'min') || hasError('weight', 'max'),
-        }"
-        formControlName="weight"
-      />
-      @if (hasError('weight', 'min') || hasError('weight', 'max')) {
-        <label class="label">
-          <span class="label-text-alt text-error">
-            {{ getErrorMessage('weight') }}
-          </span>
-        </label>
-      }
-    </div>
   </form>
 
   <div class="flex justify-between mt-6">

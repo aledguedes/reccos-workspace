@@ -22,8 +22,6 @@ export interface IPlayer {
   address?: string; // Endereço (opcional)
   city?: string; // Cidade (opcional)
   state?: string; // Estado (opcional)
-  height?: number; // Altura em cm (opcional)
-  weight?: number; // Peso em kg (opcional)
   bloodType?: string; // Tipo sanguíneo (opcional)
   allergies?: string; // Alergias (opcional)
   medicalConditions?: string; // Condições médicas (opcional)
