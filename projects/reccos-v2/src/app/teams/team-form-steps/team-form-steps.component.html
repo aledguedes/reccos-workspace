@@ -1,15 +1,19 @@
-<div class="mb-1">
-  <div class="flex items-center justify-between gap-4">
+<div class="mb-4">
+  <div class="flex items-center gap-3 mb-2">
+    <a
+      class="btn btn-circle btn-ghost text-primary hover:bg-primary/10"
+      routerLink="/teams"
+      (click)="onCancelTeam()"
+      aria-label="Voltar para listagem"
+    >
+      <i class="ri-arrow-left-line text-xl"></i>
+    </a>
     <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-primary">
       {{ team ? 'Editar Time' : 'Novo Time' }}
     </h2>
-    <a class="btn btn-outline btn-primary gap-2" routerLink="/teams">
-      <i class="ri-arrow-left-line"></i>
-      Voltar para Listagem
-    </a>
   </div>
   <p
-    class="text-xs sm:text-sm md:text-base lg:text-lg text-muted-foreground mt-2 max-w-prose break-words whitespace-normal"
+    class="text-xs sm:text-sm md:text-base lg:text-lg text-muted-foreground max-w-prose break-words whitespace-normal pl-12"
   >
     Preencha as informações do time para inscrição no torneio.
   </p>

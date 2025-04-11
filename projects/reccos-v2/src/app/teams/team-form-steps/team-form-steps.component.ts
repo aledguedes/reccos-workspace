@@ -1,13 +1,21 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ITeam } from '../../core/models/team.model';
+import { TeamBasicInfoComponent } from '../components/team-basic-info/team-basic-info.component';
+import { TeamCoachInfoComponent } from '../components/team-coach-info/team-coach-info.component';
+import { TeamConfirmationComponent } from '../components/team-confirmation/team-confirmation.component';
+import { TeamUniformInfoComponent } from '../components/team-uniform-info/team-uniform-info.component';
+import { Router } from '@angular/router';
 
 // Importando os componentes de cada etapa
-import { TeamCoachInfoComponent } from './components/team-coach-info/team-coach-info.component';
-import { TeamBasicInfoComponent } from './components/team-basic-info/team-basic-info.component';
-import { TeamConfirmationComponent } from './components/team-confirmation/team-confirmation.component';
-import { TeamUniformInfoComponent } from './components/team-uniform-info/team-uniform-info.component';
 
 @Component({
   selector: 'app-team-form-steps',
@@ -36,7 +44,7 @@ export class TeamFormStepsComponent implements OnInit {
 
   isSubmitting = false;
 
-  constructor() {}
+  private router = inject(Router);
 
   ngOnInit(): void {
     this.initializeTeamData();
@@ -100,5 +108,10 @@ export class TeamFormStepsComponent implements OnInit {
 
   onCancel(): void {
     this.cancel.emit();
+  }
+
+  onCancelTeam(): void {
+    // Navegar de volta para a lista de times
+    this.router.navigate(['/teams']);
   }
 }
