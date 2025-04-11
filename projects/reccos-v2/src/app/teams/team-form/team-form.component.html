@@ -1,284 +1,81 @@
-<div class="mb-1">
-  <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-primary">
-    {{ team ? 'Editar Time' : 'Novo Time' }}
-  </h2>
+<div class="mb-4">
+  <div class="flex items-center gap-3 mb-2">
+    <a
+      class="btn btn-circle btn-ghost text-primary hover:bg-primary/10"
+      routerLink="/teams"
+      (click)="onCancelTeam()"
+      aria-label="Voltar para listagem"
+    >
+      <i class="ri-arrow-left-line text-xl"></i>
+    </a>
+    <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-primary">
+      {{ team ? 'Editar Time' : 'Novo Time' }}
+    </h2>
+  </div>
   <p
-    class="text-xs sm:text-sm md:text-base lg:text-lg text-muted-foreground mt-2 max-w-prose break-words whitespace-normal"
+    class="text-xs sm:text-sm md:text-base lg:text-lg text-muted-foreground max-w-prose break-words whitespace-normal pl-12"
   >
-    Configure as informações básicas do seu time de futebol.
+    Preencha as informações do time para inscrição no torneio.
   </p>
 </div>
 
-<div class="glass-panel" rounded-xl p-4 md:p-8 subtle-shadow>
-  <form
-    [formGroup]="teamForm"
-    (ngSubmit)="onSubmit()"
-    class="space-y-4 md:space-y-6 p-0 md:p-6"
-  >
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <!-- Nome do time (obrigatório) -->
-      <div class="form-control w-full">
-        <label class="label">
-          <span class="label-text">Nome do Time*</span>
-        </label>
-        <input
-          type="text"
-          placeholder="Digite o nome do time"
-          class="input input-bordered w-full"
-          [ngClass]="{
-            'input-error':
-              hasError('name', 'required') || hasError('name', 'maxlength'),
-          }"
-          formControlName="name"
-        />
-        <label
-          class="label"
-          *ngIf="hasError('name', 'required') || hasError('name', 'maxlength')"
-        >
-          <span class="label-text-alt text-error">{{
-            getErrorMessage('name')
-          }}</span>
-        </label>
-      </div>
-
-      <!-- Logo do time -->
-      <div class="form-control w-full">
-        <label class="label">
-          <span class="label-text">Logo</span>
-        </label>
-        <div class="flex items-center gap-4">
-          <div
-            class="w-16 h-16 bg-gray-100 rounded-md flex items-center justify-center overflow-hidden"
-          >
-            <img
-              *ngIf="logoPreview"
-              [src]="logoPreview"
-              alt="Logo preview"
-              class="w-full h-full object-contain"
-            />
-            <i
-              *ngIf="!logoPreview"
-              class="ri-image-line text-2xl text-gray-400"
-            ></i>
-          </div>
-          <input
-            type="file"
-            class="file-input file-input-bordered w-full max-w-xs"
-            accept="image/*"
-            (change)="onLogoChange($event)"
-          />
-        </div>
-      </div>
-
-      <!-- Cidade -->
-      <div class="form-control w-full">
-        <label class="label">
-          <span class="label-text">Cidade</span>
-        </label>
-        <input
-          type="text"
-          placeholder="Digite a cidade"
-          class="input input-bordered w-full"
-          [ngClass]="{ 'input-error': hasError('city', 'maxlength') }"
-          formControlName="city"
-        />
-        <label class="label" *ngIf="hasError('city', 'maxlength')">
-          <span class="label-text-alt text-error">{{
-            getErrorMessage('city')
-          }}</span>
-        </label>
-      </div>
-
-      <!-- Estado/País -->
-      <div class="form-control w-full">
-        <label class="label">
-          <span class="label-text">Estado/País</span>
-        </label>
-        <input
-          type="text"
-          placeholder="Digite o estado ou país"
-          class="input input-bordered w-full"
-          [ngClass]="{ 'input-error': hasError('state', 'maxlength') }"
-          formControlName="state"
-        />
-        <label class="label" *ngIf="hasError('state', 'maxlength')">
-          <span class="label-text-alt text-error">{{
-            getErrorMessage('state')
-          }}</span>
-        </label>
-      </div>
-
-      <!-- Estádio -->
-      <div class="form-control w-full">
-        <label class="label">
-          <span class="label-text">Estádio</span>
-        </label>
-        <input
-          type="text"
-          placeholder="Digite o nome do estádio"
-          class="input input-bordered w-full"
-          [ngClass]="{ 'input-error': hasError('stadium', 'maxlength') }"
-          formControlName="stadium"
-        />
-        <label class="label" *ngIf="hasError('stadium', 'maxlength')">
-          <span class="label-text-alt text-error">{{
-            getErrorMessage('stadium')
-          }}</span>
-        </label>
-      </div>
-
-      <!-- Liga -->
-      <div class="form-control w-full">
-        <label class="label">
-          <span class="label-text">Liga/Campeonato</span>
-        </label>
-        <input
-          type="text"
-          placeholder="Digite o nome da liga"
-          class="input input-bordered w-full"
-          formControlName="leagueName"
-        />
-      </div>
-
-      <!-- Status -->
-      <div class="form-control w-full">
-        <label class="label">
-          <span class="label-text">Status</span>
-        </label>
-        <select class="select select-bordered w-full" formControlName="status">
-          <option value="active">Ativo</option>
-          <option value="inactive">Inativo</option>
-        </select>
-      </div>
-
-      <!-- Treinador -->
-      <div class="form-control w-full">
-        <label class="label">
-          <span class="label-text">Treinador</span>
-        </label>
-        <input
-          type="text"
-          placeholder="Digite o nome do treinador"
-          class="input input-bordered w-full"
-          formControlName="coach"
-        />
-      </div>
-
-      <!-- Website -->
-      <div class="form-control w-full">
-        <label class="label">
-          <span class="label-text">Website</span>
-        </label>
-        <input
-          type="url"
-          placeholder="https://exemplo.com"
-          class="input input-bordered w-full"
-          [ngClass]="{ 'input-error': hasError('website', 'pattern') }"
-          formControlName="website"
-        />
-        <label class="label" *ngIf="hasError('website', 'pattern')">
-          <span class="label-text-alt text-error">{{
-            getErrorMessage('website')
-          }}</span>
-        </label>
-      </div>
-
-      <!-- Ano de fundação -->
-      <div class="form-control w-full">
-        <label class="label">
-          <span class="label-text">Ano de fundação</span>
-        </label>
-        <input
-          type="number"
-          placeholder="Digite o ano de fundação"
-          class="input input-bordered w-full"
-          [ngClass]="{
-            'input-error':
-              hasError('foundedYear', 'min') || hasError('foundedYear', 'max'),
-          }"
-          formControlName="foundedYear"
-        />
-        <label
-          class="label"
-          *ngIf="
-            hasError('foundedYear', 'min') || hasError('foundedYear', 'max')
-          "
-        >
-          <span class="label-text-alt text-error">{{
-            getErrorMessage('foundedYear')
-          }}</span>
-        </label>
-      </div>
-
-      <!-- Número de jogadores -->
-      <div class="form-control w-full">
-        <label class="label">
-          <span class="label-text">Número de jogadores</span>
-        </label>
-        <input
-          type="number"
-          placeholder="Digite o número de jogadores"
-          class="input input-bordered w-full"
-          [ngClass]="{
-            'input-error':
-              hasError('playersCount', 'min') ||
-              hasError('playersCount', 'max'),
-          }"
-          formControlName="playersCount"
-        />
-        <label
-          class="label"
-          *ngIf="
-            hasError('playersCount', 'min') || hasError('playersCount', 'max')
-          "
-        >
-          <span class="label-text-alt text-error">{{
-            getErrorMessage('playersCount')
-          }}</span>
-        </label>
-      </div>
-    </div>
-
-    <!-- Descrição (textarea) -->
-    <div class="form-control w-full">
-      <label class="label">
-        <span class="label-text">Descrição</span>
-      </label>
-      <textarea
-        class="textarea textarea-bordered h-24"
-        placeholder="Digite uma descrição para o time"
-        [ngClass]="{ 'textarea-error': hasError('description', 'maxlength') }"
-        formControlName="description"
-      ></textarea>
-      <label class="label" *ngIf="hasError('description', 'maxlength')">
-        <span class="label-text-alt text-error">{{
-          getErrorMessage('description')
-        }}</span>
-      </label>
-    </div>
-
-    <!-- Botões de ação -->
-    <div class="card-actions justify-end mt-6">
-      <button
-        type="button"
-        class="btn btn-ghost text-xs sm:text-sm md:text-base px-2 sm:px-3 md:px-4"
-        (click)="onCancel()"
-        [disabled]="isSubmitting"
+<div
+  class="bg-white rounded-xl p-4 md:p-8 border border-gray-200 shadow-lg space-y-6"
+>
+  <!-- Indicador de Progresso -->
+  <div class="w-full mb-6">
+    <div class="flex justify-between mb-2">
+      <span class="text-sm font-medium"
+        ><i class="ri-steps-line mr-1"></i>Etapa {{ currentStep }} de
+        {{ totalSteps }}</span
       >
-        Cancelar
-      </button>
-      <button
-        type="submit"
-        class="btn btn-primary gap-2 text-xs sm:text-sm md:text-base px-2 sm:px-3 md:px-4"
-        [disabled]="isSubmitting"
+      <span class="text-sm font-medium"
+        >{{ (currentStep / totalSteps) * 100 }}%</span
       >
-        <i class="ri-save-line"></i>
-        <span
-          *ngIf="isSubmitting"
-          class="loading loading-spinner loading-xs mr-2"
-        ></span>
-        {{ team ? 'Atualizar' : 'Salvar' }}
-      </button>
     </div>
-  </form>
+    <div class="w-full bg-gray-200 rounded-full h-2.5">
+      <div
+        class="bg-primary h-2.5 rounded-full"
+        [style.width.%]="(currentStep / totalSteps) * 100"
+      ></div>
+    </div>
+  </div>
+
+  <div class="space-y-4 md:space-y-6 p-0 md:p-6">
+    <!-- Etapa 1: Informações Básicas -->
+    @if (currentStep === 1) {
+      <app-team-basic-info
+        [initialData]="teamData"
+        (next)="onBasicInfoNext($event)"
+      ></app-team-basic-info>
+    }
+
+    <!-- Etapa 2: Informações do Técnico/Responsável -->
+    @if (currentStep === 2) {
+      <app-team-coach-info
+        [initialData]="teamData"
+        (next)="onCoachInfoNext($event)"
+        (previous)="previousStep()"
+      ></app-team-coach-info>
+    }
+
+    <!-- Etapa 3: Informações do Uniforme -->
+    @if (currentStep === 3) {
+      <app-team-uniform-info
+        [initialData]="teamData"
+        (next)="onUniformInfoNext($event)"
+        (previous)="previousStep()"
+      ></app-team-uniform-info>
+    }
+
+    <!-- Etapa 4: Confirmação -->
+    @if (currentStep === 4) {
+      <app-team-confirmation
+        [teamData]="teamData"
+        [logoPreview]="logoPreview"
+        (submit)="onSubmit()"
+        (previous)="previousStep()"
+      ></app-team-confirmation>
+    }
+  </div>
 </div>

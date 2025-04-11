@@ -15,16 +15,16 @@ export const TEAM_ROUTES: Routes = [
       {
         path: 'new',
         loadComponent: () =>
-          import('./team-form-steps/team-form-steps.component').then(
-            c => c.TeamFormStepsComponent
+          import('./team-form/team-form.component').then(
+            c => c.TeamFormComponent
           ),
         title: 'Novo Time',
       },
       {
         path: 'edit/:id',
         loadComponent: () =>
-          import('./team-form-steps/team-form-steps.component').then(
-            c => c.TeamFormStepsComponent
+          import('./team-form/team-form.component').then(
+            c => c.TeamFormComponent
           ),
         title: 'Editar Time',
       },
