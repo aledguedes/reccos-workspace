@@ -1,0 +1,187 @@
+<div class="space-y-4">
+  <h3 class="text-xl font-semibold text-primary mb-4">
+    Informações Básicas do Time
+  </h3>
+
+  <form [formGroup]="basicForm" class="space-y-4">
+    <!-- Nome do time -->
+    <div class="form-control w-full mb-4">
+      <label class="label">
+        <span class="label-text">Nome do Time*</span>
+      </label>
+      <input
+        type="text"
+        placeholder="Digite o nome do time"
+        class="input input-bordered w-full"
+        [ngClass]="{
+          'input-error':
+            hasError('name', 'required') || hasError('name', 'maxlength'),
+        }"
+        formControlName="name"
+      />
+      @if (hasError('name', 'required') || hasError('name', 'maxlength')) {
+        <label class="label">
+          <span class="label-text-alt text-error">
+            {{ getErrorMessage('name') }}
+          </span>
+        </label>
+      }
+    </div>
+
+    <!-- Categoria e Status na mesma linha -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+      <!-- Categoria -->
+      <div class="form-control w-full">
+        <label class="label">
+          <span class="label-text">Categoria*</span>
+        </label>
+        <div class="flex flex-col space-y-2">
+          <select
+            class="select select-bordered w-full"
+            [ngClass]="{
+              'select-error':
+                hasError('category', 'required') ||
+                hasError('category', 'maxlength'),
+            }"
+            formControlName="category"
+          >
+            <option value="" disabled selected>Selecione a categoria</option>
+            @for (category of categories; track category) {
+              <option [value]="category">{{ category }}</option>
+            }
+          </select>
+          <!-- <a
+            href="javascript:void(0)"
+            class="text-sm text-primary hover:underline"
+            (click)="openCategoryModal()"
+          >
+            + Adicionar nova categoria
+          </a> -->
+        </div>
+        @if (
+          hasError('category', 'required') || hasError('category', 'maxlength')
+        ) {
+          <label class="label">
+            <span class="label-text-alt text-error">
+              {{ getErrorMessage('category') }}
+            </span>
+          </label>
+        }
+      </div>
+
+      <!-- Status -->
+      <div class="form-control w-full">
+        <label class="label">
+          <span class="label-text">Status*</span>
+        </label>
+        <select
+          class="select select-bordered w-full"
+          [ngClass]="{
+            'select-error': hasError('status', 'required'),
+          }"
+          formControlName="status"
+        >
+          <option value="" disabled selected>Selecione o status</option>
+          <option value="ativo">Ativo</option>
+          <option value="pendente">Pendente</option>
+          <option value="inativo">Inativo</option>
+        </select>
+        @if (hasError('status', 'required')) {
+          <label class="label">
+            <span class="label-text-alt text-error">
+              {{ getErrorMessage('status') }}
+            </span>
+          </label>
+        }
+      </div>
+    </div>
+
+    <!-- Logo do time e botão de navegação -->
+
+    <label class="label">
+      <span class="label-text">Logo (opcional)</span>
+    </label>
+    <div class="flex justify-between items-center mb-4">
+      <div class="form-control">
+        <div class="flex items-center gap-4">
+          <div
+            class="w-24 h-24 bg-gray-100 rounded-md flex items-center justify-center overflow-hidden"
+          >
+            @if (logoPreview) {
+              <img
+                [src]="logoPreview"
+                alt="Logo preview"
+                class="w-full h-full object-contain"
+              />
+            }
+            @if (!logoPreview) {
+              <i class="ri-image-line text-3xl text-gray-400"></i>
+            }
+          </div>
+          <input
+            type="file"
+            class="file-input file-input-bordered max-w-xs"
+            accept="image/*"
+            (change)="onLogoChange($event)"
+          />
+        </div>
+      </div>
+
+      <div class="flex justify-center items-center">
+        <button type="button" class="btn btn-primary" (click)="onNext()">
+          Próximo <i class="ri-arrow-right-line ml-2"></i>
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Modal para adicionar nova categoria -->
+  <dialog id="category_modal" class="modal">
+    <div class="modal-box">
+      <h3 class="font-bold text-lg mb-4">Adicionar Nova Categoria</h3>
+      <form [formGroup]="categoryForm" (ngSubmit)="addCategory()">
+        <div class="form-control w-full mb-4">
+          <label class="label">
+            <span class="label-text">Nome da Categoria*</span>
+          </label>
+          <input
+            type="text"
+            placeholder="Ex: sub-15, adulto"
+            class="input input-bordered w-full"
+            formControlName="newCategory"
+            [ngClass]="{
+              'input-error':
+                categoryForm.get('newCategory')?.invalid &&
+                categoryForm.get('newCategory')?.touched,
+            }"
+          />
+          @if (
+            categoryForm.get('newCategory')?.invalid &&
+            categoryForm.get('newCategory')?.touched
+          ) {
+            <label class="label">
+              <span class="label-text-alt text-error">
+                Este campo é obrigatório
+              </span>
+            </label>
+          }
+        </div>
+        <div class="modal-action">
+          <button type="button" class="btn" (click)="closeCategoryModal()">
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="categoryForm.invalid"
+          >
+            Adicionar
+          </button>
+        </div>
+      </form>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+      <button>fechar</button>
+    </form>
+  </dialog>
+</div>

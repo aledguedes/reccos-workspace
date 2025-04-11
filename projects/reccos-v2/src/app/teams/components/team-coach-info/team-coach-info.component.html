@@ -1,0 +1,131 @@
+<div class="space-y-4">
+  <h3 class="text-xl font-semibold text-primary mb-4">Técnico/Responsável</h3>
+
+  <form [formGroup]="coachForm" class="space-y-4">
+    <!-- Nome do técnico/responsável -->
+    <div class="form-control w-full mb-4">
+      <label class="label">
+        <span class="label-text">Nome do Técnico/Responsável*</span>
+      </label>
+      <input
+        type="text"
+        placeholder="Digite o nome do técnico ou responsável"
+        class="input input-bordered w-full"
+        [ngClass]="{
+          'input-error':
+            hasError('coachName', 'required') ||
+            hasError('coachName', 'maxlength'),
+        }"
+        formControlName="coachName"
+      />
+      @if (
+        hasError('coachName', 'required') || hasError('coachName', 'maxlength')
+      ) {
+        <label class="label">
+          <span class="label-text-alt text-error">
+            {{ getErrorMessage('coachName') }}
+          </span>
+        </label>
+      }
+    </div>
+
+    <!-- Telefone e Email na mesma linha -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+      <!-- Telefone do técnico/responsável -->
+      <div class="form-control w-full">
+        <label class="label">
+          <span class="label-text">Telefone do Técnico/Responsável*</span>
+        </label>
+        <input
+          type="tel"
+          placeholder="(00) 00000-0000"
+          class="input input-bordered w-full"
+          [ngClass]="{
+            'input-error':
+              hasError('coachPhone', 'required') ||
+              hasError('coachPhone', 'pattern'),
+          }"
+          formControlName="coachPhone"
+        />
+        @if (
+          hasError('coachPhone', 'required') ||
+          hasError('coachPhone', 'pattern')
+        ) {
+          <label class="label">
+            <span class="label-text-alt text-error">
+              {{ getErrorMessage('coachPhone') }}
+            </span>
+          </label>
+        }
+      </div>
+
+      <!-- Email do técnico/responsável (opcional) -->
+      <div class="form-control w-full">
+        <label class="label">
+          <span class="label-text"
+            >Email do Técnico/Responsável (opcional)</span
+          >
+        </label>
+        <input
+          type="email"
+          placeholder="email@exemplo.com"
+          class="input input-bordered w-full"
+          [ngClass]="{
+            'input-error': hasError('coachEmail', 'email'),
+          }"
+          formControlName="coachEmail"
+        />
+        @if (hasError('coachEmail', 'email')) {
+          <label class="label">
+            <span class="label-text-alt text-error">
+              {{ getErrorMessage('coachEmail') }}
+            </span>
+          </label>
+        }
+      </div>
+    </div>
+
+    <!-- Checkbox para importar jogadores -->
+    <div class="form-control mb-4">
+      <label class="label cursor-pointer justify-start gap-2">
+        <input
+          type="checkbox"
+          class="checkbox checkbox-primary"
+          [checked]="showImportPlayersInput"
+          (change)="toggleImportPlayersInput($event)"
+        />
+        <span class="label-text"
+          >Desejo importar lista de jogadores por arquivo</span
+        >
+      </label>
+    </div>
+
+    <!-- Arquivo para importar jogadores (opcional) -->
+    <div class="form-control w-full mb-4" *ngIf="showImportPlayersInput">
+      <label class="label">
+        <span class="label-text">Importar Lista de Jogadores</span>
+      </label>
+      <input
+        type="file"
+        class="file-input file-input-bordered w-full"
+        accept=".csv,.xlsx,.xls"
+        (change)="onPlayersFileChange($event)"
+      />
+      <label class="label">
+        <span class="label-text-alt text-gray-500"
+          >Formatos aceitos: CSV, Excel (.xlsx, .xls)</span
+        >
+      </label>
+    </div>
+
+    <!-- Botões de navegação -->
+    <div class="flex justify-between mt-8">
+      <button type="button" class="btn btn-outline" (click)="onPrevious()">
+        <i class="ri-arrow-left-line mr-2"></i> Voltar
+      </button>
+      <button type="button" class="btn btn-primary" (click)="onNext()">
+        Próximo <i class="ri-arrow-right-line ml-2"></i>
+      </button>
+    </div>
+  </form>
+</div>

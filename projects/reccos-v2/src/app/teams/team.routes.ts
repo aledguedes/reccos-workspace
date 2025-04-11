@@ -10,7 +10,23 @@ export const TEAM_ROUTES: Routes = [
       {
         path: '',
         component: ListDefaultComponent,
-        title: 'Usuários',
+        title: 'Lista de Times',
+      },
+      {
+        path: 'new',
+        loadComponent: () =>
+          import('./team-form/team-form.component').then(
+            c => c.TeamFormComponent
+          ),
+        title: 'Novo Time',
+      },
+      {
+        path: 'edit/:id',
+        loadComponent: () =>
+          import('./team-form/team-form.component').then(
+            c => c.TeamFormComponent
+          ),
+        title: 'Editar Time',
       },
     ],
   },

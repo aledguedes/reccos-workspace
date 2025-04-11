@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
+  FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
@@ -31,54 +32,48 @@ export class ContactInfoComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.initForm();
+    this.contactForm = this.fb.group({
+      phone: ['', [Validators.required, Validators.pattern(/^\d{10,11}$/)]],
+      email: ['', [Validators.email, Validators.maxLength(100)]],
+      cep: ['', [Validators.required, Validators.pattern(/^\d{8}$/)]],
+      address: ['', Validators.maxLength(150)],
+      number: ['', Validators.maxLength(10)],
+      district: ['', Validators.maxLength(50)],
+      complement: ['', Validators.maxLength(50)],
+      city: ['', Validators.maxLength(50)],
+      state: ['', Validators.maxLength(2)],
+    });
   }
 
-  initForm(): void {
-    this.contactForm = this.fb.group({
-      cep: ['', [Validators.required, Validators.pattern(/^\d{5}-?\d{3}$/)]],
-      phone: ['', [Validators.required, Validators.pattern(/^\d{10,11}$/)]],
-      email: [
-        this.initialData?.email || '',
-        [Validators.email, Validators.maxLength(100)],
-      ],
-      address: [this.initialData?.address || '', Validators.maxLength(200)],
-      city: [this.initialData?.city || '', Validators.maxLength(100)],
-      state: [this.initialData?.state || '', Validators.maxLength(50)],
-      complement: [''],
-      district: [''],
-    });
+  cepControl = this.contactForm.get('cep') as FormControl;
 
-    // Preencher os campos com os dados iniciais, se existirem
-    if (this.initialData) {
-      this.contactForm.patchValue({
-        cep: this.initialData.cep || '',
-        phone: this.initialData.phone || '',
-        email: this.initialData.email || '',
-        address: this.initialData.address || '',
-        city: this.initialData.city || '',
-        state: this.initialData.state || '',
-        complement: this.initialData.complement || '',
-        district: this.initialData.district || '',
-      });
-    }
+  checkCepValidity() {
+    const cepValue = this.cepControl.value?.replace(/[^\d]/g, '') || '';
+    this.cepControl.setValue(cepValue, { emitEvent: false });
   }
 
   buscarCEP(): void {
+    const cepControl = this.contactForm.get('contact.cep')?.value;
+    const cepSanitized = cepControl.replace(/[^\d]/g, '');
+    if (cepSanitized.length !== 8) {
+      this.contactForm.get('contact.cep')?.setErrors({ pattern: true });
+      return;
+    }
+
     this.cepLoading = true;
-    const cepControl = this.contactForm.get('cep')?.value;
     this.cepService.buscarCEP(cepControl).subscribe({
       next: (endereco: any) => {
         if (endereco) {
           this.contactForm.patchValue({
-            address: endereco.logradouro,
-            city: endereco.localidade,
-            state: endereco.uf,
-            district: endereco.bairro,
-            complement: endereco.complemento,
+            contact: {
+              address: endereco.logradouro,
+              city: endereco.localidade,
+              state: endereco.uf,
+            },
           });
         }
         this.cepLoading = false;
+        this.cepError = false;
       },
       error: (error: any) => {
         console.error(error);
@@ -89,10 +84,12 @@ export class ContactInfoComponent implements OnInit {
   }
 
   openCepSearch(): void {
-    window.open(
-      'https://buscacepinter.correios.com.br/app/endereco/index.php',
-      '_blank'
-    );
+    if (this.contactForm.get('contact.cep')?.valid && !this.cepError) {
+      window.open(
+        'https://buscacepinter.correios.com.br/app/endereco/index.php',
+        '_blank'
+      );
+    }
   }
 
   onNext(): void {
