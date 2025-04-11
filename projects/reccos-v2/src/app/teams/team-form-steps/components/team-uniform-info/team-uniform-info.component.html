@@ -1,0 +1,85 @@
+<div class="space-y-4">
+  <h3 class="text-xl font-semibold text-primary mb-4">
+    Informações do Uniforme
+  </h3>
+
+  <form [formGroup]="uniformForm" class="space-y-4">
+    <!-- Cor principal do uniforme -->
+    <div class="form-control w-full mb-4">
+      <label class="label">
+        <span class="label-text">Cor Principal do Uniforme (opcional)</span>
+      </label>
+      <input
+        type="text"
+        placeholder="Ex: Azul, Vermelho, etc."
+        class="input input-bordered w-full"
+        [ngClass]="{
+          'input-error': hasError('uniformMainColor', 'maxlength'),
+        }"
+        formControlName="uniformMainColor"
+      />
+      @if (hasError('uniformMainColor', 'maxlength')) {
+        <label class="label">
+          <span class="label-text-alt text-error">
+            {{ getErrorMessage('uniformMainColor') }}
+          </span>
+        </label>
+      }
+    </div>
+
+    <!-- Cor secundária do uniforme -->
+    <div class="form-control w-full mb-4">
+      <label class="label">
+        <span class="label-text">Cor Secundária do Uniforme (opcional)</span>
+      </label>
+      <input
+        type="text"
+        placeholder="Ex: Branco, Preto, etc."
+        class="input input-bordered w-full"
+        [ngClass]="{
+          'input-error': hasError('uniformSecondaryColor', 'maxlength'),
+        }"
+        formControlName="uniformSecondaryColor"
+      />
+      @if (hasError('uniformSecondaryColor', 'maxlength')) {
+        <label class="label">
+          <span class="label-text-alt text-error">
+            {{ getErrorMessage('uniformSecondaryColor') }}
+          </span>
+        </label>
+      }
+    </div>
+
+    <!-- Observações sobre o uniforme -->
+    <div class="form-control w-full mb-4">
+      <label class="label">
+        <span class="label-text">Observações sobre o Uniforme (opcional)</span>
+      </label>
+      <textarea
+        placeholder="Informações adicionais sobre o uniforme"
+        class="textarea textarea-bordered w-full h-24"
+        [ngClass]="{
+          'textarea-error': hasError('uniformNotes', 'maxlength'),
+        }"
+        formControlName="uniformNotes"
+      ></textarea>
+      @if (hasError('uniformNotes', 'maxlength')) {
+        <label class="label">
+          <span class="label-text-alt text-error">
+            {{ getErrorMessage('uniformNotes') }}
+          </span>
+        </label>
+      }
+    </div>
+
+    <!-- Botões de navegação -->
+    <div class="flex justify-between mt-8">
+      <button type="button" class="btn btn-outline" (click)="onPrevious()">
+        <i class="ri-arrow-left-line mr-2"></i> Voltar
+      </button>
+      <button type="button" class="btn btn-primary" (click)="onNext()">
+        Próximo <i class="ri-arrow-right-line ml-2"></i>
+      </button>
+    </div>
+  </form>
+</div>

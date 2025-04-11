@@ -1,0 +1,114 @@
+<div class="space-y-4">
+  <h3 class="text-xl font-semibold text-primary mb-4">Confirmação</h3>
+
+  <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+    <div class="flex items-start gap-6">
+      <!-- Logo do time -->
+      <div
+        class="w-24 h-24 bg-gray-100 rounded-md flex items-center justify-center overflow-hidden flex-shrink-0"
+      >
+        @if (logoPreview) {
+          <img
+            [src]="logoPreview"
+            alt="Logo do time"
+            class="w-full h-full object-contain"
+          />
+        }
+        @if (!logoPreview) {
+          <i class="ri-image-line text-3xl text-gray-400"></i>
+        }
+      </div>
+
+      <!-- Informações do time -->
+      <div class="flex-1">
+        <h4 class="text-lg font-bold">{{ teamData.name }}</h4>
+        <p class="text-sm text-gray-600 mb-4">
+          Categoria: {{ teamData.category }}
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Informações básicas -->
+          <div>
+            <h5 class="font-semibold text-sm mb-2">Informações Básicas</h5>
+            <ul class="space-y-1 text-sm">
+              <li>
+                <span class="font-medium">Status:</span> {{ statusLabel }}
+              </li>
+            </ul>
+          </div>
+
+          <!-- Informações do técnico -->
+          <div>
+            <h5 class="font-semibold text-sm mb-2">Técnico/Responsável</h5>
+            <ul class="space-y-1 text-sm">
+              <li>
+                <span class="font-medium">Nome:</span> {{ teamData.coachName }}
+              </li>
+              <li>
+                <span class="font-medium">Telefone:</span>
+                {{ teamData.coachPhone }}
+              </li>
+              @if (teamData.coachEmail) {
+                <li>
+                  <span class="font-medium">Email:</span>
+                  {{ teamData.coachEmail }}
+                </li>
+              }
+            </ul>
+          </div>
+
+          <!-- Informações do uniforme -->
+          @if (teamData.uniformMainColor || teamData.uniformSecondaryColor) {
+            <div>
+              <h5 class="font-semibold text-sm mb-2">Uniforme</h5>
+              <ul class="space-y-1 text-sm">
+                @if (teamData.uniformMainColor) {
+                  <li>
+                    <span class="font-medium">Cor Principal:</span>
+                    {{ teamData.uniformMainColor }}
+                  </li>
+                }
+                @if (teamData.uniformSecondaryColor) {
+                  <li>
+                    <span class="font-medium">Cor Secundária:</span>
+                    {{ teamData.uniformSecondaryColor }}
+                  </li>
+                }
+              </ul>
+            </div>
+          }
+
+          <!-- Jogadores -->
+          @if (teamData.playersList && teamData.playersList.length > 0) {
+            <div>
+              <h5 class="font-semibold text-sm mb-2">Jogadores</h5>
+              <p class="text-xs text-gray-500">
+                {{ teamData.playersList.length }} jogadores disponíveis para
+                cadastro
+              </p>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botões de navegação -->
+  <div class="flex justify-between mt-8">
+    <button type="button" class="btn btn-outline" (click)="onPrevious()">
+      <i class="ri-arrow-left-line mr-2"></i> Voltar
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary"
+      (click)="onSubmit()"
+      [disabled]="isSubmitting"
+    >
+      <i class="ri-check-line mr-2"></i> Finalizar Cadastro
+      <span
+        *ngIf="isSubmitting"
+        class="loading loading-spinner loading-xs ml-2"
+      ></span>
+    </button>
+  </div>
+</div>
