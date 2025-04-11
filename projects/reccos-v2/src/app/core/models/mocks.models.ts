@@ -122,10 +122,10 @@ export const refrees: IEntity[] = [
     avatar: '',
     status: 'active',
     relatedEntity: {
-      type: 'league',
+      type: 'federation',
       id: 1,
-      name: 'La Liga Española',
-      label: 'Liga',
+      name: 'Spanish Football Federation',
+      label: 'Federação',
     },
   },
   {
@@ -138,8 +138,8 @@ export const refrees: IEntity[] = [
     relatedEntity: {
       type: 'league',
       id: 1,
-      name: 'La Liga Española',
-      label: 'Liga',
+      name: 'Spanish Football Federation',
+      label: 'Federação',
     },
   },
 ];

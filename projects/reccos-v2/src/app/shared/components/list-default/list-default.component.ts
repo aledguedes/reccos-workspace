@@ -75,7 +75,7 @@ export class ListDefaultComponent {
         'teams',
         'leagues',
         'players',
-        'referees',
+        'refrees',
         'federations',
       ];
 

@@ -1,0 +1,68 @@
+<div class="space-y-4">
+  <h3 class="text-xl font-semibold text-primary mb-4">
+    Status e Disponibilidade
+  </h3>
+
+  <form [formGroup]="statusForm" class="space-y-4">
+    <!-- Disponibilidade -->
+    <div class="form-control w-full mb-4">
+      <label class="label">
+        <span class="label-text">Disponibilidade*</span>
+      </label>
+      <select
+        class="select select-bordered w-full"
+        [ngClass]="{
+          'select-error': hasError('availability', 'required'),
+        }"
+        formControlName="availability"
+      >
+        <option value="" disabled selected>Selecione a disponibilidade</option>
+        <option value="disponível">Disponível</option>
+        <option value="indisponível">Indisponível</option>
+      </select>
+      @if (hasError('availability', 'required')) {
+        <label class="label">
+          <span class="label-text-alt text-error">
+            {{ getErrorMessage('availability') }}
+          </span>
+        </label>
+      }
+    </div>
+
+    <!-- Status -->
+    <div class="form-control w-full mb-4">
+      <label class="label">
+        <span class="label-text">Status*</span>
+      </label>
+      <select
+        class="select select-bordered w-full"
+        [ngClass]="{
+          'select-error': hasError('status', 'required'),
+        }"
+        formControlName="status"
+      >
+        <option value="" disabled selected>Selecione o status</option>
+        <option value="ativo">Ativo</option>
+        <option value="pendente">Pendente</option>
+        <option value="suspenso">Suspenso</option>
+      </select>
+      @if (hasError('status', 'required')) {
+        <label class="label">
+          <span class="label-text-alt text-error">
+            {{ getErrorMessage('status') }}
+          </span>
+        </label>
+      }
+    </div>
+
+    <!-- Botões de navegação -->
+    <div class="flex justify-between items-center">
+      <button type="button" class="btn btn-outline" (click)="onPrevious()">
+        <i class="ri-arrow-left-line mr-2"></i> Voltar
+      </button>
+      <button type="button" class="btn btn-primary" (click)="onSubmit()">
+        Concluir <i class="ri-check-line ml-2"></i>
+      </button>
+    </div>
+  </form>
+</div>
