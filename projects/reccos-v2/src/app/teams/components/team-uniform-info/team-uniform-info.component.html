@@ -4,50 +4,53 @@
   </h3>
 
   <form [formGroup]="uniformForm" class="space-y-4">
-    <!-- Cor principal do uniforme -->
-    <div class="form-control w-full mb-4">
-      <label class="label">
-        <span class="label-text">Cor Principal do Uniforme (opcional)</span>
-      </label>
-      <input
-        type="text"
-        placeholder="Ex: Azul, Vermelho, etc."
-        class="input input-bordered w-full"
-        [ngClass]="{
-          'input-error': hasError('uniformMainColor', 'maxlength'),
-        }"
-        formControlName="uniformMainColor"
-      />
-      @if (hasError('uniformMainColor', 'maxlength')) {
+    <!-- Cores do uniforme na mesma linha -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+      <!-- Cor principal do uniforme -->
+      <div class="form-control w-full">
         <label class="label">
-          <span class="label-text-alt text-error">
-            {{ getErrorMessage('uniformMainColor') }}
-          </span>
+          <span class="label-text">Cor Principal do Uniforme (opcional)</span>
         </label>
-      }
-    </div>
+        <input
+          type="text"
+          placeholder="Ex: Azul, Vermelho, etc."
+          class="input input-bordered w-full"
+          [ngClass]="{
+            'input-error': hasError('uniformMainColor', 'maxlength'),
+          }"
+          formControlName="uniformMainColor"
+        />
+        @if (hasError('uniformMainColor', 'maxlength')) {
+          <label class="label">
+            <span class="label-text-alt text-error">
+              {{ getErrorMessage('uniformMainColor') }}
+            </span>
+          </label>
+        }
+      </div>
 
-    <!-- Cor secundária do uniforme -->
-    <div class="form-control w-full mb-4">
-      <label class="label">
-        <span class="label-text">Cor Secundária do Uniforme (opcional)</span>
-      </label>
-      <input
-        type="text"
-        placeholder="Ex: Branco, Preto, etc."
-        class="input input-bordered w-full"
-        [ngClass]="{
-          'input-error': hasError('uniformSecondaryColor', 'maxlength'),
-        }"
-        formControlName="uniformSecondaryColor"
-      />
-      @if (hasError('uniformSecondaryColor', 'maxlength')) {
+      <!-- Cor secundária do uniforme -->
+      <div class="form-control w-full">
         <label class="label">
-          <span class="label-text-alt text-error">
-            {{ getErrorMessage('uniformSecondaryColor') }}
-          </span>
+          <span class="label-text">Cor Secundária do Uniforme (opcional)</span>
         </label>
-      }
+        <input
+          type="text"
+          placeholder="Ex: Branco, Preto, etc."
+          class="input input-bordered w-full"
+          [ngClass]="{
+            'input-error': hasError('uniformSecondaryColor', 'maxlength'),
+          }"
+          formControlName="uniformSecondaryColor"
+        />
+        @if (hasError('uniformSecondaryColor', 'maxlength')) {
+          <label class="label">
+            <span class="label-text-alt text-error">
+              {{ getErrorMessage('uniformSecondaryColor') }}
+            </span>
+          </label>
+        }
+      </div>
     </div>
 
     <!-- Observações sobre o uniforme -->

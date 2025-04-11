@@ -22,6 +22,7 @@ export class TeamCoachInfoComponent implements OnInit {
   coachForm!: FormGroup;
   playersFile: File | null = null;
   playersList: any[] = [];
+  showImportPlayersInput: boolean = false;
 
   constructor(private fb: FormBuilder) {}
 
@@ -95,6 +96,10 @@ export class TeamCoachInfoComponent implements OnInit {
 
   onPrevious(): void {
     this.previous.emit();
+  }
+
+  toggleImportPlayersInput(event: Event): void {
+    this.showImportPlayersInput = (event.target as HTMLInputElement).checked;
   }
 
   hasError(controlName: string, errorName: string): boolean {

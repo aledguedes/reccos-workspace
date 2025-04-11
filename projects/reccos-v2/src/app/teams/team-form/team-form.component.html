@@ -1,47 +1,47 @@
-<div class="mb-4">
-  <div class="flex items-center gap-3 mb-2">
+<div class="mb-3">
+  <div class="flex items-center gap-2 mb-1">
     <a
       class="btn btn-circle btn-ghost text-primary hover:bg-primary/10"
       routerLink="/teams"
       (click)="onCancelTeam()"
       aria-label="Voltar para listagem"
     >
-      <i class="ri-arrow-left-line text-xl"></i>
+      <i class="ri-arrow-left-line text-lg"></i>
     </a>
-    <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-primary">
+    <h2 class="text-xl md:text-2xl lg:text-3xl font-bold text-primary">
       {{ team ? 'Editar Time' : 'Novo Time' }}
     </h2>
   </div>
   <p
-    class="text-xs sm:text-sm md:text-base lg:text-lg text-muted-foreground max-w-prose break-words whitespace-normal pl-12"
+    class="text-xs sm:text-sm md:text-base text-muted-foreground max-w-prose break-words whitespace-normal pl-10"
   >
     Preencha as informações do time para inscrição no torneio.
   </p>
 </div>
 
 <div
-  class="bg-white rounded-xl p-4 md:p-8 border border-gray-200 shadow-lg space-y-6"
+  class="bg-white rounded-xl p-5 md:p-8 border border-gray-200 shadow-lg space-y-4 w-full md:w-3/4 mx-auto"
 >
   <!-- Indicador de Progresso -->
-  <div class="w-full mb-6">
-    <div class="flex justify-between mb-2">
-      <span class="text-sm font-medium"
+  <div class="w-full mb-4">
+    <div class="flex justify-between mb-1">
+      <span class="text-xs md:text-sm font-medium"
         ><i class="ri-steps-line mr-1"></i>Etapa {{ currentStep }} de
         {{ totalSteps }}</span
       >
-      <span class="text-sm font-medium"
+      <span class="text-xs md:text-sm font-medium"
         >{{ (currentStep / totalSteps) * 100 }}%</span
       >
     </div>
-    <div class="w-full bg-gray-200 rounded-full h-2.5">
+    <div class="w-full bg-gray-200 rounded-full h-2">
       <div
-        class="bg-primary h-2.5 rounded-full"
+        class="bg-primary h-2 rounded-full"
         [style.width.%]="(currentStep / totalSteps) * 100"
       ></div>
     </div>
   </div>
 
-  <div class="space-y-4 md:space-y-6 p-0 md:p-6">
+  <div class="space-y-4 md:space-y-6 p-0 md:p-5">
     <!-- Etapa 1: Informações Básicas -->
     @if (currentStep === 1) {
       <app-team-basic-info

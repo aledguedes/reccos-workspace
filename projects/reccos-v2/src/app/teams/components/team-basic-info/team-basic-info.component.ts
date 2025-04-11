@@ -19,12 +19,24 @@ export class TeamBasicInfoComponent implements OnInit {
   @Output() next = new EventEmitter<any>();
 
   basicForm!: FormGroup;
+  categoryForm!: FormGroup;
   logoPreview: string | null = null;
+  categories: string[] = [
+    'Sub-11',
+    'Sub-13',
+    'Sub-15',
+    'Sub-17',
+    'Sub-20',
+    'Adulto',
+    'Master',
+    'Veterano',
+  ];
 
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.initForm();
+    this.initCategoryForm();
   }
 
   initForm(): void {
@@ -44,6 +56,12 @@ export class TeamBasicInfoComponent implements OnInit {
     if (this.initialData?.logo) {
       this.logoPreview = this.initialData.logo;
     }
+  }
+
+  initCategoryForm(): void {
+    this.categoryForm = this.fb.group({
+      newCategory: ['', [Validators.required, Validators.maxLength(50)]],
+    });
   }
 
   onLogoChange(event: Event): void {
@@ -92,6 +110,37 @@ export class TeamBasicInfoComponent implements OnInit {
     }
 
     return 'Campo inválido';
+  }
+
+  openCategoryModal(): void {
+    const modal = document.getElementById(
+      'category_modal'
+    ) as HTMLDialogElement;
+    if (modal) {
+      this.categoryForm.reset();
+      modal.showModal();
+    }
+  }
+
+  closeCategoryModal(): void {
+    const modal = document.getElementById(
+      'category_modal'
+    ) as HTMLDialogElement;
+    if (modal) {
+      modal.close();
+    }
+  }
+
+  addCategory(): void {
+    if (this.categoryForm.valid) {
+      const newCategory = this.categoryForm.get('newCategory')?.value;
+      if (newCategory && !this.categories.includes(newCategory)) {
+        this.categories.push(newCategory);
+        this.categories.sort(); // Ordenar categorias alfabeticamente
+        this.basicForm.get('category')?.setValue(newCategory);
+        this.closeCategoryModal();
+      }
+    }
   }
 
   private markFormGroupTouched(formGroup: FormGroup) {

@@ -29,60 +29,81 @@
       }
     </div>
 
-    <!-- Telefone do técnico/responsável -->
-    <div class="form-control w-full mb-4">
-      <label class="label">
-        <span class="label-text">Telefone do Técnico/Responsável*</span>
-      </label>
-      <input
-        type="tel"
-        placeholder="(00) 00000-0000"
-        class="input input-bordered w-full"
-        [ngClass]="{
-          'input-error':
-            hasError('coachPhone', 'required') ||
-            hasError('coachPhone', 'pattern'),
-        }"
-        formControlName="coachPhone"
-      />
-      @if (
-        hasError('coachPhone', 'required') || hasError('coachPhone', 'pattern')
-      ) {
+    <!-- Telefone e Email na mesma linha -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+      <!-- Telefone do técnico/responsável -->
+      <div class="form-control w-full">
         <label class="label">
-          <span class="label-text-alt text-error">
-            {{ getErrorMessage('coachPhone') }}
-          </span>
+          <span class="label-text">Telefone do Técnico/Responsável*</span>
         </label>
-      }
+        <input
+          type="tel"
+          placeholder="(00) 00000-0000"
+          class="input input-bordered w-full"
+          [ngClass]="{
+            'input-error':
+              hasError('coachPhone', 'required') ||
+              hasError('coachPhone', 'pattern'),
+          }"
+          formControlName="coachPhone"
+        />
+        @if (
+          hasError('coachPhone', 'required') ||
+          hasError('coachPhone', 'pattern')
+        ) {
+          <label class="label">
+            <span class="label-text-alt text-error">
+              {{ getErrorMessage('coachPhone') }}
+            </span>
+          </label>
+        }
+      </div>
+
+      <!-- Email do técnico/responsável (opcional) -->
+      <div class="form-control w-full">
+        <label class="label">
+          <span class="label-text"
+            >Email do Técnico/Responsável (opcional)</span
+          >
+        </label>
+        <input
+          type="email"
+          placeholder="email@exemplo.com"
+          class="input input-bordered w-full"
+          [ngClass]="{
+            'input-error': hasError('coachEmail', 'email'),
+          }"
+          formControlName="coachEmail"
+        />
+        @if (hasError('coachEmail', 'email')) {
+          <label class="label">
+            <span class="label-text-alt text-error">
+              {{ getErrorMessage('coachEmail') }}
+            </span>
+          </label>
+        }
+      </div>
     </div>
 
-    <!-- Email do técnico/responsável (opcional) -->
-    <div class="form-control w-full mb-4">
-      <label class="label">
-        <span class="label-text">Email do Técnico/Responsável (opcional)</span>
+    <!-- Checkbox para importar jogadores -->
+    <div class="form-control mb-4">
+      <label class="label cursor-pointer justify-start gap-2">
+        <input
+          type="checkbox"
+          class="checkbox checkbox-primary"
+          [checked]="showImportPlayersInput"
+          (change)="toggleImportPlayersInput($event)"
+        />
+        <span class="label-text"
+          >Desejo importar lista de jogadores por arquivo</span
+        >
       </label>
-      <input
-        type="email"
-        placeholder="email@exemplo.com"
-        class="input input-bordered w-full"
-        [ngClass]="{
-          'input-error': hasError('coachEmail', 'email'),
-        }"
-        formControlName="coachEmail"
-      />
-      @if (hasError('coachEmail', 'email')) {
-        <label class="label">
-          <span class="label-text-alt text-error">
-            {{ getErrorMessage('coachEmail') }}
-          </span>
-        </label>
-      }
     </div>
 
     <!-- Arquivo para importar jogadores (opcional) -->
-    <div class="form-control w-full mb-4">
+    <div class="form-control w-full mb-4" *ngIf="showImportPlayersInput">
       <label class="label">
-        <span class="label-text">Importar Lista de Jogadores (opcional)</span>
+        <span class="label-text">Importar Lista de Jogadores</span>
       </label>
       <input
         type="file"
