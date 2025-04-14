@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { IPlayer, PLAYER_POSITIONS } from '../../core/models/player.model';
@@ -10,6 +17,7 @@ import { SportInfoComponent } from './components/sport-info/sport-info.component
 import { HealthInfoComponent } from './components/health-info/health-info.component';
 import { ConfirmationComponent } from './components/confirmation/confirmation.component';
 import { ContactInfoGenericComponent } from '../../shared/components/contact-info-generic/contact-info-generic.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-player-form',
@@ -44,7 +52,7 @@ export class PlayerFormComponent implements OnInit {
 
   isSubmitting = false;
 
-  constructor() {}
+  private router = inject(Router);
 
   ngOnInit(): void {
     this.loadTeams();
@@ -140,5 +148,9 @@ export class PlayerFormComponent implements OnInit {
 
   onCancel(): void {
     this.cancel.emit();
+  }
+
+  onCancelPlayer(): void {
+    this.router.navigate(['/players']);
   }
 }
