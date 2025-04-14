@@ -15,16 +15,16 @@ export const PLAYER_ROUTES: Routes = [
       {
         path: 'new',
         loadComponent: () =>
-          import('./player-form-page/player-form-page.component').then(
-            c => c.PlayerFormPageComponent
+          import('./player-form/player-form.component').then(
+            c => c.PlayerFormComponent
           ),
         title: 'Novo Jogador',
       },
       {
         path: 'edit/:id',
         loadComponent: () =>
-          import('./player-form-page/player-form-page.component').then(
-            c => c.PlayerFormPageComponent
+          import('./player-form/player-form.component').then(
+            c => c.PlayerFormComponent
           ),
         title: 'Editar Jogador',
       },

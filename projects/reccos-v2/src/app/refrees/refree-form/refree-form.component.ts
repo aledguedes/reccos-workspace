@@ -12,9 +12,9 @@ import { Router } from '@angular/router';
 
 // Importando os componentes de cada etapa
 import { RefreePersonalInfoComponent } from '../components/refree-personal-info/refree-personal-info.component';
-import { RefreeContactInfoComponent } from '../components/refree-contact-info/refree-contact-info.component';
 import { RefreeProfessionalInfoComponent } from '../components/refree-professional-info/refree-professional-info.component';
 import { RefreeConfirmationComponent } from '../components/refree-confirmation/refree-confirmation.component';
+import { ContactInfoGenericComponent } from '../../shared/components/contact-info-generic/contact-info-generic.component';
 
 // Interface para o modelo de árbitro
 interface IRefree {
@@ -40,7 +40,7 @@ interface IRefree {
     CommonModule,
     ReactiveFormsModule,
     RefreePersonalInfoComponent,
-    RefreeContactInfoComponent,
+    ContactInfoGenericComponent,
     RefreeProfessionalInfoComponent,
     RefreeConfirmationComponent,
   ],

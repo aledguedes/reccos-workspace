@@ -2,9 +2,6 @@
   <h3 class="text-lg md:text-xl font-semibold text-primary">
     Informações de Contato
   </h3>
-  <p class="text-sm text-muted-foreground">
-    Preencha os dados de contato do árbitro.
-  </p>
 
   <form [formGroup]="contactForm" class="space-y-4" (ngSubmit)="onNext()">
     <!-- Telefone -->
@@ -82,7 +79,7 @@
                   (blur)="buscarCEP()"
                 />
                 @if (cepLoading) {
-                  <span class="absolute right-3 top-3">
+                  <span class="absolute right-3 inset-y-0 flex items-center">
                     <span
                       class="loading loading-spinner loading-xs text-primary"
                     ></span>
@@ -90,7 +87,7 @@
                 } @else {
                   <a
                     href="javascript:void(0)"
-                    class="absolute right-3 top-3 text-primary hover:text-primary-focus transition-colors"
+                    class="absolute right-3 inset-y-0 flex items-center text-primary hover:text-primary-focus transition-colors"
                     (click)="buscarCEP()"
                     [class.opacity-50]="cepLoading"
                     [attr.aria-disabled]="cepLoading"

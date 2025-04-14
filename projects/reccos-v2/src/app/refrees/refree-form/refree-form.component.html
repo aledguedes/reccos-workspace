@@ -52,11 +52,11 @@
 
     <!-- Etapa 2: Informações de Contato -->
     @if (currentStep === 2) {
-      <app-refree-contact-info
+      <app-contact-info-generic
         [initialData]="refreeData"
         (next)="onContactInfoNext($event)"
         (previous)="previousStep()"
-      ></app-refree-contact-info>
+      ></app-contact-info-generic>
     }
 
     <!-- Etapa 3: Informações Profissionais -->

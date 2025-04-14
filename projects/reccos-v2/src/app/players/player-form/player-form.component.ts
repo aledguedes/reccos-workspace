@@ -6,10 +6,10 @@ import { ITeam } from '../../core/models/team.model';
 
 // Importando os componentes de cada etapa
 import { PersonalInfoComponent } from './components/personal-info/personal-info.component';
-import { ContactInfoComponent } from './components/contact-info/contact-info.component';
 import { SportInfoComponent } from './components/sport-info/sport-info.component';
 import { HealthInfoComponent } from './components/health-info/health-info.component';
 import { ConfirmationComponent } from './components/confirmation/confirmation.component';
+import { ContactInfoGenericComponent } from '../../shared/components/contact-info-generic/contact-info-generic.component';
 
 @Component({
   selector: 'app-player-form',
@@ -17,11 +17,11 @@ import { ConfirmationComponent } from './components/confirmation/confirmation.co
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    PersonalInfoComponent,
-    ContactInfoComponent,
     SportInfoComponent,
     HealthInfoComponent,
+    PersonalInfoComponent,
     ConfirmationComponent,
+    ContactInfoGenericComponent,
   ],
   templateUrl: './player-form.component.html',
   styleUrl: './player-form.component.scss',

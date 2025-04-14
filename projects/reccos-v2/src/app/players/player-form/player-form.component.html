@@ -48,11 +48,16 @@
 
     <!-- Etapa 2: Informações de Contato -->
     @if (currentStep === 2) {
-      <app-contact-info
+      <!-- <app-contact-info
         [initialData]="playerData"
         (next)="onContactInfoNext($event)"
         (previous)="previousStep()"
-      ></app-contact-info>
+      ></app-contact-info> -->
+      <app-contact-info-generic
+        [initialData]="playerData"
+        (next)="onContactInfoNext($event)"
+        (previous)="previousStep()"
+      ></app-contact-info-generic>
     }
 
     <!-- Etapa 3: Informações Esportivas -->

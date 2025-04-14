@@ -6,16 +6,15 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { CepService, Endereco } from '../../../shared/services/cep.service';
+import { CepService, Endereco } from '../../services/cep.service';
 
 @Component({
-  selector: 'app-refree-contact-info',
-  standalone: true,
+  selector: 'app-contact-info-generic',
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './refree-contact-info.component.html',
-  styleUrl: './refree-contact-info.component.scss',
+  templateUrl: './contact-info-generic.component.html',
+  styleUrl: './contact-info-generic.component.scss',
 })
-export class RefreeContactInfoComponent implements OnInit {
+export class ContactInfoGenericComponent implements OnInit {
   @Input() initialData: any = {};
   @Output() next = new EventEmitter<any>();
   @Output() previous = new EventEmitter<void>();
