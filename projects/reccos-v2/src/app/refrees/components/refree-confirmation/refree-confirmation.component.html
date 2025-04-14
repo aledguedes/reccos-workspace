@@ -1,0 +1,157 @@
+<div class="space-y-4">
+  <h3 class="text-lg md:text-xl font-semibold text-primary">
+    Confirmação de Dados
+  </h3>
+  <p class="text-sm font-semibold text-muted-foreground">
+    Revise os dados do árbitro antes de finalizar o cadastro.
+  </p>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+    <!-- Coluna 1: Informações Pessoais e Foto -->
+    <div class="space-y-4">
+      <div class="bg-gray-50 p-4 rounded-lg">
+        <h4 class="font-bold text-primary mb-3">Informações Pessoais</h4>
+        <div class="space-y-2">
+          <div class="flex flex-col">
+            <span class="text-sm font-semibold text-muted-foreground"
+              >Nome Completo</span
+            >
+            <span class="font-normal">{{
+              refreeData.fullName || 'Não informado'
+            }}</span>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-sm font-semibold text-muted-foreground">CPF</span>
+            <span class="font-normal">{{
+              refreeData.cpf || 'Não informado'
+            }}</span>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-sm font-semibold text-muted-foreground"
+              >Data de Nascimento</span
+            >
+            <span class="font-normal">{{
+              formatDate(refreeData.birthDate)
+            }}</span>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-sm font-semibold text-muted-foreground"
+              >Data de Cadastro</span
+            >
+            <span class="font-normal">{{
+              formatDate(refreeData.registrationDate)
+            }}</span>
+          </div>
+        </div>
+      </div>
+
+      @if (photoPreview) {
+        <div class="bg-gray-50 p-4 rounded-lg">
+          <h4 class="font-bold text-primary mb-3">Foto</h4>
+          <div class="flex justify-center">
+            <img
+              [src]="photoPreview"
+              alt="Foto do árbitro"
+              class="w-32 h-32 object-cover rounded-lg border border-gray-200"
+            />
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Coluna 2: Informações de Contato e Profissionais -->
+    <div class="space-y-4">
+      <div class="bg-gray-50 p-4 rounded-lg">
+        <h4 class="font-bold text-primary mb-3">Informações de Contato</h4>
+        <div class="space-y-2">
+          <div class="flex flex-col">
+            <span class="text-sm font-semibold text-muted-foreground"
+              >Telefone</span
+            >
+            <span class="font-normal">{{
+              refreeData.phone || 'Não informado'
+            }}</span>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-sm font-semibold text-muted-foreground"
+              >Endereço</span
+            >
+            <span class="font-normal">{{
+              refreeData.address || 'Não informado'
+            }}</span>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-sm font-semibold text-muted-foreground"
+              >E-mail</span
+            >
+            <span class="font-normal">{{
+              refreeData.email || 'Não informado'
+            }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-gray-50 p-4 rounded-lg">
+        <h4 class="font-bold text-primary mb-3">Informações Profissionais</h4>
+        <div class="space-y-2">
+          <div class="flex flex-col">
+            <span class="text-sm font-semibold text-muted-foreground"
+              >Disponibilidade</span
+            >
+            <span class="font-normal">{{
+              formatAvailability(refreeData.availability)
+            }}</span>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-sm font-semibold text-muted-foreground"
+              >Status</span
+            >
+            <span class="font-normal">{{
+              formatStatus(refreeData.status)
+            }}</span>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-sm font-semibold text-muted-foreground"
+              >Experiência</span
+            >
+            <span class="font-normal">{{
+              formatExperience(refreeData.experience)
+            }}</span>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-sm font-semibold text-muted-foreground"
+              >Especialidade</span
+            >
+            <span class="font-normal">{{
+              formatSpecialty(refreeData.specialty)
+            }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botões -->
+  <div class="flex justify-between pt-6">
+    <button type="button" class="btn btn-outline" (click)="onPrevious()">
+      <i class="ri-arrow-left-line mr-1"></i> Anterior
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary"
+      (click)="onSubmit()"
+      [disabled]="isLoading"
+    >
+      @if (!isLoading) {
+        <i class="ri-check-line mr-1"></i>
+        <span>Finalizar Cadastro</span>
+      }
+      @if (isLoading) {
+        <span class="flex items-center">
+          <span class="loading loading-spinner loading-xs mr-2"></span>
+          Processando...
+        </span>
+      }
+    </button>
+  </div>
+</div>

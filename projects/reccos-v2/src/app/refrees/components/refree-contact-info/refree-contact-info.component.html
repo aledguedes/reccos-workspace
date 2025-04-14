@@ -1,0 +1,300 @@
+<div class="space-y-4">
+  <h3 class="text-lg md:text-xl font-semibold text-primary">
+    Informações de Contato
+  </h3>
+  <p class="text-sm text-muted-foreground">
+    Preencha os dados de contato do árbitro.
+  </p>
+
+  <form [formGroup]="contactForm" class="space-y-4" (ngSubmit)="onNext()">
+    <!-- Telefone -->
+    <form [formGroup]="contactForm" class="space-y-4">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6 mb-4">
+        <!-- Telefone -->
+        <div class="form-control w-full md:col-span-4">
+          <label class="label">
+            <span class="label-text text-sm font-semibold">Telefone*</span>
+          </label>
+          <input
+            type="tel"
+            placeholder="Digite o telefone (apenas números)"
+            class="input input-bordered w-full"
+            [ngClass]="{
+              'input-error':
+                hasError('phone', 'required') || hasError('phone', 'pattern'),
+            }"
+            formControlName="phone"
+          />
+          @if (hasError('phone', 'required') || hasError('phone', 'pattern')) {
+            <label class="label">
+              <span class="label-text-alt text-error">
+                {{ getErrorMessage('phone') }}
+              </span>
+            </label>
+          }
+        </div>
+
+        <!-- E-mail -->
+        <div class="form-control w-full md:col-span-8">
+          <label class="label">
+            <span class="label-text text-sm font-semibold">E-mail</span>
+          </label>
+          <input
+            type="email"
+            placeholder="Digite o e-mail"
+            class="input input-bordered w-full"
+            [ngClass]="{
+              'input-error':
+                hasError('email', 'email') || hasError('email', 'maxlength'),
+            }"
+            formControlName="email"
+          />
+          @if (hasError('email', 'email') || hasError('email', 'maxlength')) {
+            <label class="label">
+              <span class="label-text-alt text-error">
+                {{ getErrorMessage('email') }}
+              </span>
+            </label>
+          }
+        </div>
+      </div>
+
+      <!-- CEP na primeira linha com layout mais amigável -->
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6 mb-4">
+        <div class="md:col-span-12">
+          <div class="form-control w-full">
+            <label class="label">
+              <span class="label-text text-sm font-semibold">CEP*</span>
+            </label>
+            <div class="flex items-center gap-2">
+              <div class="relative flex-1 md:w-1/3 md:max-w-xs">
+                <input
+                  type="text"
+                  placeholder="Digite o CEP"
+                  class="input input-bordered w-full pr-10"
+                  [ngClass]="{
+                    'input-error':
+                      hasError('cep', 'required') ||
+                      hasError('cep', 'pattern') ||
+                      cepError,
+                  }"
+                  formControlName="cep"
+                  (blur)="buscarCEP()"
+                />
+                @if (cepLoading) {
+                  <span class="absolute right-3 top-3">
+                    <span
+                      class="loading loading-spinner loading-xs text-primary"
+                    ></span>
+                  </span>
+                } @else {
+                  <a
+                    href="javascript:void(0)"
+                    class="absolute right-3 top-3 text-primary hover:text-primary-focus transition-colors"
+                    (click)="buscarCEP()"
+                    [class.opacity-50]="cepLoading"
+                    [attr.aria-disabled]="cepLoading"
+                  >
+                    <i class="ri-search-line"></i>
+                  </a>
+                }
+              </div>
+              <a
+                href="https://buscacepinter.correios.com.br/app/endereco/index.php"
+                target="_blank"
+                class="text-sm text-primary hover:underline"
+              >
+                Não sei meu CEP
+              </a>
+            </div>
+            @if (hasError('cep', 'required') || hasError('cep', 'pattern')) {
+              <label class="label">
+                <span class="label-text-alt text-error">
+                  {{ getErrorMessage('cep') }}
+                </span>
+              </label>
+            }
+            @if (cepError) {
+              <label class="label">
+                <span class="label-text-alt text-error">
+                  CEP não encontrado. Verifique o número digitado.
+                </span>
+              </label>
+            }
+            <p class="text-xs text-muted-foreground mt-1">
+              Digite o CEP e clique no ícone de busca para preencher
+              automaticamente os campos de endereço
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Endereço e Número na mesma linha logo abaixo do CEP -->
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6 mb-4">
+        <div class="md:col-span-9">
+          <!-- Endereço -->
+          <div class="form-control w-full">
+            <label class="label">
+              <span class="label-text text-sm font-semibold">Endereço</span>
+            </label>
+            <div class="relative">
+              <input
+                type="text"
+                placeholder="Digite o endereço"
+                class="input input-bordered w-full"
+                [ngClass]="{ 'input-error': hasError('address', 'maxlength') }"
+                formControlName="address"
+              />
+              @if (addressLoading) {
+                <span class="absolute right-3 top-3">
+                  <span
+                    class="loading loading-spinner loading-xs text-primary"
+                  ></span>
+                </span>
+              }
+            </div>
+          </div>
+        </div>
+        <div class="md:col-span-3">
+          <!-- Número -->
+          <div class="form-control w-full">
+            <label class="label">
+              <span class="label-text text-sm font-semibold">Número</span>
+            </label>
+            <input
+              type="text"
+              placeholder="Nº"
+              class="input input-bordered w-full"
+              [ngClass]="{ 'input-error': hasError('number', 'maxlength') }"
+              formControlName="number"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Cidade e Estado na mesma linha -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-6">
+        <!-- Bairro -->
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text text-sm font-semibold">Bairro</span>
+          </label>
+          <div class="relative">
+            <input
+              type="text"
+              placeholder="Digite o bairro"
+              class="input input-bordered w-full"
+              [ngClass]="{ 'input-error': hasError('district', 'maxlength') }"
+              formControlName="district"
+            />
+            @if (addressLoading) {
+              <span class="absolute right-3 top-3">
+                <span
+                  class="loading loading-spinner loading-xs text-primary"
+                ></span>
+              </span>
+            }
+          </div>
+          @if (hasError('district', 'maxlength')) {
+            <label class="label">
+              <span class="label-text-alt text-error">
+                {{ getErrorMessage('district') }}
+              </span>
+            </label>
+          }
+        </div>
+
+        <!-- Complemento -->
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text text-sm font-semibold">Complemento</span>
+          </label>
+          <input
+            type="text"
+            placeholder="Ex: Apt 123"
+            class="input input-bordered w-full"
+            [ngClass]="{ 'input-error': hasError('complement', 'maxlength') }"
+            formControlName="complement"
+          />
+          @if (hasError('complement', 'maxlength')) {
+            <label class="label">
+              <span class="label-text-alt text-error">
+                {{ getErrorMessage('complement') }}
+              </span>
+            </label>
+          }
+        </div>
+
+        <!-- Cidade -->
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text text-sm font-semibold">Cidade</span>
+          </label>
+          <div class="relative">
+            <input
+              type="text"
+              placeholder="Digite a cidade"
+              class="input input-bordered w-full"
+              [ngClass]="{ 'input-error': hasError('city', 'maxlength') }"
+              formControlName="city"
+            />
+            @if (addressLoading) {
+              <span class="absolute right-3 top-3">
+                <span
+                  class="loading loading-spinner loading-xs text-primary"
+                ></span>
+              </span>
+            }
+          </div>
+          @if (hasError('city', 'maxlength')) {
+            <label class="label">
+              <span class="label-text-alt text-error">
+                {{ getErrorMessage('city') }}
+              </span>
+            </label>
+          }
+        </div>
+
+        <!-- Estado -->
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text text-sm font-semibold">Estado</span>
+          </label>
+          <div class="relative">
+            <input
+              type="text"
+              placeholder="Digite o estado"
+              class="input input-bordered w-full"
+              [ngClass]="{ 'input-error': hasError('state', 'maxlength') }"
+              formControlName="state"
+            />
+            @if (addressLoading) {
+              <span class="absolute right-3 top-3">
+                <span
+                  class="loading loading-spinner loading-xs text-primary"
+                ></span>
+              </span>
+            }
+          </div>
+          @if (hasError('state', 'maxlength')) {
+            <label class="label">
+              <span class="label-text-alt text-error">
+                {{ getErrorMessage('state') }}
+              </span>
+            </label>
+          }
+        </div>
+      </div>
+    </form>
+
+    <!-- Botões -->
+    <div class="flex justify-between pt-4">
+      <button type="button" class="btn btn-outline" (click)="onPrevious()">
+        <i class="ri-arrow-left-line mr-1"></i> Anterior
+      </button>
+      <button type="submit" class="btn btn-primary">
+        Próximo <i class="ri-arrow-right-line ml-1"></i>
+      </button>
+    </div>
+  </form>
+</div>
