@@ -1,0 +1,124 @@
+<div class="space-y-4">
+  <h3 class="text-lg md:text-xl font-semibold text-primary">
+    Informações Pessoais
+  </h3>
+  <p class="text-sm text-muted-foreground">
+    Preencha os dados pessoais do árbitro.
+  </p>
+
+  <form [formGroup]="personalForm" class="space-y-4" (ngSubmit)="onNext()">
+    <!-- Nome Completo -->
+    <div class="form-control w-full">
+      <label class="label">
+        <span class="label-text text-sm font-semibold">Nome Completo*</span>
+      </label>
+      <input
+        type="text"
+        formControlName="fullName"
+        class="input input-bordered w-full"
+        [ngClass]="{
+          'input-error':
+            hasError('fullName', 'required') ||
+            hasError('fullName', 'maxlength'),
+        }"
+        placeholder="Digite o nome completo"
+      />
+      @if (
+        hasError('fullName', 'required') || hasError('fullName', 'maxlength')
+      ) {
+        <div class="text-error text-sm mt-1">
+          {{ getErrorMessage('fullName') }}
+        </div>
+      }
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+      <div class="form-control w-full mb-4">
+        <label class="label">
+          <span class="label-text text-sm font-semibold"
+            >Data de Nascimento*</span
+          >
+        </label>
+        <input
+          type="date"
+          class="input input-bordered w-full"
+          [ngClass]="{
+            'input-error': hasError('birthDate', 'required'),
+          }"
+          formControlName="birthDate"
+        />
+        @if (hasError('birthDate', 'required')) {
+          <label class="label">
+            <span class="label-text-alt text-error">
+              {{ getErrorMessage('birthDate') }}
+            </span>
+          </label>
+        }
+      </div>
+
+      <div class="form-control w-full mb-4">
+        <label class="label">
+          <span class="label-text text-sm font-semibold">CPF*</span>
+        </label>
+        <input
+          type="text"
+          placeholder="Digite o CPF"
+          class="input input-bordered w-full"
+          [ngClass]="{
+            'input-error':
+              hasError('cpf', 'required') || hasError('cpf', 'maxlength'),
+          }"
+          formControlName="cpf"
+        />
+        @if (hasError('cpf', 'required') || hasError('cpf', 'maxlength')) {
+          <label class="label">
+            <span class="label-text-alt text-error">
+              {{ getErrorMessage('cpf') }}
+            </span>
+          </label>
+        }
+      </div>
+    </div>
+
+    <!-- Foto -->
+    <div class="form-control w-full">
+      <label class="label">
+        <span class="label-text text-sm font-semibold">Foto</span>
+        <span class="label-text-alt text-muted-foreground">Opcional</span>
+      </label>
+      <div class="flex items-start gap-4">
+        <div
+          class="w-24 h-24 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center overflow-hidden bg-gray-50"
+        >
+          @if (photoPreview) {
+            <img
+              [src]="photoPreview"
+              alt="Preview da foto"
+              class="w-full h-full object-cover"
+            />
+          } @else {
+            <i class="ri-user-line text-3xl text-gray-400"></i>
+          }
+        </div>
+        <div class="flex-1">
+          <input
+            type="file"
+            class="file-input file-input-bordered w-full max-w-xs"
+            accept="image/*"
+            (change)="onPhotoChange($event)"
+          />
+          <p class="text-xs text-muted-foreground mt-1">
+            Formatos aceitos: JPG, PNG. Tamanho máximo: 2MB
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botões -->
+    <div class="flex justify-end pt-4">
+      <button type="submit" class="btn btn-primary">
+        Próximo <i class="ri-arrow-right-line ml-1"></i>
+      </button>
+    </div>
+  </form>
+</div>
