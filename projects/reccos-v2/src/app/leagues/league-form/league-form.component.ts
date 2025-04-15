@@ -15,12 +15,14 @@ import { BasicInfoComponent } from '../components/basic-info/basic-info.componen
 import { TournamentFormatComponent } from '../components/tournament-format/tournament-format.component';
 import { TeamsSelectionComponent } from '../components/teams-selection/teams-selection.component';
 import { TournamentScheduleComponent } from '../components/tournament-schedule/tournament-schedule.component';
+import { LeagueConfirmationComponent } from '../components/league-confirmation/league-confirmation.component';
 
 const components = [
   BasicInfoComponent,
   TournamentFormatComponent,
   TeamsSelectionComponent,
   TournamentScheduleComponent,
+  LeagueConfirmationComponent,
 ];
 
 @Component({

@@ -1,0 +1,350 @@
+<div class="container mx-auto p-4 max-w-4xl">
+  <div class="bg-white rounded-lg shadow-sm p-6 space-y-6">
+    <div class="space-y-2">
+      <h2 class="text-2xl font-semibold text-primary">Cadastro de Usuário</h2>
+      <p class="text-sm text-muted-foreground">
+        Preencha os dados para criar um novo usuário no sistema
+      </p>
+    </div>
+
+    <form class="space-y-8" [formGroup]="userForm" (ngSubmit)="onSubmit()">
+      <!-- Seção de Informações Pessoais -->
+      <div class="space-y-6">
+        <h3 class="text-lg font-medium text-primary border-b pb-2">
+          Informações Pessoais
+        </h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Nome Completo -->
+          <div class="form-control w-full">
+            <label class="label">
+              <span class="label-text font-medium">Nome Completo</span>
+              <span class="label-text-alt text-error">*</span>
+            </label>
+            <input
+              type="text"
+              formControlName="fullName"
+              placeholder="Digite seu nome completo"
+              class="input input-bordered w-full"
+              [ngClass]="{ 'input-error': submitted && f['fullName'].errors }"
+            />
+            <label class="label" *ngIf="submitted && f['fullName'].errors">
+              <span class="label-text-alt text-error"
+                >Nome completo é obrigatório</span
+              >
+            </label>
+            <label class="label" *ngIf="!submitted || !f['fullName'].errors">
+              <span class="label-text-alt text-muted-foreground"
+                >Informe seu nome completo</span
+              >
+            </label>
+          </div>
+
+          <!-- E-mail -->
+          <div class="form-control w-full">
+            <label class="label">
+              <span class="label-text font-medium">E-mail</span>
+              <span class="label-text-alt text-error">*</span>
+              <div
+                class="tooltip tooltip-info"
+                data-tip="Utilize um e-mail válido para receber notificações"
+              >
+                <i class="ri-information-line text-muted-foreground"></i>
+              </div>
+            </label>
+            <input
+              type="email"
+              formControlName="email"
+              placeholder="seu.email@exemplo.com"
+              class="input input-bordered w-full"
+              [ngClass]="{ 'input-error': submitted && f['email'].errors }"
+            />
+            <label
+              class="label"
+              *ngIf="submitted && f['email'].errors?.['required']"
+            >
+              <span class="label-text-alt text-error"
+                >E-mail é obrigatório</span
+              >
+            </label>
+            <label
+              class="label"
+              *ngIf="submitted && f['email'].errors?.['email']"
+            >
+              <span class="label-text-alt text-error"
+                >Formato de e-mail inválido</span
+              >
+            </label>
+            <label class="label" *ngIf="!submitted || !f['email'].errors">
+              <span class="label-text-alt text-muted-foreground"
+                >Será usado para login e recuperação de senha</span
+              >
+            </label>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- CPF (Opcional) -->
+          <div class="form-control w-full">
+            <label class="label">
+              <span class="label-text font-medium">CPF</span>
+              <span class="label-text-alt">(Opcional)</span>
+            </label>
+            <input
+              type="text"
+              formControlName="cpf"
+              placeholder="000.000.000-00"
+              class="input input-bordered w-full"
+              [ngClass]="{ 'input-error': submitted && f['cpf'].errors }"
+              mask="000.000.000-00"
+            />
+            <label
+              class="label"
+              *ngIf="submitted && f['cpf'].errors?.['cpfInvalid']"
+            >
+              <span class="label-text-alt text-error">CPF inválido</span>
+            </label>
+            <label class="label" *ngIf="!submitted || !f['cpf'].errors">
+              <span class="label-text-alt text-muted-foreground"
+                >Formato: 000.000.000-00</span
+              >
+            </label>
+          </div>
+
+          <!-- Telefone -->
+          <div class="form-control w-full">
+            <label class="label">
+              <span class="label-text font-medium">Telefone</span>
+              <span class="label-text-alt text-error">*</span>
+            </label>
+            <div class="flex gap-2">
+              <select
+                class="select select-bordered w-24"
+                formControlName="countryCode"
+              >
+                <option value="+55">+55</option>
+                <option value="+1">+1</option>
+                <option value="+351">+351</option>
+                <option value="+44">+44</option>
+                <option value="+34">+34</option>
+              </select>
+              <input
+                type="text"
+                formControlName="phone"
+                placeholder="(00) 00000-0000"
+                class="input input-bordered flex-1"
+                [ngClass]="{ 'input-error': submitted && f['phone'].errors }"
+                mask="(00) 00000-0000"
+              />
+            </div>
+            <label class="label" *ngIf="submitted && f['phone'].errors">
+              <span class="label-text-alt text-error"
+                >Telefone é obrigatório</span
+              >
+            </label>
+            <label class="label" *ngIf="!submitted || !f['phone'].errors">
+              <span class="label-text-alt text-muted-foreground"
+                >Será usado para contato e notificações</span
+              >
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Seção de Credenciais -->
+      <div class="space-y-6">
+        <h3 class="text-lg font-medium text-primary border-b pb-2">
+          Credenciais de Acesso
+        </h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Senha -->
+          <div class="form-control w-full">
+            <label class="label">
+              <span class="label-text font-medium">Senha</span>
+              <span class="label-text-alt text-error">*</span>
+            </label>
+            <div class="relative">
+              <input
+                [type]="showPassword ? 'text' : 'password'"
+                formControlName="password"
+                placeholder="Digite sua senha"
+                class="input input-bordered w-full pr-10"
+                [ngClass]="{ 'input-error': submitted && f['password'].errors }"
+              />
+              <button
+                type="button"
+                class="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+                (click)="togglePasswordVisibility()"
+              >
+                <i
+                  [class]="showPassword ? 'ri-eye-off-line' : 'ri-eye-line'"
+                ></i>
+              </button>
+            </div>
+            <label
+              class="label"
+              *ngIf="submitted && f['password'].errors?.['required']"
+            >
+              <span class="label-text-alt text-error">Senha é obrigatória</span>
+            </label>
+            <label
+              class="label"
+              *ngIf="submitted && f['password'].errors?.['minlength']"
+            >
+              <span class="label-text-alt text-error"
+                >Senha deve ter no mínimo 8 caracteres</span
+              >
+            </label>
+            <label
+              class="label"
+              *ngIf="submitted && f['password'].errors?.['pattern']"
+            >
+              <span class="label-text-alt text-error"
+                >Senha deve conter letras, números e caracteres especiais</span
+              >
+            </label>
+
+            <!-- Medidor de força da senha -->
+            @if (f['password'].value) {
+              <div class="mt-2">
+                <div class="text-xs mb-1">
+                  Força da senha:
+                  <span [class]="getPasswordStrengthClass()">{{
+                    getPasswordStrengthText()
+                  }}</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-1.5">
+                  <div
+                    [class]="
+                      'h-1.5 rounded-full ' + getPasswordStrengthBarClass()
+                    "
+                    [style.width.%]="getPasswordStrength()"
+                  ></div>
+                </div>
+              </div>
+            }
+          </div>
+
+          <!-- Confirmar Senha -->
+          <div class="form-control w-full">
+            <label class="label">
+              <span class="label-text font-medium">Confirmar Senha</span>
+              <span class="label-text-alt text-error">*</span>
+            </label>
+            <div class="relative">
+              <input
+                [type]="showConfirmPassword ? 'text' : 'password'"
+                formControlName="confirmPassword"
+                placeholder="Confirme sua senha"
+                class="input input-bordered w-full pr-10"
+                [ngClass]="{
+                  'input-error': submitted && f['confirmPassword'].errors,
+                }"
+              />
+              <button
+                type="button"
+                class="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+                (click)="toggleConfirmPasswordVisibility()"
+              >
+                <i
+                  [class]="
+                    showConfirmPassword ? 'ri-eye-off-line' : 'ri-eye-line'
+                  "
+                ></i>
+              </button>
+            </div>
+            <label
+              class="label"
+              *ngIf="submitted && f['confirmPassword'].errors?.['required']"
+            >
+              <span class="label-text-alt text-error"
+                >Confirmação de senha é obrigatória</span
+              >
+            </label>
+            <label
+              class="label"
+              *ngIf="submitted && f['confirmPassword'].errors?.['matching']"
+            >
+              <span class="label-text-alt text-error"
+                >As senhas não coincidem</span
+              >
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Seção de Foto de Perfil -->
+      <div class="space-y-6">
+        <h3 class="text-lg font-medium text-primary border-b pb-2">
+          Foto de Perfil
+        </h3>
+
+        <div class="flex flex-col md:flex-row gap-6 items-start">
+          <!-- Preview da Foto -->
+          <div
+            class="w-32 h-32 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden border-2 border-dashed border-gray-300"
+          >
+            @if (imagePreview) {
+              <img
+                [src]="imagePreview"
+                alt="Preview"
+                class="w-full h-full object-cover"
+              />
+            } @else {
+              <i class="ri-user-line text-4xl text-gray-400"></i>
+            }
+          </div>
+
+          <!-- Upload da Foto -->
+          <div class="flex-1 space-y-4">
+            <div class="form-control w-full">
+              <label class="label">
+                <span class="label-text font-medium">Foto de Perfil</span>
+                <span class="label-text-alt">(Opcional)</span>
+              </label>
+              <input
+                type="file"
+                class="file-input file-input-bordered w-full"
+                accept="image/*"
+                (change)="onFileSelected($event)"
+              />
+              <label class="label">
+                <span class="label-text-alt text-muted-foreground"
+                  >Formatos aceitos: JPG, PNG. Tamanho máximo: 2MB</span
+                >
+              </label>
+            </div>
+
+            @if (imagePreview) {
+              <button
+                type="button"
+                class="btn btn-sm btn-outline btn-error"
+                (click)="removeImage()"
+              >
+                <i class="ri-delete-bin-line mr-1"></i> Remover Foto
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Botões de Ação -->
+      <div
+        class="flex flex-col sm:flex-row justify-between gap-4 pt-4 border-t"
+      >
+        <button type="button" class="btn btn-outline" (click)="onCancel()">
+          <i class="ri-close-line mr-1"></i> Cancelar
+        </button>
+        <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
+          @if (!isSubmitting) {
+            <i class="ri-save-line mr-1"></i> Cadastrar Usuário
+          } @else {
+            <span class="loading loading-spinner loading-xs mr-2"></span>
+            Processando...
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

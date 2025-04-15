@@ -16,7 +16,6 @@ interface TournamentData {
   playerRegistrationDeadline?: Date;
   preferredDays?: string[];
   preferredTimes?: string[];
-  venues?: string[];
   matchInterval?: number;
   [key: string]: any;
 }
@@ -34,6 +33,7 @@ export class TournamentScheduleComponent implements OnInit {
   @Output() previous = new EventEmitter<void>();
 
   scheduleForm!: FormGroup;
+
   formatTypes: Record<string, string> = {
     league: 'Todos contra todos',
     elimination: 'Eliminatórias',
@@ -79,34 +79,38 @@ export class TournamentScheduleComponent implements OnInit {
   }
 
   initForm(): void {
-    // Obter valores iniciais ou definir valores padrão
     const registrationPeriod = this.initialData.registrationPeriod || {
       start: null,
       end: null,
     };
+
     const transferWindow = this.initialData.transferWindow || {
       start: null,
       end: null,
     };
 
     this.scheduleForm = this.fb.group({
-      // Tipo de esporte
       sportType: [this.initialData.sportType || '', Validators.required],
 
-      // Períodos importantes
       registrationStart: [registrationPeriod.start, Validators.required],
       registrationEnd: [registrationPeriod.end, Validators.required],
+
       transferWindowStart: [transferWindow.start],
       transferWindowEnd: [transferWindow.end],
+
       playerRegistrationDeadline: [
         this.initialData.playerRegistrationDeadline || null,
         Validators.required,
       ],
 
-      // Preferências de agendamento
       preferredDays: [this.initialData.preferredDays || []],
-      preferredTimes: [this.initialData.preferredTimes || []],
-      venues: [this.initialData.venues || ''],
+      startTime: [this.initialData.preferredTimes?.[0] || '08:00'],
+      endTime: [
+        this.initialData.preferredTimes?.[
+          this.initialData.preferredTimes?.length - 1
+        ] || '20:00',
+      ],
+
       matchInterval: [
         this.initialData.matchInterval || 90,
         [Validators.required, Validators.min(30)],
@@ -115,69 +119,73 @@ export class TournamentScheduleComponent implements OnInit {
   }
 
   toggleDay(day: string): void {
-    const preferredDays = [
-      ...(this.scheduleForm.get('preferredDays')?.value || []),
-    ];
-    const index = preferredDays.indexOf(day);
+    const control = this.scheduleForm.get('preferredDays');
+    if (!control) return;
 
-    if (index === -1) {
-      preferredDays.push(day);
-    } else {
-      preferredDays.splice(index, 1);
-    }
+    const selected = [...control.value];
+    const index = selected.indexOf(day);
 
-    this.scheduleForm.get('preferredDays')?.setValue(preferredDays);
+    index >= 0 ? selected.splice(index, 1) : selected.push(day);
+    control.setValue(selected);
   }
 
   isDaySelected(day: string): boolean {
-    const preferredDays = this.scheduleForm.get('preferredDays')?.value || [];
-    return preferredDays.includes(day);
+    return this.scheduleForm.get('preferredDays')?.value?.includes(day);
   }
 
   toggleTime(time: string): void {
-    const preferredTimes = [
-      ...(this.scheduleForm.get('preferredTimes')?.value || []),
-    ];
-    const index = preferredTimes.indexOf(time);
+    const control = this.scheduleForm.get('preferredTimes');
+    if (!control) return;
 
-    if (index === -1) {
-      preferredTimes.push(time);
-    } else {
-      preferredTimes.splice(index, 1);
-    }
+    const selected = [...control.value];
+    const index = selected.indexOf(time);
 
-    this.scheduleForm.get('preferredTimes')?.setValue(preferredTimes);
+    index >= 0 ? selected.splice(index, 1) : selected.push(time);
+    control.setValue(selected);
   }
 
   isTimeSelected(time: string): boolean {
-    const preferredTimes = this.scheduleForm.get('preferredTimes')?.value || [];
-    return preferredTimes.includes(time);
+    return this.scheduleForm.get('preferredTimes')?.value?.includes(time);
   }
 
   onSubmit(): void {
     if (this.scheduleForm.valid) {
-      // Formatar os dados antes de emitir o evento
-      const formValue = this.scheduleForm.value;
+      const {
+        sportType,
+        registrationStart,
+        registrationEnd,
+        transferWindowStart,
+        transferWindowEnd,
+        playerRegistrationDeadline,
+        preferredDays,
+        startTime,
+        endTime,
+        matchInterval,
+      } = this.scheduleForm.value;
 
-      const formattedData = {
+      // Criar array de horários preferidos com base no intervalo selecionado
+      const preferredTimes = this.generateTimeRange(startTime, endTime);
+
+      const updatedData: TournamentData = {
         ...this.initialData,
-        sportType: formValue.sportType,
+        sportType,
         registrationPeriod: {
-          start: formValue.registrationStart,
-          end: formValue.registrationEnd,
+          start: registrationStart,
+          end: registrationEnd,
         },
         transferWindow: {
-          start: formValue.transferWindowStart,
-          end: formValue.transferWindowEnd,
+          start: transferWindowStart,
+          end: transferWindowEnd,
         },
-        playerRegistrationDeadline: formValue.playerRegistrationDeadline,
-        preferredDays: formValue.preferredDays,
-        preferredTimes: formValue.preferredTimes,
-        venues: formValue.venues,
-        matchInterval: formValue.matchInterval,
+        playerRegistrationDeadline,
+        preferredDays,
+        preferredTimes,
+        startTime,
+        endTime,
+        matchInterval,
       };
 
-      this.next.emit(formattedData);
+      this.next.emit(updatedData);
     } else {
       this.scheduleForm.markAllAsTouched();
     }
@@ -188,9 +196,21 @@ export class TournamentScheduleComponent implements OnInit {
   }
 
   generateAutomaticSchedule(): void {
-    // Implementar lógica para gerar agenda automática
-    console.log('Gerando agenda automática...');
-    // Aqui você implementaria a lógica para gerar datas e horários
-    // baseado no formato do torneio e número de times
+    console.log('Gerando agenda automática com dados parciais:');
+    console.table(this.scheduleForm.value);
+  }
+
+  generateTimeRange(startTime: string, endTime: string): string[] {
+    if (!startTime || !endTime) return [];
+
+    const timeValues = this.times.map(t => t.value);
+    const startIndex = timeValues.indexOf(startTime);
+    const endIndex = timeValues.indexOf(endTime);
+
+    if (startIndex === -1 || endIndex === -1 || startIndex > endIndex) {
+      return [startTime, endTime];
+    }
+
+    return timeValues.slice(startIndex, endIndex + 1);
   }
 }

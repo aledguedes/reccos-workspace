@@ -1,0 +1,165 @@
+<div class="space-y-4">
+  <h3 class="text-lg md:text-xl font-semibold text-primary">
+    Confirmação de Dados
+  </h3>
+  <p class="text-sm font-semibold text-muted-foreground">
+    Revise os dados do torneio antes de finalizar o cadastro.
+  </p>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+    <!-- Coluna 1: Informações Básicas -->
+    <div class="space-y-4">
+      <div class="bg-gray-50 p-4 rounded-lg">
+        <h4 class="font-bold text-primary mb-3">Informações do Torneio</h4>
+        <div class="space-y-2">
+          <div class="flex flex-col">
+            <span class="text-sm font-semibold text-muted-foreground"
+              >Nome</span
+            >
+            <span class="font-normal">{{
+              initialData.name || 'Não informado'
+            }}</span>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-sm font-semibold text-muted-foreground"
+              >Temporada</span
+            >
+            <span class="font-normal">{{
+              initialData.season || 'Não informado'
+            }}</span>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-sm font-semibold text-muted-foreground"
+              >Descrição</span
+            >
+            <span class="font-normal">{{
+              initialData.description || 'Não informado'
+            }}</span>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-sm font-semibold text-muted-foreground"
+              >Local</span
+            >
+            <span class="font-normal">{{
+              initialData.location || 'Não informado'
+            }}</span>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-sm font-semibold text-muted-foreground"
+              >Data de Início</span
+            >
+            <span class="font-normal">{{
+              formatDate(initialData.startDate)
+            }}</span>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-sm font-semibold text-muted-foreground"
+              >Data de Término</span
+            >
+            <span class="font-normal">{{
+              formatDate(initialData.endDate)
+            }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Coluna 2: Formato e Configurações -->
+    <div class="space-y-4">
+      <div class="bg-gray-50 p-4 rounded-lg">
+        <h4 class="font-bold text-primary mb-3">Formato do Torneio</h4>
+        <div class="space-y-2">
+          <div class="flex flex-col">
+            <span class="text-sm font-semibold text-muted-foreground"
+              >Formato</span
+            >
+            <span class="font-normal">{{
+              getFormatLabel(initialData.format)
+            }}</span>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-sm font-semibold text-muted-foreground"
+              >Tipo de Esporte</span
+            >
+            <span class="font-normal">{{
+              getSportTypeLabel(initialData.sportType)
+            }}</span>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-sm font-semibold text-muted-foreground"
+              >Número de Equipes</span
+            >
+            <span class="font-normal">{{
+              initialData.teamsCount || 'Não informado'
+            }}</span>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-sm font-semibold text-muted-foreground"
+              >Jogadores por Equipe</span
+            >
+            <span class="font-normal">{{
+              initialData.playersPerTeam || 'Não informado'
+            }}</span>
+          </div>
+          @if (initialData.teamsPerGroup) {
+            <div class="flex flex-col">
+              <span class="text-sm font-semibold text-muted-foreground"
+                >Times por Grupo</span
+              >
+              <span class="font-normal">{{ initialData.teamsPerGroup }}</span>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Times selecionados -->
+  <div class="bg-gray-50 p-4 rounded-lg mt-4">
+    <h4 class="font-bold text-primary mb-3">Times Selecionados</h4>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+      @for (team of selectedTeams; track $index) {
+        <div class="flex items-center gap-3 border rounded-md p-3 bg-white">
+          <div
+            class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center overflow-hidden"
+          >
+            @if (!team.logo) {
+              <i class="ri-team-line text-xl text-gray-400"></i>
+            } @else {
+              <img
+                [src]="team.logo"
+                [alt]="team.name"
+                class="object-cover w-full h-full"
+              />
+            }
+          </div>
+          <span class="font-medium">{{ team.name }}</span>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Botões -->
+  <div class="flex justify-between pt-6">
+    <button type="button" class="btn btn-outline" (click)="onPrevious()">
+      <i class="ri-arrow-left-line mr-1"></i> Anterior
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary"
+      (click)="onConfirm()"
+      [disabled]="isLoading"
+    >
+      @if (!isLoading) {
+        <i class="ri-check-line mr-1"></i>
+        <span>Finalizar Cadastro</span>
+      }
+      @if (isLoading) {
+        <span class="flex items-center">
+          <span class="loading loading-spinner loading-xs mr-2"></span>
+          Processando...
+        </span>
+      }
+    </button>
+  </div>
+</div>

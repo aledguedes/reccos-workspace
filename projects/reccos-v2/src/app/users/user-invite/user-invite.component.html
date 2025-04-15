@@ -1,0 +1,118 @@
+<div class="mb-3">
+  <div class="flex items-center gap-2 mb-1">
+    <a
+      class="btn btn-circle btn-ghost text-primary hover:bg-primary/10"
+      routerLink="/users"
+      (click)="onCancelTeam()"
+      aria-label="Voltar para listagem"
+    >
+      <i class="ri-arrow-left-line text-lg"></i>
+    </a>
+    <h2 class="text-xl md:text-2xl lg:text-3xl font-bold text-primary">
+      Convidar Novo Usuário
+    </h2>
+  </div>
+  <p
+    class="text-xs sm:text-sm md:text-base text-muted-foreground max-w-prose break-words whitespace-normal pl-10"
+  >
+    Preencha as informações abaixo para enviar um convite de cadastro ao
+    sistema.
+  </p>
+</div>
+<div
+  class="bg-white rounded-xl p-5 md:p-8 border border-gray-200 shadow-lg space-y-4 w-full md:w-3/4 mx-auto"
+>
+  <form class="space-y-6" [formGroup]="inviteForm">
+    <!-- Campo de E-mail -->
+    <div class="form-control w-full mb-4">
+      <label class="label">
+        <span class="text-sm font-semibold text-muted-foreground"
+          >E-mail do Convidado</span
+        >
+      </label>
+      <input
+        type="email"
+        class="input input-bordered w-full text-sm md:text-base"
+        placeholder="exemplo@email.com"
+        formControlName="email"
+        name="email"
+      />
+    </div>
+
+    <!-- Campo de Nível de Acesso -->
+    <div class="form-control w-full mb-4">
+      <label class="label">
+        <span class="text-sm font-semibold text-muted-foreground"
+          >Nível de Acesso</span
+        >
+      </label>
+      <select
+        class="select select-bordered w-full text-sm md:text-base"
+        required
+        formControlName="role"
+        name="role"
+      >
+        <option value="" disabled selected>
+          Selecione um nível (Defina as permissões do usuário)
+        </option>
+        <option value="admin">Administrador</option>
+        <option value="editor">Editor</option>
+        <option value="viewer">Visualizador</option>
+      </select>
+      @if (inviteForm.get('role')?.value) {
+        <div class="text-xs text-muted-foreground mt-1">
+          <ul class="mt-2 list-disc pl-4 space-y-1">
+            @if (inviteForm.get('role')?.value === 'admin') {
+              <li>
+                <span class="font-semibold">Administrador:</span> Acesso total
+                ao sistema, pode gerenciar todos os usuários e configurações.
+              </li>
+            }
+            @if (inviteForm.get('role')?.value === 'editor') {
+              <li>
+                <span class="font-semibold">Editor:</span> Pode criar e editar
+                conteúdo, mas não pode gerenciar usuários ou configurações.
+              </li>
+            }
+            @if (inviteForm.get('role')?.value === 'viewer') {
+              <li>
+                <span class="font-semibold">Visualizador:</span> Apenas
+                visualização de conteúdo, sem permissão para editar ou criar.
+              </li>
+            }
+          </ul>
+        </div>
+      }
+    </div>
+
+    <!-- Botões -->
+    <div class="flex justify-end gap-4 mt-8">
+      <button
+        type="submit"
+        class="btn btn-primary w-full md:w-auto px-6 gap-2 hover:shadow-md transition-shadow"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"
+          />
+          <path
+            d="M18 8.118l-8 4-8-4a2 2 0 00-2 2v4a2 2 0 002 2h12a2 2 0 002-2v-4a2 2 0 00-2-2z"
+          />
+        </svg>
+        Enviar Convite
+      </button>
+      <button
+        type="button"
+        class="btn btn-ghost w-full md:w-auto px-6"
+        (click)="onCancelTeam()"
+      >
+        Cancelar
+      </button>
+    </div>
+  </form>
+</div>

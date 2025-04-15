@@ -80,7 +80,11 @@
 
     <!-- Etapa 5: Confirmação -->
     @if (currentStep === 5) {
-      STEP 5
+      <app-league-confirmation
+        [initialData]="leagueData"
+        (previous)="previousStep()"
+        (confirm)="onSubmit()"
+      />
     }
   </div>
 </div>

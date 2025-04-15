@@ -1,0 +1,54 @@
+.container {
+  min-height: calc(100vh - 4rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+// Estilização para o tema claro com tons de verde e cinza
+:host {
+  --primary-color: #2e7d32;
+  --primary-light: #60ad5e;
+  --primary-dark: #005005;
+  --gray-light: #f5f5f5;
+  --gray-medium: #e0e0e0;
+  --gray-dark: #757575;
+}
+
+// Estilização para o medidor de força da senha
+.password-strength-meter {
+  height: 4px;
+  border-radius: 2px;
+  transition: width 0.3s ease-in-out;
+}
+
+// Efeitos de hover para botões
+.btn {
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+}
+
+// Estilização para o upload de imagem
+.file-input {
+  cursor: pointer;
+}
+
+// Responsividade adicional
+@media (max-width: 640px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}

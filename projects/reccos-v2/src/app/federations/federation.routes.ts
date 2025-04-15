@@ -12,6 +12,14 @@ export const FEDERATION_ROUTES: Routes = [
         component: ListDefaultComponent,
         title: 'Usuários',
       },
+      {
+        path: 'new',
+        loadComponent: () =>
+          import('./federation-form/federation-form.component').then(
+            c => c.FederationFormComponent
+          ),
+        title: 'Novo Time',
+      },
     ],
   },
 ];

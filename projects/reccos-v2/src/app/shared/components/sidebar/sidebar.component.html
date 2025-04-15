@@ -1,9 +1,10 @@
 <!-- Overlay para dispositivos móveis que fecha a sidebar ao ser clicado -->
-<div
-  *ngIf="isSidebarOpen"
-  class="fixed inset-0 bg-black/50 backdrop-blur-sm z-30 md:hidden transition-opacity duration-300"
-  (click)="toggleSidebar()"
-></div>
+@if (isSidebarOpen) {
+  <div
+    class="fixed inset-0 bg-black/50 backdrop-blur-sm z-30 md:hidden transition-opacity duration-300"
+    (click)="toggleSidebar()"
+  ></div>
+}
 
 <aside
   id="logo-sidebar"
