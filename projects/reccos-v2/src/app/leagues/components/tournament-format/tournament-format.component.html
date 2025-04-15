@@ -2,7 +2,7 @@
   <div class="space-y-6">
     <h2 class="text-xl font-semibold mb-4">Formato do Torneio</h2>
 
-    <div class="space-y-4" [formGroup]="parentForm">
+    <form class="space-y-4" [formGroup]="parentForm">
       <!-- Formato do Torneio -->
       <div class="form-control w-full">
         <label class="label">
@@ -28,13 +28,13 @@
               >
                 <div class="flex items-center mb-2">
                   <i
-                    [class]="getFormatIcon(option.value)"
+                    [class]="option.icon"
                     class="mr-2 text-primary text-xl"
                   ></i>
                   <span class="font-semibold">{{ option.label }}</span>
                 </div>
                 <p class="text-sm text-base-content/70">
-                  {{ getFormatDescription(option.value) }}
+                  {{ option.description }}
                 </p>
               </label>
             </div>
@@ -166,15 +166,10 @@
 
       <!-- Botões de Navegação -->
       <div class="flex justify-end mt-6 space-x-2">
-        <button
-          type="button"
-          class="btn btn-primary"
-          (click)="onNext()"
-          [disabled]="!isFormValid()"
-        >
+        <button type="button" class="btn btn-primary" (click)="onNext()">
           Próximo
         </button>
       </div>
-    </div>
+    </form>
   </div>
 }

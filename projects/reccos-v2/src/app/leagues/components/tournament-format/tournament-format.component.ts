@@ -23,109 +23,102 @@ import {
   styleUrls: ['./tournament-format.component.scss'],
 })
 export class TournamentFormatComponent implements OnInit, AfterViewInit {
-  @Input() parentForm!: FormGroup;
-  @Output() proceed = new EventEmitter<void>();
+  @Input() initialData: any = {};
+  @Output() next = new EventEmitter<any>();
+  @Output() previous = new EventEmitter<void>();
 
+  parentForm!: FormGroup;
   formatOptions = [
-    { value: 'league', label: 'Liga (todos contra todos)' },
-    { value: 'cup', label: 'Copa (eliminatórias)' },
-    { value: 'group_knockout', label: 'Grupos + Eliminatórias' },
-    { value: 'custom', label: 'Personalizado' },
+    {
+      value: 'league',
+      label: 'Liga',
+      description:
+        'Todos os times jogam entre si, acumulando pontos para uma classificação geral.',
+      icon: 'ri-trophy-line',
+    },
+    {
+      value: 'elimination',
+      label: 'Eliminatórias',
+      description:
+        'Torneio no formato mata-mata, onde os times são eliminados ao perder.',
+      icon: 'ri-award-line',
+    },
+    {
+      value: 'group-elimination',
+      label: 'Grupos + Eliminatórias',
+      description:
+        'Fase de grupos seguida por eliminatórias entre os classificados.',
+      icon: 'ri-team-line',
+    },
+    {
+      value: 'custom',
+      label: 'Personalizado',
+      description: 'Crie seu próprio formato de competição personalizado.',
+      icon: 'ri-flag-line',
+    },
   ];
 
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    // Verificar se o formulário pai foi injetado corretamente
-    if (!this.parentForm) {
-      console.error('O formulário pai não foi injetado corretamente!');
-      return;
-    }
+    if (this.initialData) {
+      this.parentForm = this.fb.group({
+        format: ['', Validators.required],
+        teamsCount: [
+          8,
+          [Validators.required, Validators.min(2), Validators.max(32)],
+        ],
+        playersPerTeam: [
+          11,
+          [Validators.required, Validators.min(1), Validators.max(30)],
+        ],
+      });
 
-    // Verificar se os campos necessários existem no formulário pai
-    if (!this.parentForm.get('format')) {
-      this.parentForm.addControl(
-        'format',
-        this.fb.control('league', Validators.required)
-      );
-    }
-
-    if (!this.parentForm.get('teamsCount')) {
-      this.parentForm.addControl(
-        'teamsCount',
-        this.fb.control(8, [Validators.required, Validators.min(2)])
-      );
-    }
-
-    if (!this.parentForm.get('playersPerTeam')) {
-      this.parentForm.addControl(
-        'playersPerTeam',
-        this.fb.control(5, [Validators.required, Validators.min(1)])
-      );
-    }
-
-    if (!this.parentForm.get('matchDuration')) {
-      this.parentForm.addControl(
-        'matchDuration',
-        this.fb.control(40, [Validators.required, Validators.min(10)])
-      );
-    }
-
-    // Adicionar campo de intervalo se não existir
-    if (!this.parentForm.get('breakDuration')) {
-      this.parentForm.addControl(
-        'breakDuration',
-        this.fb.control(15, [Validators.required, Validators.min(5)])
-      );
-    }
-
-    // Adicionar campo de times por grupo se não existir
-    if (!this.parentForm.get('teamsPerGroup')) {
-      this.parentForm.addControl(
-        'teamsPerGroup',
-        this.fb.control(4, [Validators.required, Validators.min(2)])
-      );
-    }
-
-    // Observar mudanças no formato para mostrar/ocultar campos específicos
-    this.parentForm.get('format')?.valueChanges.subscribe(format => {
-      const teamsPerGroupControl = this.parentForm.get('teamsPerGroup');
-
-      if (format === 'group_knockout') {
-        // Ativar validação para o campo de times por grupo
-        if (teamsPerGroupControl) {
-          teamsPerGroupControl.setValidators([
-            Validators.required,
-            Validators.min(2),
-          ]);
+      // Adicionar campo teamsPerGroup apenas quando o formato for group-elimination
+      this.parentForm.get('format')?.valueChanges.subscribe(format => {
+        if (format === 'group-elimination') {
+          this.parentForm.addControl(
+            'teamsPerGroup',
+            this.fb.control(2, [
+              Validators.required,
+              Validators.min(2),
+              Validators.max(8),
+              control => {
+                const teamsCount = this.parentForm.get('teamsCount')?.value;
+                if (teamsCount && control.value > teamsCount) {
+                  return { invalidGroupSize: true };
+                }
+                return null;
+              },
+            ])
+          );
+        } else {
+          this.parentForm.removeControl('teamsPerGroup');
         }
-      } else {
-        // Remover validação quando não for formato de grupos
-        if (teamsPerGroupControl) {
-          teamsPerGroupControl.clearValidators();
-          teamsPerGroupControl.updateValueAndValidity();
-        }
-      }
-    });
-
-    // Trigger inicial para configurar validações baseadas no formato atual
-    const currentFormat = this.parentForm.get('format')?.value;
-    if (currentFormat === 'group_knockout') {
-      const teamsPerGroupControl = this.parentForm.get('teamsPerGroup');
-      if (teamsPerGroupControl) {
-        teamsPerGroupControl.setValidators([
-          Validators.required,
-          Validators.min(2),
-        ]);
-        teamsPerGroupControl.updateValueAndValidity();
-      }
+      });
     }
   }
 
+  onPrevious(): void {
+    this.previous.emit();
+  }
+
   onNext(): void {
-    if (this.validateStep()) {
-      this.proceed.emit();
+    if (this.parentForm.valid) {
+      this.next.emit(this.parentForm.value);
+    } else {
+      this.markFormGroupTouched(this.parentForm);
     }
+  }
+
+  private markFormGroupTouched(formGroup: FormGroup) {
+    Object.values(formGroup.controls).forEach(control => {
+      control.markAsTouched();
+
+      if ((control as FormGroup)?.controls) {
+        this.markFormGroupTouched(control as FormGroup);
+      }
+    });
   }
 
   ngAfterViewInit(): void {
@@ -191,7 +184,7 @@ export class TournamentFormatComponent implements OnInit, AfterViewInit {
     ];
 
     // Adicionar campo de times por grupo se o formato for grupos + eliminatórias
-    if (this.parentForm.get('format')?.value === 'group_knockout') {
+    if (this.parentForm.get('format')?.value === 'group-elimination') {
       formatFields.push('teamsPerGroup');
     }
 
@@ -226,7 +219,7 @@ export class TournamentFormatComponent implements OnInit, AfterViewInit {
     ];
 
     // Adicionar campo de times por grupo se o formato for grupos + eliminatórias
-    if (this.parentForm.get('format')?.value === 'group_knockout') {
+    if (this.parentForm.get('format')?.value === 'group-elimination') {
       formatFields.push('teamsPerGroup');
     }
 
@@ -241,9 +234,9 @@ export class TournamentFormatComponent implements OnInit, AfterViewInit {
     switch (format) {
       case 'league':
         return 'ri-trophy-line text-primary text-xl';
-      case 'cup':
+      case 'elimination':
         return 'ri-award-line text-primary text-xl';
-      case 'group_knockout':
+      case 'group-elimination':
         return 'ri-team-line text-primary text-xl';
       case 'custom':
         return 'ri-settings-line text-primary text-xl';
@@ -257,9 +250,9 @@ export class TournamentFormatComponent implements OnInit, AfterViewInit {
     switch (format) {
       case 'league':
         return 'Todos os times jogam entre si, acumulando pontos para uma classificação geral.';
-      case 'cup':
+      case 'elimination':
         return 'Torneio no formato mata-mata, onde os times são eliminados ao perder.';
-      case 'group_knockout':
+      case 'group-elimination':
         return 'Fase de grupos seguida por eliminatórias entre os classificados.';
       case 'custom':
         return 'Crie seu próprio formato de competição personalizado.';
