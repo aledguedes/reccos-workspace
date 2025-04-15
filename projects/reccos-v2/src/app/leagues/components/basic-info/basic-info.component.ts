@@ -16,40 +16,73 @@ import {
   styleUrls: ['./basic-info.component.scss'],
 })
 export class BasicInfoComponent implements OnInit {
-  @Input() parentForm!: FormGroup;
-  @Output() proceed = new EventEmitter<void>();
+  @Input() initialData: any = {};
+  @Output() next = new EventEmitter<void>();
+
+  personalForm!: FormGroup;
 
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    // Verificar se o formulário pai foi injetado corretamente
-    if (!this.parentForm) {
-      console.error('O formulário pai não foi injetado corretamente!');
-      return;
+    this.initForm();
+  }
+
+  initForm() {
+    if (!this.personalForm) {
+      this.personalForm = this.fb.group({
+        name: ['', Validators.required],
+        season: ['', Validators.required],
+        description: [''],
+        startDate: [null, Validators.required],
+        endDate: [null, Validators.required],
+        location: ['', Validators.required],
+      });
     }
   }
 
   onNext(): void {
-    if (this.validateStep()) {
-      this.proceed.emit();
+    if (this.personalForm.valid) {
+      const formData = {
+        ...this.personalForm.value,
+        // photo: this.photoPreview,
+      };
+      this.next.emit(formData);
+    } else {
+      this.markFormGroupTouched(this.personalForm);
     }
+  }
+
+  private markFormGroupTouched(formGroup: FormGroup) {
+    Object.values(formGroup.controls).forEach(control => {
+      control.markAsTouched();
+
+      if ((control as FormGroup)?.controls) {
+        this.markFormGroupTouched(control as FormGroup);
+      }
+    });
   }
 
   validateStep(): boolean {
     // Marcar todos os campos como touched para mostrar validações
-    Object.keys(this.parentForm.controls).forEach(key => {
-      const control = this.parentForm.get(key);
+    Object.keys(this.personalForm.controls).forEach(key => {
+      const control = this.personalForm.get(key);
       if (control) {
         control.markAsTouched();
       }
     });
 
     // Verificar se os campos específicos desta etapa são válidos
-    const requiredFields = ['name', 'season'];
+    const requiredFields = [
+      'name',
+      'season',
+      'startDate',
+      'endDate',
+      'location',
+    ];
     let isValid = true;
 
     requiredFields.forEach(field => {
-      const control = this.parentForm.get(field);
+      const control = this.personalForm.get(field);
       if (control?.invalid) {
         isValid = false;
       }
@@ -60,9 +93,15 @@ export class BasicInfoComponent implements OnInit {
 
   // Método para verificar se o formulário está válido para habilitar o botão de próximo
   isFormValid(): boolean {
-    const requiredFields = ['name', 'season'];
+    const requiredFields = [
+      'name',
+      'season',
+      'startDate',
+      'endDate',
+      'location',
+    ];
     return requiredFields.every(field => {
-      const control = this.parentForm.get(field);
+      const control = this.personalForm.get(field);
       return control && control.valid;
     });
   }

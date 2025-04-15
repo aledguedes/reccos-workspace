@@ -101,22 +101,24 @@
     </div>
 
     <!-- Arquivo para importar jogadores (opcional) -->
-    <div class="form-control w-full mb-4" *ngIf="showImportPlayersInput">
-      <label class="label">
-        <span class="label-text">Importar Lista de Jogadores</span>
-      </label>
-      <input
-        type="file"
-        class="file-input file-input-bordered w-full"
-        accept=".csv,.xlsx,.xls"
-        (change)="onPlayersFileChange($event)"
-      />
-      <label class="label">
-        <span class="label-text-alt text-gray-500"
-          >Formatos aceitos: CSV, Excel (.xlsx, .xls)</span
-        >
-      </label>
-    </div>
+    @if (showImportPlayersInput) {
+      <div class="form-control w-full mb-4">
+        <label class="label">
+          <span class="label-text">Importar Lista de Jogadores</span>
+        </label>
+        <input
+          type="file"
+          class="file-input file-input-bordered w-full"
+          accept=".csv,.xlsx,.xls"
+          (change)="onPlayersFileChange($event)"
+        />
+        <label class="label">
+          <span class="label-text-alt text-gray-500"
+            >Formatos aceitos: CSV, Excel (.xlsx, .xls)</span
+          >
+        </label>
+      </div>
+    }
 
     <!-- Botões de navegação -->
     <div class="flex justify-between mt-8">

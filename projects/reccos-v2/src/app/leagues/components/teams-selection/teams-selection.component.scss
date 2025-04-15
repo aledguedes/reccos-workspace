@@ -1,0 +1,30 @@
+/* Estilos para o componente de seleção de times */
+
+.team-card {
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Estilização para a lista de times */
+.teams-list {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(155, 155, 155, 0.5) transparent;
+}
+
+.teams-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.teams-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.teams-list::-webkit-scrollbar-thumb {
+  background-color: rgba(155, 155, 155, 0.5);
+  border-radius: 20px;
+  border: transparent;
+}

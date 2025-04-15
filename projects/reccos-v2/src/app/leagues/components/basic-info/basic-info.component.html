@@ -1,8 +1,8 @@
-@if (parentForm) {
+@if (personalForm) {
   <div class="space-y-6">
     <h2 class="text-xl font-semibold mb-4">Informações Básicas do Torneio</h2>
 
-    <div class="space-y-4" [formGroup]="parentForm">
+    <form class="space-y-4" [formGroup]="personalForm">
       <!-- Grid para Nome do Torneio e Temporada na mesma linha -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <!-- Nome do Torneio -->
@@ -19,15 +19,15 @@
             aria-label="Nome do Torneio"
             [ngClass]="{
               'input-error':
-                parentForm.get('name')?.invalid &&
-                parentForm.get('name')?.touched &&
-                parentForm.get('name')?.dirty,
+                personalForm.get('name')?.invalid &&
+                personalForm.get('name')?.touched &&
+                personalForm.get('name')?.dirty,
             }"
           />
           @if (
-            parentForm.get('name')?.invalid &&
-            parentForm.get('name')?.touched &&
-            parentForm.get('name')?.dirty
+            personalForm.get('name')?.invalid &&
+            personalForm.get('name')?.touched &&
+            personalForm.get('name')?.dirty
           ) {
             <label class="label">
               <span class="label-text-alt text-error"
@@ -51,15 +51,15 @@
             aria-label="Temporada"
             [ngClass]="{
               'input-error':
-                parentForm.get('season')?.invalid &&
-                parentForm.get('season')?.touched &&
-                parentForm.get('season')?.dirty,
+                personalForm.get('season')?.invalid &&
+                personalForm.get('season')?.touched &&
+                personalForm.get('season')?.dirty,
             }"
           />
           @if (
-            parentForm.get('season')?.invalid &&
-            parentForm.get('season')?.touched &&
-            parentForm.get('season')?.dirty
+            personalForm.get('season')?.invalid &&
+            personalForm.get('season')?.touched &&
+            personalForm.get('season')?.dirty
           ) {
             <label class="label">
               <span class="label-text-alt text-error"
@@ -83,6 +83,103 @@
           aria-label="Descrição do Torneio"
         ></textarea>
       </div>
+
+      <!-- Datas e Localização -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Data de Início -->
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text text-sm font-medium">Data de Início</span>
+          </label>
+          <input
+            type="date"
+            class="input input-bordered w-full"
+            formControlName="startDate"
+            [ngClass]="{
+              'input-error':
+                personalForm.get('startDate')?.invalid &&
+                personalForm.get('startDate')?.touched &&
+                personalForm.get('startDate')?.dirty,
+            }"
+          />
+          @if (
+            personalForm.get('startDate')?.invalid &&
+            personalForm.get('startDate')?.touched &&
+            personalForm.get('startDate')?.dirty
+          ) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Data de início é obrigatória</span
+              >
+            </label>
+          }
+        </div>
+
+        <!-- Data de Término -->
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text text-sm font-medium">Data de Término</span>
+          </label>
+          <input
+            type="date"
+            class="input input-bordered w-full"
+            formControlName="endDate"
+            [ngClass]="{
+              'input-error':
+                personalForm.get('endDate')?.invalid &&
+                personalForm.get('endDate')?.touched &&
+                personalForm.get('endDate')?.dirty,
+            }"
+          />
+          @if (
+            personalForm.get('endDate')?.invalid &&
+            personalForm.get('endDate')?.touched &&
+            personalForm.get('endDate')?.dirty
+          ) {
+            <label class="label">
+              <span class="label-text-alt text-error"
+                >Data de término é obrigatória</span
+              >
+            </label>
+          }
+        </div>
+      </div>
+
+      <!-- Localização -->
+      <div class="form-control w-full">
+        <label class="label">
+          <span class="label-text text-sm font-medium">Local</span>
+        </label>
+        <input
+          id="location"
+          type="text"
+          placeholder="Ex: Estádio Municipal"
+          class="input input-bordered w-full"
+          formControlName="location"
+          aria-label="Local do Torneio"
+          [ngClass]="{
+            'input-error':
+              personalForm.get('location')?.invalid &&
+              personalForm.get('location')?.touched &&
+              personalForm.get('location')?.dirty,
+          }"
+        />
+        @if (
+          personalForm.get('location')?.invalid &&
+          personalForm.get('location')?.touched &&
+          personalForm.get('location')?.dirty
+        ) {
+          <label class="label">
+            <span class="label-text-alt text-error">Local é obrigatório</span>
+          </label>
+        }
+      </div>
+    </form>
+
+    <div class="flex justify-end mt-6">
+      <button class="btn btn-primary" (click)="onNext()">
+        Próximo <i class="ri-arrow-right-line ml-2"></i>
+      </button>
     </div>
   </div>
 }

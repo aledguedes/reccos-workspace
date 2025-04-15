@@ -1,0 +1,278 @@
+<div class="space-y-6">
+  <div class="flex flex-col md:flex-row justify-between items-start gap-4">
+    <div>
+      <h2 class="text-2xl font-semibold">Informações Administrativas</h2>
+      <p class="text-muted-foreground">
+        Configure as informações administrativas e operacionais da liga. Formato
+        selecionado:
+        <span class="font-medium">{{ formatTypes[initialData.format] }}</span>
+      </p>
+    </div>
+  </div>
+
+  <form [formGroup]="scheduleForm" class="space-y-4" (ngSubmit)="onSubmit()">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <!-- Card de Tipo de Campeonato e Períodos -->
+      <div class="card bg-base-100 shadow-sm">
+        <div class="card-body">
+          <h3 class="text-lg font-medium mb-4">
+            Tipo de Campeonato e Períodos
+          </h3>
+          <div class="space-y-4">
+            <!-- Tipo de Campeonato -->
+            <div class="form-control w-full">
+              <label class="label text-semibold">
+                <span class="label-text font-semibold">Tipo de Campeonato</span>
+              </label>
+              <select
+                formControlName="sportType"
+                class="select select-bordered w-full"
+              >
+                <option value="" disabled>
+                  Selecione o tipo de campeonato
+                </option>
+                @for (type of sportTypes; track type.value) {
+                  <option [value]="type.value">{{ type.label }}</option>
+                }
+              </select>
+              @if (
+                scheduleForm.get('sportType')?.invalid &&
+                scheduleForm.get('sportType')?.touched
+              ) {
+                <label class="label">
+                  <span class="label-text-alt text-error">
+                    Tipo de campeonato é obrigatório
+                  </span>
+                </label>
+              }
+            </div>
+
+            <!-- Período de Inscrições -->
+            <div>
+              <label class="label">
+                <span class="label-text font-semibold"
+                  >Período de Inscrições</span
+                >
+              </label>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="form-control w-full">
+                  <label class="label">
+                    <span class="label-text font-semibold">Início</span>
+                  </label>
+                  <input
+                    type="date"
+                    formControlName="registrationStart"
+                    class="input input-bordered w-full"
+                  />
+                  @if (
+                    scheduleForm.get('registrationStart')?.invalid &&
+                    scheduleForm.get('registrationStart')?.touched
+                  ) {
+                    <label class="label">
+                      <span class="label-text-alt text-error">
+                        Data de início é obrigatória
+                      </span>
+                    </label>
+                  }
+                </div>
+
+                <div class="form-control w-full">
+                  <label class="label">
+                    <span class="label-text font-semibold">Término</span>
+                  </label>
+                  <input
+                    type="date"
+                    formControlName="registrationEnd"
+                    class="input input-bordered w-full"
+                    [min]="scheduleForm.get('registrationStart')?.value"
+                  />
+                  @if (
+                    scheduleForm.get('registrationEnd')?.invalid &&
+                    scheduleForm.get('registrationEnd')?.touched
+                  ) {
+                    <label class="label">
+                      <span class="label-text-alt text-error">
+                        Data de término é obrigatória
+                      </span>
+                    </label>
+                  }
+                </div>
+              </div>
+            </div>
+
+            <!-- Janela de Transferências -->
+            <div>
+              <label class="label">
+                <span class="label-text font-semibold"
+                  >Janela de Transferências</span
+                >
+              </label>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="form-control w-full">
+                  <label class="label">
+                    <span class="label-text font-semibold">Início</span>
+                  </label>
+                  <input
+                    type="date"
+                    formControlName="transferWindowStart"
+                    class="input input-bordered w-full"
+                  />
+                </div>
+
+                <div class="form-control w-full">
+                  <label class="label">
+                    <span class="label-text font-semibold">Término</span>
+                  </label>
+                  <input
+                    type="date"
+                    formControlName="transferWindowEnd"
+                    class="input input-bordered w-full"
+                    [min]="scheduleForm.get('transferWindowStart')?.value"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- Prazo Final para Cadastro de Jogadores -->
+            <div class="form-control w-full">
+              <label class="label">
+                <span class="label-text font-semibold">
+                  Prazo Final para Cadastro de Jogadores
+                </span>
+              </label>
+              <input
+                type="date"
+                formControlName="playerRegistrationDeadline"
+                class="input input-bordered w-full"
+              />
+              @if (
+                scheduleForm.get('playerRegistrationDeadline')?.invalid &&
+                scheduleForm.get('playerRegistrationDeadline')?.touched
+              ) {
+                <label class="label">
+                  <span class="label-text-alt text-error">
+                    Prazo final é obrigatório
+                  </span>
+                </label>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card de Preferências de Agendamento -->
+      <div class="card bg-base-100 shadow-sm">
+        <div class="card-body">
+          <h3 class="text-lg font-medium mb-4">Preferências de Agendamento</h3>
+          <div class="space-y-4">
+            <!-- Dias da semana preferenciais -->
+            <div class="form-control w-full">
+              <label class="label">
+                <span class="label-text font-semibold"
+                  >Dias da semana preferenciais</span
+                >
+              </label>
+              <div class="flex flex-wrap gap-2">
+                @for (day of days; track day.value) {
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline transition-all duration-200 hover:scale-105"
+                    [class.btn-primary]="isDaySelected(day.value)"
+                    [class.shadow-md]="isDaySelected(day.value)"
+                    [class.font-bold]="isDaySelected(day.value)"
+                    (click)="toggleDay(day.value)"
+                  >
+                    {{ day.label }}
+                  </button>
+                }
+              </div>
+            </div>
+
+            <!-- Horários disponíveis -->
+            <div class="form-control w-full">
+              <label class="label">
+                <span class="label-text font-semibold"
+                  >Horários disponíveis</span
+                >
+              </label>
+              <div class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div class="form-control w-full">
+                    <label class="label">
+                      <span class="label-text font-semibold"
+                        >Horário inicial</span
+                      >
+                    </label>
+                    <select
+                      formControlName="startTime"
+                      class="select select-bordered w-full"
+                    >
+                      <option value="" disabled>
+                        Selecione o horário inicial
+                      </option>
+                      @for (time of times; track time.value) {
+                        <option [value]="time.value">{{ time.label }}</option>
+                      }
+                    </select>
+                  </div>
+                  <div class="form-control w-full">
+                    <label class="label">
+                      <span class="label-text font-semibold"
+                        >Horário final</span
+                      >
+                    </label>
+                    <select
+                      formControlName="endTime"
+                      class="select select-bordered w-full"
+                    >
+                      <option value="" disabled>
+                        Selecione o horário final
+                      </option>
+                      @for (time of times; track time.value) {
+                        <option [value]="time.value">{{ time.label }}</option>
+                      }
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Intervalo entre partidas -->
+            <div class="form-control w-full">
+              <label class="label">
+                <span class="label-text font-semibold">
+                  Intervalo entre partidas (minutos)
+                </span>
+              </label>
+              <input
+                type="number"
+                formControlName="matchInterval"
+                class="input input-bordered w-full"
+                min="30"
+                step="15"
+              />
+              @if (
+                scheduleForm.get('matchInterval')?.invalid &&
+                scheduleForm.get('matchInterval')?.touched
+              ) {
+                <label class="label">
+                  <span class="label-text-alt text-error">
+                    Intervalo mínimo é de 30 minutos
+                  </span>
+                </label>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botões de navegação -->
+    <div class="flex justify-between mt-6">
+      <button type="button" class="btn btn-outline" (click)="onPrevious()">
+        Voltar
+      </button>
+      <button type="submit" class="btn btn-primary">Próximo</button>
+    </div>
+  </form>
+</div>

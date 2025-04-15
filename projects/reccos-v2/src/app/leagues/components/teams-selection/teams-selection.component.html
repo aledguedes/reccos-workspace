@@ -1,0 +1,114 @@
+<div class="space-y-6">
+  <div class="mb-4">
+    <h3 class="text-xl font-bold text-primary mb-2">Seleção de Times</h3>
+    <p class="text-sm text-muted-foreground">
+      Selecione os times que participarão desta liga. Você pode buscar times
+      pelo nome.
+    </p>
+  </div>
+
+  <form [formGroup]="teamsForm" class="space-y-4">
+    <!-- Campo de busca -->
+    <div class="relative">
+      <div
+        class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+      >
+        <i class="ri-search-line text-gray-400"></i>
+      </div>
+      <input
+        type="text"
+        formControlName="searchTerm"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full pl-10 p-2.5"
+        placeholder="Buscar times..."
+      />
+    </div>
+
+    <!-- Lista de times -->
+    <div class="bg-gray-50 rounded-lg border border-gray-200 p-4">
+      <div class="mb-3 flex justify-between items-center">
+        <h4 class="font-medium">Times Disponíveis</h4>
+        <span class="text-sm text-gray-500"
+          >{{ selectedTeams.length }} selecionados</span
+        >
+      </div>
+
+      @if (filteredTeams.length === 0) {
+        <div class="text-center py-4 text-gray-500">
+          <i class="ri-error-warning-line text-2xl mb-2"></i>
+          <p>Nenhum time encontrado com este termo de busca.</p>
+        </div>
+      } @else {
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[400px] overflow-y-auto p-2"
+        >
+          @for (team of filteredTeams; track team.id) {
+            <div
+              class="flex items-center p-3 rounded-lg border cursor-pointer transition-all"
+              [class.bg-primary-50]="isTeamSelected(team.id)"
+              [class.border-primary]="isTeamSelected(team.id)"
+              [class.border-gray-200]="!isTeamSelected(team.id)"
+              (click)="toggleTeamSelection(team.id)"
+            >
+              <div
+                class="flex-shrink-0 w-10 h-10 mr-3 bg-gray-100 rounded-full overflow-hidden flex items-center justify-center"
+              >
+                @if (team.logo) {
+                  <img
+                    [src]="team.logo"
+                    [alt]="team.name"
+                    class="w-full h-full object-cover"
+                  />
+                } @else {
+                  <i class="ri-team-line text-gray-400 text-xl"></i>
+                }
+              </div>
+              <div class="flex-1">
+                <h5 class="font-medium">{{ team.name }}</h5>
+              </div>
+              <div class="flex-shrink-0">
+                <div
+                  class="w-6 h-6 rounded-full border flex items-center justify-center"
+                  [class.bg-primary]="isTeamSelected(team.id)"
+                  [class.border-primary]="isTeamSelected(team.id)"
+                  [class.border-gray-300]="!isTeamSelected(team.id)"
+                >
+                  @if (isTeamSelected(team.id)) {
+                    <i class="ri-check-line text-white text-sm"></i>
+                  }
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      }
+
+      @if (
+        teamsForm.get('selectedTeamIds')?.invalid &&
+        teamsForm.get('selectedTeamIds')?.touched
+      ) {
+        <div class="text-red-500 text-sm mt-2">
+          <p>Selecione pelo menos um time para continuar.</p>
+        </div>
+      }
+    </div>
+  </form>
+
+  <!-- Botões de navegação -->
+  <div class="flex justify-between mt-6">
+    <button
+      type="button"
+      class="btn btn-outline btn-primary"
+      (click)="onPrevious()"
+    >
+      <i class="ri-arrow-left-line mr-1"></i> Voltar
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary"
+      [disabled]="selectedTeams.length === 0"
+      (click)="onNext()"
+    >
+      Próximo <i class="ri-arrow-right-line ml-1"></i>
+    </button>
+  </div>
+</div>

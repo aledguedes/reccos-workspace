@@ -1,0 +1,36 @@
+.card {
+  border-radius: 0.5rem;
+}
+
+.btn-primary {
+  &:focus {
+    outline: 2px solid rgba(var(--p), 0.2);
+  }
+}
+
+.text-muted-foreground {
+  color: hsl(var(--bc) / 0.6);
+}
+
+.form-control {
+  .label-text {
+    font-weight: 500;
+    font-size: 0.875rem;
+  }
+}
+
+// Estilo para os dias selecionados
+.btn-outline {
+  &.btn-primary {
+    background-color: hsl(var(--p) / 0.1);
+    border-color: hsl(var(--p));
+    color: hsl(var(--p));
+  }
+}
+
+// Responsividade
+@media (max-width: 640px) {
+  .card-body {
+    padding: 1rem;
+  }
+}
