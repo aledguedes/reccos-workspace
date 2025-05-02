@@ -12,7 +12,8 @@
     "lint": "ng lint",
     "lint:fix": "ng lint --fix",
     "format": "prettier --write \"**/*.{ts,html,css,scss,json,md}\"",
-    "format:check": "prettier --check \"**/*.{ts,html,css,scss,json,md}\""
+    "format:check": "prettier --check \"**/*.{ts,html,css,scss,json,md}\"",
+    "serve:ssr:dailybrief": "node dist/dailybrief/server/server.mjs"
   },
   "private": true,
   "dependencies": {
