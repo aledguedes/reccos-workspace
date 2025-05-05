@@ -4,15 +4,13 @@
 :root {
   --primary-text: #1f2937;
   --primary-bg: #ffffff;
-  --primary-bg: #dee0e2;
   --secondary-text: #6b7280;
   --accent: #3b82f6;
 }
 
 .dark {
-  --primary-bg: #1f2937;
-  --primary-text: #f9fafb;
   --primary-bg: #181e26;
+  --primary-text: #f9fafb;
   --secondary-text: #9ca3af;
   --accent: #60a5fa;
 }
@@ -26,7 +24,7 @@ body {
 }
 
 body {
-  @apply font-inter bg-[var(--primary-bg)] text-[var(--primary-text)];
+  @apply bg-[var(--primary-bg)] text-[var(--primary-text)];
 }
 
 app-root {

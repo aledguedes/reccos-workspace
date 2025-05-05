@@ -9,14 +9,30 @@ import { NewsletterComponent } from '../components/newsletter.component';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, HeroComponent, PostListComponent, NewsletterComponent],
+  imports: [
+    CommonModule,
+    HeroComponent,
+    PostListComponent,
+    NewsletterComponent,
+  ],
   template: `
-    <div class="min-h-screen flex flex-col bg-[var(--background)] text-[var(--foreground)]">
+    <div
+      class="min-h-screen flex flex-col bg-[var(--background)] text-[var(--foreground)]"
+    >
       <main class="flex-1">
         <app-hero [post]="featuredPost"></app-hero>
-        <app-post-list [posts]="recentPosts" [title]="'Posts Recentes'"></app-post-list>
-        <app-post-list [posts]="techPosts" [title]="'Tecnologia'"></app-post-list>
-        <app-post-list [posts]="aiPosts" [title]="'Inteligência Artificial'"></app-post-list>
+        <app-post-list
+          [posts]="recentPosts"
+          [title]="'Posts Recentes'"
+        ></app-post-list>
+        <app-post-list
+          [posts]="techPosts"
+          [title]="'Tecnologia'"
+        ></app-post-list>
+        <app-post-list
+          [posts]="aiPosts"
+          [title]="'Inteligência Artificial'"
+        ></app-post-list>
         <app-newsletter></app-newsletter>
       </main>
     </div>
@@ -46,7 +62,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.featuredPost = POSTS[0];
     this.recentPosts = POSTS.slice(0, 3);
-    this.techPosts = POSTS.filter((post) => post.category.name === 'Tecnologia');
-    this.aiPosts = POSTS.filter((post) => post.category.name.includes('IA'));
+    this.techPosts = POSTS.filter(post => post.category.name === 'Tecnologia');
+    this.aiPosts = POSTS.filter(post => post.category.name.includes('IA'));
   }
 }
