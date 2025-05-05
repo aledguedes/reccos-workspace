@@ -1,0 +1,39 @@
+/* You can add global styles to this file, and also import other style files */
+@use 'tailwindcss';
+
+:root {
+  --primary-text: #1f2937;
+  --primary-bg: #f5f5f5;
+  --secondary-text: #6b7280;
+  --accent: #3b82f6;
+}
+
+.dark {
+  --primary-bg: #181e26;
+  --primary-text: #f9fafb;
+  --secondary-text: #9ca3af;
+  --accent: #60a5fa;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  @apply bg-[var(--primary-bg)] text-[var(--primary-text)];
+}
+
+app-root {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
