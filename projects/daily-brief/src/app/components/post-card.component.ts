@@ -9,7 +9,7 @@ import { IPost } from '../model/post.model';
   imports: [CommonModule, RouterModule],
   template: `
     <div
-      class="rounded-lg border border-gray-200 dark:border-gray-700 bg-[var(--primary-bg)] text-[var(--primary-text)] shadow-sm overflow-hidden h-full flex flex-col"
+      class="rounded-lg border-[0.5px] border-gray-300 border-opacity-50 bg-white dark:bg-gray-700 text-[var(--primary-text)] shadow-sm overflow-hidden h-full flex flex-col"
     >
       @if (post.image) {
         <div class="aspect-video overflow-hidden">
@@ -22,9 +22,11 @@ import { IPost } from '../model/post.model';
       }
       <div class="p-4 pb-0">
         <div class="flex justify-between items-center mb-4 mt-4">
-          <time class="text-sm text-[var(--secondary-text)]">{{ post.date }}</time>
+          <time class="text-sm text-[var(--secondary-text)]">{{
+            post.date
+          }}</time>
           <span
-            class="ml-2 inline-flex items-center justify-center rounded-full px-4 py-1.5 text-xs font-semibold bg-[var(--primary-text)] text-[var(--primary-bg)]"
+            class="ml-2 inline-flex items-center justify-center rounded-full px-4 py-1.5 text-xs font-semibold bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
           >
             {{ post.category.name }}
           </span>
