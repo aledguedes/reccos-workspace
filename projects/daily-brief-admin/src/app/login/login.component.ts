@@ -1,6 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -12,14 +18,37 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
         <h2 class="text-2xl font-bold mb-6 text-center">Login</h2>
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
           <div class="mb-4">
-            <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email</label>
-            <input type="email" id="email" formControlName="email" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500" required>
+            <label
+              for="email"
+              class="block text-gray-700 text-sm font-bold mb-2"
+              >Email</label
+            >
+            <input
+              type="email"
+              id="email"
+              formControlName="email"
+              class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+              required
+            />
           </div>
           <div class="mb-6">
-            <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Password</label>
-            <input type="password" id="password" formControlName="password" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500" required>
+            <label
+              for="password"
+              class="block text-gray-700 text-sm font-bold mb-2"
+              >Password</label
+            >
+            <input
+              type="password"
+              id="password"
+              formControlName="password"
+              class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+              required
+            />
           </div>
-          <button type="submit" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+          <button
+            type="submit"
+            class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >
             Login
           </button>
         </form>
@@ -32,7 +61,10 @@ export class LoginComponent {
   loginForm: FormGroup;
   fixedUser = { email: 'admin@example.com', password: 'password123' };
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router
+  ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
@@ -42,13 +74,10 @@ export class LoginComponent {
   onSubmit() {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
-      if (email === this.fixedUser.email && password === this.fixedUser.password) {
-        console.log('Login successful!', this.loginForm.value);
-      } else {
-        console.log('Login failed! Incorrect credentials.');
+      if (email === 'admin@dailybrief.com' && password === '123') {
+        localStorage.setItem('mock-token', 'mock-token');
+        this.router.navigate(['/home/dashboard']);
       }
-    } else {
-      console.log('Form is invalid');
     }
   }
 }
