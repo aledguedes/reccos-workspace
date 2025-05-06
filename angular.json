@@ -94,6 +94,7 @@
         }
       }
     },
+
     "dailyBrief": {
       "projectType": "application",
       "schematics": {
