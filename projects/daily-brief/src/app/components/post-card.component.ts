@@ -9,7 +9,7 @@ import { IPost } from '../model/post.model';
   imports: [CommonModule, RouterModule],
   template: `
     <div
-      class="rounded-lg border-[0.5px] border-gray-300 border-opacity-50 bg-white dark:bg-gray-700 text-[var(--primary-text)] shadow-sm overflow-hidden h-full flex flex-col"
+      class="rounded-lg border-[0.5px] border-gray-200 text-[var(--primary-text)] shadow-sm overflow-hidden h-full flex flex-col dark:border-gray-900 bg-[var(--card-bg-color)]"
     >
       @if (post.image) {
         <div class="aspect-video overflow-hidden">
@@ -26,7 +26,7 @@ import { IPost } from '../model/post.model';
             post.date
           }}</time>
           <span
-            class="ml-2 inline-flex items-center justify-center rounded-full px-4 py-1.5 text-xs font-semibold bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+            class="ml-2 inline-flex items-center justify-center rounded-full px-4 py-1.5 text-xs font-semibold bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200"
           >
             {{ post.category.name }}
           </span>

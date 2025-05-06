@@ -11,6 +11,7 @@ module.exports = {
       },
       // Você pode adicionar outras extensões de tema específicas para daily-brief aqui
       colors: {
+        'db-dark-bg': '#181e26', // Cor de fundo da página no modo escuro
         // Cores específicas para daily-brief, se necessário
         // Exemplo:
         // 'db-primary': '#...',

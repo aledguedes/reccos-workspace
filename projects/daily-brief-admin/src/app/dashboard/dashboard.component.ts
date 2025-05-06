@@ -141,8 +141,8 @@ export class DashboardComponent {
   };
 
   constructor(private router: Router) {
-    if (!localStorage.getItem('mock-token')) {
-      this.router.navigate(['/login']);
-    }
+    // if (!localStorage.getItem('mock-token')) {
+    //   this.router.navigate(['/login']);
+    // }
   }
 }

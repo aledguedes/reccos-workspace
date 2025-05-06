@@ -8,7 +8,7 @@ import { CATEGORIES } from '../data/mock-data';
   standalone: true,
   imports: [RouterLink],
   template: `
-    <footer>
+    <footer class=" bg-[var(--card-bg-color)]">
       <div
         class="container mx-auto py-8 md:py-12 px-4 border-t border-gray-200 dark:border-gray-700"
       >
@@ -16,14 +16,17 @@ import { CATEGORIES } from '../data/mock-data';
           <div class="space-y-3">
             <h3 class="text-lg font-semibold">DailyBrief</h3>
             <p class="text-sm text-muted-foreground">
-              O seu portal de notícias e insights sobre tecnologia e inteligência artificial.
+              O seu portal de notícias e insights sobre tecnologia e
+              inteligência artificial.
             </p>
           </div>
           <div class="space-y-3">
             <h4 class="text-sm font-semibold">Links</h4>
             <ul class="space-y-2">
               <li>
-                <a [routerLink]="['/']" class="text-sm text-muted-foreground hover:text-foreground"
+                <a
+                  [routerLink]="['/']"
+                  class="text-sm text-muted-foreground hover:text-foreground"
                   >Home</a
                 >
               </li>
@@ -77,12 +80,18 @@ import { CATEGORIES } from '../data/mock-data';
                 </a>
               </li>
               <li>
-                <a [routerLink]="['/']" class="text-sm text-muted-foreground hover:text-foreground"
+                <a
+                  [routerLink]="['/']"
+                  class="text-sm text-muted-foreground hover:text-foreground"
                   >Newsletter</a
                 >
               </li>
               <li>
-                <a href="#" class="text-sm text-muted-foreground hover:text-foreground">RSS</a>
+                <a
+                  href="#"
+                  class="text-sm text-muted-foreground hover:text-foreground"
+                  >RSS</a
+                >
               </li>
             </ul>
           </div>
@@ -93,9 +102,21 @@ import { CATEGORIES } from '../data/mock-data';
             &copy; 2025 DailyBrief. Todos os direitos reservados.
           </p>
           <div class="flex space-x-4 mt-4 md:mt-0">
-            <a href="#" class="text-sm text-muted-foreground hover:text-foreground">Termos</a>
-            <a href="#" class="text-sm text-muted-foreground hover:text-foreground">Privacidade</a>
-            <a href="#" class="text-sm text-muted-foreground hover:text-foreground">Cookies</a>
+            <a
+              href="#"
+              class="text-sm text-muted-foreground hover:text-foreground"
+              >Termos</a
+            >
+            <a
+              href="#"
+              class="text-sm text-muted-foreground hover:text-foreground"
+              >Privacidade</a
+            >
+            <a
+              href="#"
+              class="text-sm text-muted-foreground hover:text-foreground"
+              >Cookies</a
+            >
           </div>
         </div>
       </div>
