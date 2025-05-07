@@ -1,0 +1,78 @@
+<header class="w-full border-b bg-white fixed top-0 z-40 h-16">
+  <div class="container flex items-center justify-between h-full mx-auto px-4">
+    <!-- Logo -->
+    <div class="flex items-center">
+      <a routerLink="/" class="flex items-center">
+        <span class="text-xl font-bold text-dailybrief-500">Daily</span>
+        <span class="text-xl font-semibold">Brief</span>
+        <span
+          class="ml-1 bg-dailybrief-800 text-white text-xs px-2 py-0.5 rounded"
+          >Admin</span
+        >
+      </a>
+    </div>
+
+    <!-- Desktop Navigation -->
+    <div class="hidden md:flex items-center space-x-6">
+      <a
+        *ngFor="let item of navItems"
+        [routerLink]="item.path"
+        routerLinkActive="text-dailybrief-600"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="text-sm font-medium transition-colors hover:text-dailybrief-600 text-muted-foreground"
+      >
+        {{ item.title }}
+      </a>
+
+      <div class="flex items-center pl-6 border-l">
+        <!-- <app-language-switcher></app-language-switcher> -->
+        <button
+          class="text-muted-foreground hover:text-foreground ml-2"
+          (click)="handleLogout()"
+        >
+          <i class="ri-logout-box-line text-xl"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <div class="md:hidden flex items-center gap-3">
+      <!-- <app-language-switcher></app-language-switcher> -->
+      <button class="p-1" (click)="mobileMenuOpen = !mobileMenuOpen">
+        <i
+          [ngClass]="mobileMenuOpen ? 'ri-close-line' : 'ri-menu-line'"
+          class="text-xl"
+        ></i>
+      </button>
+
+      <!-- Mobile Menu -->
+      <div
+        *ngIf="mobileMenuOpen"
+        class="absolute top-16 left-0 right-0 bg-white border-b shadow-lg z-50"
+      >
+        <div class="flex flex-col p-4 space-y-2">
+          <a
+            *ngFor="let item of navItems"
+            [routerLink]="item.path"
+            (click)="mobileMenuOpen = false"
+            routerLinkActive="bg-dailybrief-50 text-dailybrief-600"
+            class="flex items-center gap-2 px-4 py-2 rounded-md hover:bg-gray-100"
+          >
+            <i [class]="item.icon + ' text-base'"></i>
+            {{ item.title }}
+          </a>
+
+          <div class="pt-2 mt-2 border-t">
+            <button
+              class="flex items-center gap-2 px-4 py-2 rounded-md w-full text-left hover:bg-gray-100"
+              (click)="handleLogout(); mobileMenuOpen = false"
+            >
+              <i class="ri-logout-box-line text-base"></i>
+              <span>Sair</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

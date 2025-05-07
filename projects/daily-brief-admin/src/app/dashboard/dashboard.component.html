@@ -1,0 +1,67 @@
+<div class="container">
+  <!-- Cabeçalho -->
+  <div
+    class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6"
+  >
+    <div class="space-y-1">
+      <h1 class="text-2xl font-bold tracking-tight">Dashboard</h1>
+      <p class="text-muted-foreground">Visão geral do desempenho do blog.</p>
+    </div>
+    <button class="md:self-start">
+      <a routerLink="/posts" class="flex items-center">
+        <span>Ver todos os posts</span>
+        <svg
+          class="ml-2 h-4 w-4"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M5 12h14M12 5l7 7-7 7" />
+        </svg>
+      </a>
+    </button>
+  </div>
+
+  <!-- Cartões Estatísticos -->
+  <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
+    @for (stat of blogDashboardCards; track $index) {
+      <app-stat-card [stat]="stat"></app-stat-card>
+    }
+  </div>
+
+  <!-- Gráficos -->
+  <!-- <div class="grid gap-6 lg:grid-cols-12 mb-8">
+    <div class="lg:col-span-5 flex flex-col gap-6">
+      <app-chart
+        [title]="'Posts por Status'"
+        [data]="postsByStatusChart"
+      ></app-chart>
+
+      <app-chart
+        [title]="'Fontes de Tráfego'"
+        [data]="trafficSourcesChart"
+      ></app-chart>
+    </div>
+    <div class="lg:col-span-7 flex">
+      <app-chart
+        class="w-full"
+        [title]="'Visualizações (últimos 7 dias)'"
+        [data]="viewsOverTimeChart"
+      ></app-chart>
+    </div>
+  </div> -->
+
+  <!-- Posts Recentes e Logs -->
+  <div class="grid gap-6 lg:grid-cols-12 mb-8">
+    <div class="bg-white shadow-lg lg:col-span-6">
+      <app-post-card-dash [posts]="mockPosts" [selectedLanguage]="'pt-BR'" />
+    </div>
+    <div class="bg-white shadow-lg lg:col-span-6">
+      <app-log-item [logs]="mockLogs" />
+    </div>
+  </div>
+</div>

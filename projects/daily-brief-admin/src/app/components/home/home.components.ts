@@ -7,22 +7,11 @@ import { RouterModule, RouterOutlet } from '@angular/router';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterModule,
-    HeaderComponent,
-    SidebarComponent,
-    RouterOutlet,
-  ],
+  imports: [CommonModule, RouterModule, HeaderComponent, RouterOutlet],
   template: `
-    <div class="flex h-screen bg-gray-100">
-      sidebar
-      <app-sidebar></app-sidebar>
-
-      <div class="flex-1 flex flex-col overflow-auto">
-        <app-header></app-header>
-        <router-outlet />
-      </div>
+    <app-header></app-header>
+    <div class="container mx-auto px-4">
+      <router-outlet />
     </div>
   `,
   styles: [],

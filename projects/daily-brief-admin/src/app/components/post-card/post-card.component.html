@@ -1,0 +1,126 @@
+<div class="overflow-hidden flex flex-col h-full border rounded-lg bg-white">
+  <div *ngIf="post.featuredImage" class="h-40 overflow-hidden">
+    <img
+      [src]="post.featuredImage"
+      [alt]="post.title[selectedLanguage]"
+      class="w-full h-full object-cover"
+    />
+  </div>
+
+  <div class="p-4">
+    <div class="flex items-start justify-between">
+      <h3 class="font-bold text-lg line-clamp-2">
+        {{ post.title[selectedLanguage] }}
+      </h3>
+      <span
+        class="ml-2 capitalize whitespace-nowrap shrink-0 border px-2 py-1 rounded text-xs font-medium"
+        [ngClass]="statusColors[post.status]"
+      >
+        {{ post.status }}
+      </span>
+    </div>
+
+    <div class="flex flex-wrap gap-1 mt-1">
+      <ng-container *ngFor="let tag of post.tags.slice(0, 3)">
+        <span class="bg-gray-100 text-gray-800 text-xs px-2 py-0.5 rounded">
+          {{ tag }}
+        </span>
+      </ng-container>
+      <span
+        *ngIf="post.tags.length > 3"
+        class="bg-gray-100 text-gray-800 text-xs px-2 py-0.5 rounded"
+      >
+        +{{ post.tags.length - 3 }}
+      </span>
+    </div>
+  </div>
+
+  <div class="p-4 pt-0 flex-grow">
+    <p class="text-sm text-muted-foreground line-clamp-3">
+      {{ post.excerpt[selectedLanguage] }}
+    </p>
+    <div
+      class="flex justify-between items-center mt-4 text-xs text-muted-foreground"
+    >
+      <span>{{ post.category }}</span>
+    </div>
+  </div>
+
+  <div class="p-4 pt-0 flex flex-col gap-3">
+    <!-- View and Edit -->
+    <div class="grid grid-cols-2 gap-2 w-full">
+      <button
+        class="border px-3 py-1 text-sm rounded flex items-center justify-center hover:bg-gray-100"
+        (click)="onView.emit(post.id)"
+      >
+        <svg
+          class="h-4 w-4 mr-1"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+        >
+          <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          <path
+            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+          />
+        </svg>
+        Ver
+      </button>
+
+      <button
+        class="border px-3 py-1 text-sm rounded flex items-center justify-center hover:bg-gray-100"
+        (click)="onEdit.emit(post.id)"
+      >
+        <svg
+          class="h-4 w-4 mr-1"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+        >
+          <path d="M11 5h2M4 20h16M4 4l16 16" />
+        </svg>
+        Editar
+      </button>
+    </div>
+
+    <!-- Approve/Reject (only if pending) -->
+    <div
+      *ngIf="post.status === 'pending'"
+      class="grid grid-cols-2 gap-2 w-full"
+    >
+      <button
+        class="bg-red-500 hover:bg-red-600 text-white text-sm px-3 py-1 rounded flex items-center justify-center"
+        (click)="onReject.emit(post.id)"
+      >
+        <svg
+          class="h-4 w-4 mr-1"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+        >
+          <path d="M6 18L18 6M6 6l12 12" />
+        </svg>
+        Rejeitar
+      </button>
+
+      <button
+        class="bg-green-600 hover:bg-green-700 text-white text-sm px-3 py-1 rounded flex items-center justify-center"
+        (click)="onApprove.emit(post.id)"
+      >
+        <svg
+          class="h-4 w-4 mr-1"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+        >
+          <path d="M5 13l4 4L19 7" />
+        </svg>
+        Aprovar
+      </button>
+    </div>
+  </div>
+</div>
