@@ -1,29 +1,29 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from 'express';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule],
-  template: `
-    <header
-      class="bg-gray-800 text-white p-4 flex justify-between items-center"
-    >
-      <div class="text-xl font-bold">DailyBrief Admin</div>
-      <div class="flex items-center">
-        <select class="bg-gray-700 text-white rounded-md p-2 mr-4">
-          <option value="pt">PT</option>
-          <option value="en">EN</option>
-          <option value="es">ES</option>
-        </select>
-        <button
-          class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Logout
-        </button>
-      </div>
-    </header>
-  `,
-  styles: [],
+  imports: [CommonModule, RouterLink, RouterLinkActive],
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent {}
+export class HeaderComponent {
+  mobileMenuOpen = false;
+  private router = inject(Router);
+
+  navItems = [
+    { title: 'Dashboard', path: '/', icon: 'layout-dashboard' },
+    { title: 'Posts', path: '/posts', icon: 'file-text' },
+    { title: 'Logs', path: '/logs', icon: 'clock' },
+    { title: 'Usuários', path: '/users', icon: 'users' },
+    { title: 'Analytics', path: '/analytics', icon: 'bar-chart' },
+    { title: 'Configurações', path: '/settings', icon: 'settings' },
+  ];
+
+  handleLogout() {
+    this.router.navigate(['/login']);
+  }
+}

@@ -9,14 +9,16 @@ import { CategoryTagComponent } from './category-tag.component';
   standalone: true,
   imports: [CommonModule, RouterModule, CategoryTagComponent],
   template: `
-    <section class="py-12 md:py-24 lg:py-32">
+    <section class="py-12 md:py-24 lg:py-32 bg-[var(--card-bg-color)]">
       <div class="container mx-auto px-4 md:px-6">
         <div class="flex flex-col md:flex-row gap-8 md:gap-12 items-center">
           <div class="flex-1 space-y-4">
             @if (post.category) {
               <app-category-tag [category]="post.category"></app-category-tag>
             }
-            <h1 class="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl">
+            <h1
+              class="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl"
+            >
               {{ post.title }}
             </h1>
             <p class="max-w-[700px] text-muted-foreground md:text-xl">

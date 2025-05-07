@@ -1,0 +1,130 @@
+<div class="min-h-screen flex items-center justify-center bg-slate-50 p-4">
+  <div class="w-full max-w-6xl">
+    <div class="grid lg:grid-cols-2 gap-8 items-center">
+      <!-- Brand Section -->
+      <div class="text-center lg:text-left lg:pr-12 order-1 lg:order-1">
+        <div class="flex items-center justify-center lg:justify-start mb-4">
+          <span class="text-3xl md:text-4xl font-bold text-dailybrief-600"
+            >Daily</span
+          >
+          <span class="text-3xl md:text-4xl font-semibold">Brief</span>
+          <span
+            class="ml-1 border bg-dailybrief-100 text-white text-xs px-2 py-0.5 rounded"
+            >Admin</span
+          >
+        </div>
+        <h2 class="text-xl md:text-2xl font-semibold text-slate-800 mb-4">
+          Painel administrativo
+        </h2>
+        <p class="hidden lg:block text-slate-600 max-w-md">
+          Gerencie seu conteúdo, acompanhe métricas e otimize o desempenho do
+          seu blog com nossa plataforma intuitiva.
+        </p>
+      </div>
+
+      <!-- Login Form -->
+      <div class="lg:max-w-md w-full mx-auto order-2 lg:order-2">
+        <div class="border-none shadow-lg bg-white rounded-lg">
+          <div class="space-y-1 p-6">
+            <h3 class="text-xl text-center lg:text-left font-semibold">
+              Entrar na sua conta
+            </h3>
+            <p class="text-center lg:text-left text-sm text-gray-600">
+              Digite suas credenciais para acessar o painel
+            </p>
+          </div>
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <div class="space-y-4 px-6">
+              <div class="space-y-2">
+                <label for="email" class="text-left block">Email</label>
+                <input
+                  id="email"
+                  type="email"
+                  placeholder="seu@email.com"
+                  formControlName="email"
+                  class="bg-white border border-gray-300 text-sm rounded-md w-full p-2"
+                  required
+                />
+              </div>
+              <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                  <label for="password" class="text-left block">Senha</label>
+                  <a
+                    href="#"
+                    class="text-sm font-medium text-dailybrief-600 hover:text-dailybrief-500 transition-colors"
+                  >
+                    Esqueceu a senha?
+                  </a>
+                </div>
+                <div class="relative">
+                  <input
+                    id="password"
+                    [type]="showPassword ? 'text' : 'password'"
+                    placeholder="••••••••"
+                    formControlName="password"
+                    class="bg-white border border-gray-300 text-sm rounded-md w-full p-2 pr-10"
+                    required
+                  />
+                  <button
+                    type="button"
+                    class="absolute right-0 top-0 h-full px-3 text-gray-500"
+                    (click)="onSubmit()"
+                  >
+                    @if (showPassword) {
+                      <i class="ri-eye-off-line"></i>
+                    } @else {
+                      <i class="ri-eye-line"></i>
+                    }
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="flex-col space-y-3 p-6 pt-4">
+              <button
+                class="w-full bg-dailybrief-600 hover:bg-dailybrief-700 transition-colors text-white text-base rounded-md px-4 py-2 flex items-center justify-center"
+                type="submit"
+                [disabled]="isLoading"
+              >
+                @if (isLoading) {
+                  <svg
+                    class="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      class="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      stroke-width="4"
+                    ></circle>
+                    <path
+                      class="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                  <span>Entrando...</span>
+                } @else {
+                  <i class="ri-eye-line"></i>
+                  <span>Entrar</span>
+                }
+              </button>
+              <p class="text-sm text-muted-foreground text-center">
+                Não tem uma conta?
+                <a
+                  href="#"
+                  class="text-dailybrief-600 hover:text-dailybrief-500 font-medium"
+                >
+                  Solicitar acesso
+                </a>
+              </p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

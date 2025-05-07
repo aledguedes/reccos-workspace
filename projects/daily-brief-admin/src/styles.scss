@@ -1,2 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
 @use 'tailwindcss';
+@theme {
+  --font-display: 'Satoshi', 'sans-serif';
+  --color-dailybrief-600: #2563eb;
+  --color-dailybrief-800: #1e293b;
+  --color-dailybrief-900: #0f172a;
+}
+
+body {
+  background-color: #f5f5f5;
+}

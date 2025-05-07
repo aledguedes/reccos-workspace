@@ -1,116 +1,78 @@
-import { ChartComponent } from './../components/chart/chart.components';
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
+import {
+  blogDashboardCards,
+  mockLogs,
+  mockPosts,
+} from '../../../data/mockData';
+import { LogItemComponent } from '../components/log-item/log-item.component';
+import { StatCardComponent } from '../components/stat-card/stat-card.component';
+import { PostCardDashComponent } from '../components/post-card-dash/post-card-dash.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule, ChartComponent],
-  template: `
-    <main class="container mx-auto p-8 max-w-7xl">
-      <h1
-        class="text-3xl font-bold text-gray-800 mb-6 tracking-tight animate-fade-in"
-      >
-        Dashboard
-      </h1>
-
-      <!-- Cards Section -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div
-          class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300 animate-slide-up"
-        >
-          <h3 class="text-lg font-semibold text-gray-700">Pageviews</h3>
-          <p class="text-4xl font-bold text-blue-500 my-2">
-            {{ analytics.pageviews.toLocaleString() }}
-          </p>
-          <p class="text-sm text-gray-500">Total this month</p>
-        </div>
-        <div
-          class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300 animate-slide-up delay-100"
-        >
-          <h3 class="text-lg font-semibold text-gray-700">Affiliate Clicks</h3>
-          <p class="text-4xl font-bold text-green-500 my-2">
-            {{ analytics.affiliateClicks.toLocaleString() }}
-          </p>
-          <p class="text-sm text-gray-500">Total this month</p>
-        </div>
-        <div
-          class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300 animate-slide-up delay-200"
-        >
-          <h3 class="text-lg font-semibold text-gray-700">Posts Published</h3>
-          <p class="text-4xl font-bold text-indigo-500 my-2">
-            {{ analytics.postsPublished }}
-          </p>
-          <p class="text-sm text-gray-500">Total this month</p>
-        </div>
-        <div
-          class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300 animate-slide-up delay-300"
-        >
-          <h3 class="text-lg font-semibold text-gray-700">Active Users</h3>
-          <p class="text-4xl font-bold text-purple-500 my-2">
-            {{ analytics.activeUsers.toLocaleString() }}
-          </p>
-          <p class="text-sm text-gray-500">Total this month</p>
-        </div>
-      </div>
-
-      <!-- Charts Section -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <app-chart
-          type="bar"
-          [data]="pageviewsData"
-          title="Pageviews by Day"
-          class="animate-fade-in"
-        ></app-chart>
-        <app-chart
-          type="line"
-          [data]="clicksData"
-          title="Affiliate Clicks by Day"
-          class="animate-fade-in delay-200"
-        ></app-chart>
-      </div>
-    </main>
-  `,
-  styles: [
-    `
-      .animate-fade-in {
-        animation: fadeIn 0.5s ease-out;
-      }
-      .animate-slide-up {
-        animation: slideUp 0.5s ease-out;
-      }
-      .delay-100 {
-        animation-delay: 100ms;
-      }
-      .delay-200 {
-        animation-delay: 200ms;
-      }
-      .delay-300 {
-        animation-delay: 300ms;
-      }
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
-      @keyframes slideUp {
-        from {
-          transform: translateY(20px);
-          opacity: 0;
-        }
-        to {
-          transform: translateY(0);
-          opacity: 1;
-        }
-      }
-    `,
+  imports: [
+    CommonModule,
+    RouterModule,
+    LogItemComponent,
+    StatCardComponent,
+    PostCardDashComponent,
   ],
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent {
+  selectedLanguage = 'pt-BR';
+  blogDashboardCards = blogDashboardCards;
+  mockPosts = mockPosts;
+  mockLogs = mockLogs;
+
+  postsByStatusChart = {
+    labels: ['Aprovado', 'Pendente', 'Rejeitado'],
+    datasets: [
+      {
+        label: 'Posts',
+        data: [12, 7, 3],
+        backgroundColor: ['#22c55e', '#eab308', '#ef4444'],
+      },
+    ],
+  };
+
+  viewsOverTimeChart = {
+    labels: [
+      '2025-05-01',
+      '2025-05-02',
+      '2025-05-03',
+      '2025-05-04',
+      '2025-05-05',
+      '2025-05-06',
+      '2025-05-07',
+    ],
+    datasets: [
+      {
+        label: 'Visualizações',
+        data: [200, 350, 400, 320, 500, 450, 600],
+        borderColor: '#3b82f6',
+        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+        fill: true,
+        tension: 0.4,
+      },
+    ],
+  };
+
+  trafficSourcesChart = {
+    labels: ['Orgânico', 'Social', 'Referência', 'Direto'],
+    datasets: [
+      {
+        label: 'Fontes de Tráfego',
+        data: [45, 25, 20, 10],
+        backgroundColor: ['#6366f1', '#f59e42', '#10b981', '#f43f5e'],
+      },
+    ],
+  };
+
   analytics = {
     pageviews: 12500,
     affiliateClicks: 3200,
@@ -141,8 +103,8 @@ export class DashboardComponent {
   };
 
   constructor(private router: Router) {
-    if (!localStorage.getItem('mock-token')) {
-      this.router.navigate(['/login']);
-    }
+    // if (!localStorage.getItem('mock-token')) {
+    //   this.router.navigate(['/login']);
+    // }
   }
 }

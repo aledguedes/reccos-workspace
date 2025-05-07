@@ -1,0 +1,58 @@
+<div class="rounded-lg overflow-hidden">
+  <div class="pb-2 px-4 pt-4">
+    <div class="flex justify-between items-center">
+      <h2 class="text-lg font-semibold">Posts Recentes</h2>
+      <a routerLink="/posts" class="text-xs text-blue-600 hover:underline">
+        Ver todos
+      </a>
+    </div>
+  </div>
+
+  <div class="p-4">
+    <div class="space-y-4">
+      @for (post of posts.slice(0, 3); track $index) {
+        <div
+          class="flex items-center gap-3 p-3 border-b border-gray-200 border-bg hover:bg-accent/50 transition-colors"
+        >
+          @if (post.featuredImage) {
+            <img
+              [src]="post.featuredImage"
+              [alt]="post.title[selectedLanguage]"
+              class="w-16 h-16 object-cover rounded"
+            />
+          }
+
+          <div class="flex-1">
+            <h3 class="font-medium line-clamp-1">
+              {{ post.title[selectedLanguage] }}
+            </h3>
+            <p class="text-sm text-muted-foreground font-normal line-clamp-1">
+              {{ post.excerpt[selectedLanguage] }}
+            </p>
+            <div class="flex items-center gap-2 mt-1">
+              <span
+                class="text-xs px-2 py-0.5 rounded-full"
+                [ngClass]="{
+                  'bg-green-100 text-green-700': post.status === 'approved',
+                  'bg-red-100 text-red-700': post.status === 'rejected',
+                  'bg-yellow-100 text-yellow-700': post.status === 'pending',
+                }"
+              >
+                {{
+                  post.status === 'approved'
+                    ? 'Aprovado'
+                    : post.status === 'rejected'
+                      ? 'Rejeitado'
+                      : 'Pendente'
+                }}
+              </span>
+              <span class="text-xs text-muted-foreground">{{
+                post.category
+              }}</span>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>

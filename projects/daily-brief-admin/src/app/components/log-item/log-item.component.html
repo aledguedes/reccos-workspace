@@ -1,0 +1,55 @@
+<div class="rounded-lg overflow-hidden">
+  <div class="pb-2 px-4 pt-4">
+    <div class="flex justify-between items-center">
+      <h2 class="text-lg font-semibold">Logs Recentes</h2>
+      <a routerLink="/posts" class="text-xs text-blue-600 hover:underline">
+        Ver todos
+      </a>
+    </div>
+  </div>
+  <div class="p-4">
+    <div class="space-y-4">
+      @for (log of logs; track $index) {
+        <div
+          [ngClass]="['p-4 border rounded-md mb-2', getActionClass(log.action)]"
+        >
+          <div class="flex items-start">
+            <div class="mr-3 mt-1">
+              <span [innerHTML]="getActionIcon(log.action)"></span>
+            </div>
+            <div class="flex-1">
+              <div class="flex justify-between items-start">
+                <div>
+                  <div class="font-medium">{{ log.action }}</div>
+                  <div class="text-sm text-muted-foreground">
+                    {{ log.user }}
+                  </div>
+                </div>
+                <div class="text-xs text-right text-muted-foreground">
+                  <div>{{ log.timestamp | date: 'dd/MM/yyyy' }}</div>
+                  <div>{{ log.timestamp | date: 'HH:mm' }}</div>
+                </div>
+              </div>
+
+              <div *ngIf="log.details?.postId" class="mt-2 text-sm">
+                <span class="text-muted-foreground">Post: </span>
+                <a
+                  [routerLink]="['/posts', log.details.postId]"
+                  class="text-blue-600 hover:underline"
+                >
+                  {{ log.details.postTitle }}
+                </a>
+                <div
+                  *ngIf="log.details.change"
+                  class="mt-1 text-xs text-muted-foreground"
+                >
+                  {{ log.details.change }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>
